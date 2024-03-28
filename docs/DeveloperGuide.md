@@ -64,6 +64,14 @@ Upon successful validation, the method removes the transaction at the calculated
 ArrayList. Subsequently, it updates the account balance to reflect the removed transaction. Finally, it 
 notifies the user of the successful removal along with displaying the details of the removed transaction.
 
+### [Implemented] List feature
+#### Implementation
+The list feature in the BudgetBuddy application allows users to view all their past transactions. This feature is
+facilitated through the `UserInterface#printAllTransactions`, which loops through the entire ArrayList of transactions
+and extract all the details of each transaction.
+
+This feature will be further enhanced to include options to view transactions that the user is interested in only. For
+example, transactions of the past week, past month, specified date range.
 
 ## Product scope
 ### Target user profile
