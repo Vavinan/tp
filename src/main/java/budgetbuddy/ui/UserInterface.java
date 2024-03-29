@@ -18,7 +18,7 @@ public class UserInterface {
             "_________________________________________________________________________________";
 
     private static final String TAB_SPACE = "    ";
-    public static final String HELP_BORDER = "//////////////////////////////////////////////////////";
+    public static final String HELP_BORDER = "```````````````````````````````````````````````````";
 
     public static Scanner in = new Scanner(System.in);
 
@@ -49,6 +49,7 @@ public class UserInterface {
         System.out.println(LINE);
     }
 
+    //@@author Vavinan
     public static void printAddMessage(String transaction, double balance) {
         String[] parts = transaction.split("\\|");
         System.out.println(LINE);
@@ -79,6 +80,7 @@ public class UserInterface {
         System.out.println(LINE);
     }
 
+    //@@author isaaceng7
     public static void printInvalidAddSyntax(String message) {
         System.out.println(LINE);
         System.out.println(TAB_SPACE + message);
@@ -106,6 +108,7 @@ public class UserInterface {
         System.out.println(LINE);
     }
 
+    //@@author Vavinan
     public static void printAllTransactions(ArrayList<Transaction> transactions, double balance) {
         int index = transactions.size();
         System.out.println(LINE);
@@ -143,7 +146,6 @@ public class UserInterface {
         System.out.println(LINE);
     }
 
-    //@@author Vavinan
     public static String getEditInformation(String string) {
         System.out.println(LINE);
         System.out.println(TAB_SPACE + "Please edit the following transaction");
@@ -200,9 +202,9 @@ public class UserInterface {
 
     public static void printDeleteHelp(){
         System.out.println(HELP_BORDER);
-        System.out.println("delete [INDEX]");
-        System.out.println("Make sure the index is above 0 and below or equal to the size of the " +
-                "transaction list");
+        System.out.println(TAB_SPACE + "delete [INDEX]");
+        System.out.println( TAB_SPACE + "Make sure the index is above 0 and below or equal to the size of " +
+                "the transaction list");
         System.out.println(HELP_BORDER);
     }
 
@@ -212,13 +214,10 @@ public class UserInterface {
         System.out.println("Make sure the index is above 0 and below or equal to the size of the " +
                 "transaction list");
         System.out.println("Then you will be asked to input the data for each parameters like");
-        System.out.println("Please edit the following transaction\n" +
-                " Transaction Type: Expense |  Description: Shopping |  Date: 2024-03-21 |  Amount: -500.0 |  Category: Groceries\n" +
-                "    Enter transaction type: [EXPENSE / INCOME] \n" +
+        System.out.println("    Enter transaction type: [EXPENSE / INCOME] \n" +
                 "    Enter description: [NEW DESCRIPTION] \n" +
                 "    Enter transaction date: [NEW DATE] \n" +
-                "    Enter transaction amount: [NEW AMOUNT] \n" +
-                " \n" +
+                "    Enter transaction amount: [NEW AMOUNT] \n" + " \n" +
                 "        Dining: 1\n" +
                 "        Groceries: 2\n" +
                 "        Utilities: 3\n" +
@@ -228,14 +227,24 @@ public class UserInterface {
                 "        Rent: 7\n" +
                 "        Salary: 8\n" +
                 "        Others: 9\n" +
-                "In which category do you want to list this transaction? [Enter number between 1 and 9]\n" +
+                "    In which category do you want to list this transaction? [Enter number between 1 and " +
+                "9]\n" +
                 "    Enter Category: [NEW CATEGORY] ");
         System.out.println(HELP_BORDER);
     }
 
-    public static void  printListHelp(){
+    public static void printListHelp(){
         System.out.println(HELP_BORDER);
         System.out.println(TAB_SPACE + " list ");
+        System.out.println(TAB_SPACE + "This will give some available options to choose from like:");
+        System.out.println("What would you like to view?\n" +
+                "    1. All Transactions\n" +
+                "    2. Past Week Transactions\n" +
+                "    3. Past Month Transactions\n" +
+                "    4. Custom Date Transactions\n");
+        System.out.println("From this you can choose 1-4 :");
+        System.out.println("To print Custom date transaction: \n" +
+                " 4\n" +"Start Date: [dd-MM-yyyy]]\n" + "End Date: [dd-MM-yyyy] ");
         System.out.println(HELP_BORDER);
     }
 

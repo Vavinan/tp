@@ -55,7 +55,7 @@ public class TransactionList {
         UserInterface.printAllTransactions(transactions, account.getBalance());
     }
 
-
+    //@@author Vavinan
     public void removeTransaction(String input, Account account) throws EmptyArgumentException,
             NumberFormatException, InvalidIndexException {
         if (input.trim().length() < DELETE_BEGIN_INDEX) {
@@ -79,6 +79,7 @@ public class TransactionList {
         }
     }
 
+    //@@author vibes-863
     public static boolean isNotInteger(String data) {
         try {
             Integer.parseInt(data);
@@ -96,7 +97,7 @@ public class TransactionList {
             return true;
         }
     }
-
+    //@@author ShyamKrishna33
     void addTransaction(Transaction t) {
         transactions.add(t);
     }
@@ -132,6 +133,7 @@ public class TransactionList {
         account.setBalance(dataStorage.getBalance());
     }
 
+    //@@author isaaceng7
     public static ArrayList<Transaction> getPastWeekTransactions(ArrayList<Transaction> transactions) {
         LocalDate today = LocalDate.now();
         LocalDate lastWeek = today.minusDays(DAYS_IN_WEEK + DAYS_OFFSET);
@@ -203,6 +205,7 @@ public class TransactionList {
 
     }
 
+    //@@author Vavinan
     public void processEditTransaction(String input, Account account) throws EmptyArgumentException,
             NumberFormatException, InvalidIndexException, InvalidEditTransactionData {
         if (input.trim().length() < EDIT_BEGIN_INDEX) {
@@ -239,8 +242,10 @@ public class TransactionList {
             break;
         case EDIT:
             UserInterface.printEditHelp();
+            break;
         case LIST:
             UserInterface.printListHelp();
+            break;
         default:
             UserInterface.printUseAvailableHelp();
             break;

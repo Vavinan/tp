@@ -16,6 +16,7 @@ public class Parser {
     public static final int ADD_COMMAND_INDEX = 3;
     public static final int HELP_BEGIN_INDEX = 4;
 
+    //@@author ShyamKrishna33
     public Transaction parseTransaction(String input, Account account)
             throws InvalidTransactionTypeException, NumberFormatException, EmptyArgumentException {
         String data = input.substring(ADD_COMMAND_INDEX + 1);
@@ -71,6 +72,7 @@ public class Parser {
         }
     }
 
+    //@@author Vavinan
     public Transaction parseTransactionType(String newTransaction, Account account) throws InvalidEditTransactionData {
         String[] parts = newTransaction.split(" \\| ");
 
