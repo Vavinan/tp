@@ -14,6 +14,7 @@ import budgetbuddy.transaction.type.Transaction;
 public class Parser {
 
     public static final int ADD_COMMAND_INDEX = 3;
+    public static final int HELP_BEGIN_INDEX = 4;
 
     public Transaction parseTransaction(String input, Account account)
             throws InvalidTransactionTypeException, NumberFormatException, EmptyArgumentException {
@@ -93,6 +94,10 @@ public class Parser {
         } else {
             throw new InvalidEditTransactionData(" One or more data is wrong. ");
         }
+    }
+
+    public String parseHelpCommand(String input){
+        return input.substring(HELP_BEGIN_INDEX).trim();
     }
 
 }

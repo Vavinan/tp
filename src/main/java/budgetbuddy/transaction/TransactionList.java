@@ -23,6 +23,11 @@ public class TransactionList {
     public static final int INDEX_OFFSET = 1;
     public static final int LOWER_BOUND = 0;
     public static final int EDIT_BEGIN_INDEX = 5;
+    public static final String ALL = "all";
+    public static final String ADD = "add";
+    public static final String DELETE = "delete";
+    public static final String EDIT = "edit";
+    public static final String LIST = "list";
 
     private ArrayList<Transaction> transactions;
     private Parser parser;
@@ -142,6 +147,25 @@ public class TransactionList {
         }
     }
 
-
-
+    public void helpWithUserCommands(String input){
+        String helpCommand = parser.parseHelpCommand(input);
+        switch(helpCommand){
+        case ALL:
+            UserInterface.printAllCommands();
+            break;
+        case ADD:
+            UserInterface.printAddHelp();
+            break;
+        case DELETE:
+            UserInterface.printDeleteHelp();
+            break;
+        case EDIT:
+            UserInterface.printEditHelp();
+        case LIST:
+            UserInterface.printListHelp();
+        default:
+            UserInterface.printUseAvailableHelp();
+            break;
+        }
+    }
 }
