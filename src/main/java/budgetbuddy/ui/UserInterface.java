@@ -177,16 +177,22 @@ public class UserInterface {
     }
 
     public static void printAllCommands(){
-        printAddHelp();
-        printDeleteHelp();
-        printEditHelp();
-        printListHelp();
+        System.out.println(HELP_BORDER);
+        System.out.printf("%-20s %-70s %-20s%n", "Command", "Syntax", "Further help");
+        System.out.printf("%-20s %-70s %-20s%n","Add","add /t/[TYPE] /n/[DESCRIPTION] /d/[DD-MM-YYYY] " +
+                "/$/[AMOUNT] /c/[1:9]", "help add");
+        System.out.printf("%-20s %-70s %-20s%n", "Edit", "edit [INDEX]", "help edit");
+        System.out.printf("%-20s %-70s %-20s%n", "Delete", "delete [INDEX]", "help delete");
+        System.out.printf("%-20s %-70s %-20s%n", "List", "list", "help list");
+        System.out.println(HELP_BORDER);
+
     }
 
     public static void printAddHelp(){
         System.out.println(HELP_BORDER);
         System.out.println("Method 1:");
-        System.out.println(TAB_SPACE + "add /t/[TYPE] /n/[DESCRIPTION] /d/[DD-MM-YYYY] /$/[AMOUNT]");
+        System.out.println(TAB_SPACE + "SYNTAX : add /t/[TYPE] /n/[DESCRIPTION] /d/[DD-MM-YYYY]" +
+                "/$/[AMOUNT] \n");
         System.out.println("followed by choosing category from the given list:");
 
         for(Category category : Category.values()) {
@@ -194,7 +200,8 @@ public class UserInterface {
         }
 
         System.out.println("\n Method 2");
-        System.out.println(TAB_SPACE + "add /t/[TYPE] /n/[DESCRIPTION] /d/[DD-MM-YYYY] /$/[AMOUNT] /c/[1:9]");
+        System.out.println(TAB_SPACE + " SYNTAX : add /t/[TYPE] /n/[DESCRIPTION] /d/[DD-MM-YYYY] " +
+                "/$/[AMOUNT] /c/[1:9] \n");
         System.out.println("Provide the category number along with the add command");
         System.out.println("\n ");
         System.out.println(HELP_BORDER);
@@ -202,7 +209,7 @@ public class UserInterface {
 
     public static void printDeleteHelp(){
         System.out.println(HELP_BORDER);
-        System.out.println(TAB_SPACE + "delete [INDEX]");
+        System.out.println(TAB_SPACE + "SYNTAX : delete [INDEX] \n");
         System.out.println( TAB_SPACE + "Make sure the index is above 0 and below or equal to the size of " +
                 "the transaction list");
         System.out.println(HELP_BORDER);
@@ -210,23 +217,15 @@ public class UserInterface {
 
     public static void printEditHelp(){
         System.out.println(HELP_BORDER);
-        System.out.println("edit [INDEX]");
+        System.out.println(TAB_SPACE + "SYNTAX : edit [INDEX] \n");
         System.out.println("Make sure the index is above 0 and below or equal to the size of the " +
                 "transaction list");
         System.out.println("Then you will be asked to input the data for each parameters like");
         System.out.println("    Enter transaction type: [EXPENSE / INCOME] \n" +
                 "    Enter description: [NEW DESCRIPTION] \n" +
                 "    Enter transaction date: [NEW DATE] \n" +
-                "    Enter transaction amount: [NEW AMOUNT] \n" + " \n" +
-                "        Dining: 1\n" +
-                "        Groceries: 2\n" +
-                "        Utilities: 3\n" +
-                "        Transportation: 4\n" +
-                "        Healthcare: 5\n" +
-                "        Entertainment: 6\n" +
-                "        Rent: 7\n" +
-                "        Salary: 8\n" +
-                "        Others: 9\n" +
+                "    Enter transaction amount: [NEW AMOUNT] \n" + " \n");
+        System.out.println("Then you will be given categories to choose from (like as add command). \n"+
                 "    In which category do you want to list this transaction? [Enter number between 1 and " +
                 "9]\n" +
                 "    Enter Category: [NEW CATEGORY] ");
@@ -235,8 +234,8 @@ public class UserInterface {
 
     public static void printListHelp(){
         System.out.println(HELP_BORDER);
-        System.out.println(TAB_SPACE + " list ");
-        System.out.println(TAB_SPACE + "This will give some available options to choose from like:");
+        System.out.println(TAB_SPACE + "SYNTAX : list \n");
+        System.out.println(TAB_SPACE + "This will give some available options to choose from:");
         System.out.println("What would you like to view?\n" +
                 "    1. All Transactions\n" +
                 "    2. Past Week Transactions\n" +
@@ -244,7 +243,7 @@ public class UserInterface {
                 "    4. Custom Date Transactions\n");
         System.out.println("From this you can choose 1-4 :");
         System.out.println("To print Custom date transaction: \n" +
-                " 4\n" +"Start Date: [dd-MM-yyyy]]\n" + "End Date: [dd-MM-yyyy] ");
+                " 4\n" +"Start Date: [dd-MM-yyyy]\n" + "End Date: [dd-MM-yyyy] ");
         System.out.println(HELP_BORDER);
     }
 
