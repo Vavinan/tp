@@ -15,6 +15,8 @@ import budgetbuddy.transaction.type.Transaction;
 import budgetbuddy.ui.UserInterface;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class TransactionList {
@@ -23,6 +25,9 @@ public class TransactionList {
     public static final int INDEX_OFFSET = 1;
     public static final int LOWER_BOUND = 0;
     public static final int EDIT_BEGIN_INDEX = 5;
+    private static final int DAYS_IN_WEEK = 7;
+    private static final int DAYS_IN_MONTH = 30;
+    private static final int DAYS_OFFSET = 1;
 
     private ArrayList<Transaction> transactions;
     private Parser parser;
@@ -40,9 +45,10 @@ public class TransactionList {
         return transactions;
     }
 
-    public void printTransactions(Account account){
+    public void printTransactions(Account account) {
         UserInterface.printAllTransactions(transactions, account.getBalance());
     }
+
 
     public void removeTransaction(String input, Account account) throws EmptyArgumentException,
             NumberFormatException, InvalidIndexException {
@@ -58,7 +64,7 @@ public class TransactionList {
         if (id >= LOWER_BOUND && id < size) {
             String itemRemoved = transactions.get(id).toString();
             assert itemRemoved != null : "String representation of item to remove is null";
-            account.setBalance(account.getBalance() - transactions.get(id).getAmount() );
+            account.setBalance(account.getBalance() - transactions.get(id).getAmount());
             transactions.remove(id);
             assert transactions.size() == size - 1 : "Transaction list size did not decrease after removal";
             UserInterface.printDeleteMessage(itemRemoved, account.getBalance());
@@ -84,7 +90,7 @@ public class TransactionList {
             return true;
         }
     }
-  
+
     void addTransaction(Transaction t) {
         transactions.add(t);
     }
@@ -120,6 +126,77 @@ public class TransactionList {
         account.setBalance(dataStorage.getBalance());
     }
 
+    public static ArrayList<Transaction> getPastWeekTransactions(ArrayList<Transaction> transactions) {
+        LocalDate today = LocalDate.now();
+        LocalDate lastWeek = today.minusDays(DAYS_IN_WEEK + DAYS_OFFSET);
+        ArrayList<Transaction> pastWeekTransactions = new ArrayList<>();
+        for (Transaction transaction : transactions) {
+            if (transaction.getDate().isAfter(lastWeek)) {
+                pastWeekTransactions.add(transaction);
+            }
+        }
+        return pastWeekTransactions;
+    }
+
+    public static ArrayList<Transaction> getPastMonthTransactions(ArrayList<Transaction> transactions) {
+        LocalDate today = LocalDate.now();
+        LocalDate lastMonth = today.minusDays(DAYS_IN_MONTH + DAYS_OFFSET);
+        ArrayList<Transaction> pastWeekTransactions = new ArrayList<>();
+        for (Transaction transaction : transactions) {
+            if (transaction.getDate().isAfter(lastMonth)) {
+                pastWeekTransactions.add(transaction);
+            }
+        }
+        return pastWeekTransactions;
+    }
+
+    public static ArrayList<Transaction> getCustomDateTransactions(ArrayList<Transaction> transactions) {
+        String start = UserInterface.getStartDate();
+        String end = UserInterface.getEndDate();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        LocalDate startDate = LocalDate.parse(start, formatter).minusDays(DAYS_OFFSET);
+        LocalDate endDate = LocalDate.parse(end, formatter).plusDays(DAYS_OFFSET);
+        ArrayList<Transaction> customDateTransactions = new ArrayList<>();
+        for (Transaction transaction : transactions) {
+            if (transaction.getDate().isAfter(startDate) && transaction.getDate().isBefore(endDate)) {
+                customDateTransactions.add(transaction);
+            }
+        }
+        return customDateTransactions;
+    }
+
+
+    public void processList(Account account) throws InvalidIndexException {
+        UserInterface.printListOptions();
+        String data = UserInterface.getListOption().trim();
+        int option = Integer.parseInt(data);
+        switch (option) {
+        // 1 - ALL TRANSACTIONS
+        case 1:
+            printTransactions(account);
+            break;
+        // 2 - PAST WEEK TRANSACTIONS
+        case 2:
+            ArrayList<Transaction> pastWeekTransactions = getPastWeekTransactions(transactions);
+            UserInterface.printPastWeekTransactions(pastWeekTransactions);
+            break;
+        // 3 - PAST MONTH TRANSACTIONS
+        case 3:
+            ArrayList<Transaction> pastMonthTransactions = getPastMonthTransactions(transactions);
+            UserInterface.printPastMonthTransactions(pastMonthTransactions);
+            break;
+        // 4 - CUSTOM DATE TRANSACTIONS
+        case 4:
+            ArrayList<Transaction> customDateTransactions = getCustomDateTransactions(transactions);
+            UserInterface.printCustomDateTransactions(customDateTransactions);
+            break;
+
+        default:
+            throw new InvalidIndexException("4");
+        }
+
+    }
+
     public void processEditTransaction(String input, Account account) throws EmptyArgumentException,
             NumberFormatException, InvalidIndexException, InvalidEditTransactionData {
         if (input.trim().length() < EDIT_BEGIN_INDEX) {
@@ -134,14 +211,13 @@ public class TransactionList {
         if ((index >= LOWER_BOUND) && (index < transactions.size())) {
             Transaction transaction = transactions.get(index);
             String newTransaction = UserInterface.getEditInformation(transaction.toString());
-            Transaction t = parser.parseTransactionType(newTransaction,account);
-            transactions.set(index,t);
+            Transaction t = parser.parseTransactionType(newTransaction, account);
+            transactions.set(index, t);
             UserInterface.printUpdatedTransaction();
         } else {
             throw new InvalidIndexException(String.valueOf(transactions.size()));
         }
     }
-
 
 
 }
