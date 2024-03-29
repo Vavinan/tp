@@ -11,6 +11,9 @@ import java.util.Scanner;
 public class UserInterface {
 
     public static final int START_INDEX = 0;
+
+    public static final String HELP_BORDER = "```````````````````````````````````````````````````";
+
     private static final String LINE = "-------------------------------------------" +
             "----------------------------------------------------------------------" +
             "-----------------------";
@@ -18,8 +21,6 @@ public class UserInterface {
             "_________________________________________________________________________________";
 
     private static final String TAB_SPACE = "    ";
-    public static final String HELP_BORDER = "```````````````````````````````````````````````````";
-
     public static Scanner in = new Scanner(System.in);
 
     public static void listCategories() {
