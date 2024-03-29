@@ -142,6 +142,7 @@ public class UserInterface {
         System.out.println(LINE);
     }
 
+    //@@author Vavinan
     public static String getEditInformation(String string) {
         System.out.println(LINE);
         System.out.println(TAB_SPACE + "Please edit the following transaction");
@@ -172,6 +173,7 @@ public class UserInterface {
         System.out.println(LINE);
     }
 
+    //@@author isaaceng7
     public static void printListOptions() {
         System.out.println(LINE);
         System.out.println("What would you like to view?");
