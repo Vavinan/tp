@@ -2,13 +2,18 @@ package budgetbuddy.account;
 
 public class Account {
     private int accountId;
+    private String accountName;
     private double balance;
 
-    public Account() {
+    public Account(int accountId) {
         this.balance = 0.00;
+        this.accountName = "";
+        this.accountId = accountId;
     }
 
-    public Account(double balance) {
+    public Account(int accountId, String accountName, double balance) {
+        this.accountId = accountId;
+        this.accountName = accountName;
         this.balance = balance;
     }
 
