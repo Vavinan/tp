@@ -55,6 +55,9 @@ public class BudgetBuddy {
                 case "edit":
                     transactions.processEditTransaction(input, account);
                     break;
+                case "help":
+                    transactions.helpWithUserCommands(input);
+                    break;
                 default:
                     UserInterface.printNoCommandExists();
                 }
