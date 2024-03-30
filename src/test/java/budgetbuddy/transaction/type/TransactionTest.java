@@ -16,13 +16,13 @@ public class TransactionTest {
 
     @BeforeEach
     public void setUp() {
-        account = new Account();
+        account = new Account(1);
     }
 
     @Test
     public void testTransactionConstructor() {
         Transaction transaction = new Income("Groceries", 50.0f, "14-03-2024",
-                new Account());
+                new Account(1));
         assertEquals("Groceries", transaction.getDescription());
         assertEquals(50.0f, transaction.getAmount(), 0.001);
         LocalDate date = LocalDate.parse("14-03-2024", DateTimeFormatter.ofPattern("dd-MM-yyyy"));

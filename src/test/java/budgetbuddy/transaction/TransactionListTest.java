@@ -24,7 +24,7 @@ public class TransactionListTest {
     @BeforeEach
     public void setUp() throws IOException {
         transactionList = new TransactionList();
-        account = new Account();
+        account = new Account(1);
     }
 
     @Test

@@ -16,7 +16,7 @@ public class ParserTest {
     @Test
     public void testParseTransaction() throws InvalidTransactionTypeException, EmptyArgumentException {
         Parser parser = new Parser();
-        Account account = new Account();
+        Account account = new Account(1);
         Transaction transaction = parser.parseTransaction("add /t/Income /n/Shopping /$/50 /d/14-03-2024 " +
                 "/c/1", account);
         assertEquals("Shopping", transaction.getDescription());
@@ -28,7 +28,7 @@ public class ParserTest {
     @Test
     public void testParseTransactionType() throws InvalidEditTransactionData, InvalidEditTransactionData {
         Parser parser = new Parser();
-        Account account = new Account();
+        Account account = new Account(1);
 
         // Test case for valid income transaction
         String incomeTransactionString = "income | test1 | 10-11-2022 | 1000.00 | 1";
