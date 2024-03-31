@@ -92,7 +92,7 @@ public class DataStorage {
 
         Scanner s = new Scanner(f);
         ArrayList<Transaction> transactionList = new ArrayList<>();
-        Account account = new Account();
+        Account account = new Account(1);
         for (int i = 0; s.hasNext(); i++) {
             transactionList.add(processData(s.nextLine(), account));
         }

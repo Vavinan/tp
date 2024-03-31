@@ -129,7 +129,7 @@ public class UserInterface {
                     description, date, amount, category);
         }
         System.out.println(TAB_SPACE + TABLE_BORDER);
-        System.out.println("\n" + TAB_SPACE + "Your currents account balance is $" + balance);
+        System.out.println("\n" + TAB_SPACE + "Your current account balance is $" + balance);
         System.out.println(LINE);
     }
 
@@ -358,6 +358,21 @@ public class UserInterface {
     }
 
 
+    public static void printAddAccountMessage(String account) {
+        String[] parts = account.split("\\|");
+        System.out.println(LINE);
+        System.out.println(TAB_SPACE + "Got it. I have added the following account \n");
+        for (String part : parts) {
+            System.out.println(TAB_SPACE + part.trim());
+        }
+        System.out.println(LINE);
+    }
 
+    public static void printInvalidArgumentSyntax(String message) {
+        System.out.println(LINE);
+        System.out.println(TAB_SPACE + message);
+        System.out.println(TAB_SPACE + "Please ensure that you have entered all the arguments correctly.");
+        System.out.println(LINE);
+    }
 }
 

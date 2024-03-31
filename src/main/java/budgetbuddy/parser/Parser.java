@@ -102,4 +102,31 @@ public class Parser {
         return input.substring(HELP_BEGIN_INDEX).trim();
     }
 
+    public static String[] parseAddAccount(String input) throws NumberFormatException, EmptyArgumentException {
+        String[] parts = input.trim().split(" /n/ | /\\$/ " );
+        String name = null;
+        String initialBalance = null;
+
+        for (int i = 1; i < parts.length; i++) {
+            if (input.contains("/n/ " + parts[i])) {
+                name = parts[i].trim();
+            } else if (input.contains("/$/ " + parts[i])) {
+                initialBalance = parts[i].trim();
+            }
+        }
+
+        if (name == null || name.isEmpty()){
+            throw new EmptyArgumentException("name ");
+        }
+
+        if (initialBalance == null) {
+            throw new EmptyArgumentException("initial balance ");
+        }
+
+        if (TransactionList.isNotDouble(initialBalance)) {
+            throw new NumberFormatException(initialBalance);
+        }
+
+        return new String[] {name, initialBalance};
+    }
 }
