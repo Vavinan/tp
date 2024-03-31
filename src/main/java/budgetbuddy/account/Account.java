@@ -1,19 +1,19 @@
 package budgetbuddy.account;
 
 public class Account {
-    private int accountId;
-    private String accountName;
+    private final int id;
+    private final String name;
     private double balance;
 
     public Account(int accountId) {
+        this.id = accountId;
+        this.name = "";
         this.balance = 0.00;
-        this.accountName = "";
-        this.accountId = accountId;
     }
 
-    public Account(int accountId, String accountName, double balance) {
-        this.accountId = accountId;
-        this.accountName = accountName;
+    public Account(int id, String name, double balance) {
+        this.id = id;
+        this.name = name;
         this.balance = balance;
     }
 
@@ -25,11 +25,18 @@ public class Account {
         this.balance = balance;
     }
 
-    public int getAccountId() {
-        return accountId;
+    public int getId() {
+        return id;
     }
 
-    public void setAccountId(int accountId) {
-        this.accountId = accountId;
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public String toString() {
+        return  (" ID: " + getId() + " | " +
+                " Name: " + getName() + " | " +
+                " Balance: " + getBalance()) ;
     }
 }
