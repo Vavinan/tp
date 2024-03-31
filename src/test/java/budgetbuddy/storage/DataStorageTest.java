@@ -10,7 +10,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 
 public class DataStorageTest {
     @Test
@@ -45,9 +48,11 @@ public class DataStorageTest {
             assertEquals(expectedTransactions.size(), actualTransactions.size());
             for (int i = 0; i < expectedTransactions.size(); i++) {
                 assertEquals(expectedTransactions.get(i).getDescription(), actualTransactions.get(i).getDescription());
-                assertEquals(expectedTransactions.get(i).getAmount(), actualTransactions.get(i).getAmount(), 0.001);
+                assertEquals(expectedTransactions.get(i).getAmount(),
+                        actualTransactions.get(i).getAmount(), 0.001);
                 assertEquals(expectedTransactions.get(i).getDate(), actualTransactions.get(i).getDate());
-                assertEquals(expectedTransactions.get(i).getTransactionType(), actualTransactions.get(i).getTransactionType());
+                assertEquals(expectedTransactions.get(i).getTransactionType(),
+                        actualTransactions.get(i).getTransactionType());
                 assertEquals(expectedTransactions.get(i).getCategory(), actualTransactions.get(i).getCategory());
             }
         } catch (IOException e) {
