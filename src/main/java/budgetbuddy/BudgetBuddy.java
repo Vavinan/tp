@@ -4,9 +4,10 @@ import budgetbuddy.account.Account;
 import budgetbuddy.account.AccountManager;
 import budgetbuddy.exceptions.EmptyArgumentException;
 import budgetbuddy.exceptions.InvalidAddTransactionSyntax;
+import budgetbuddy.exceptions.InvalidArgumentSyntaxException;
+import budgetbuddy.exceptions.InvalidEditTransactionData;
 import budgetbuddy.exceptions.InvalidIndexException;
 import budgetbuddy.exceptions.InvalidTransactionTypeException;
-import budgetbuddy.exceptions.InvalidEditTransactionData;
 import budgetbuddy.transaction.TransactionList;
 import budgetbuddy.ui.UserInterface;
 
@@ -69,6 +70,9 @@ public class BudgetBuddy {
                 case "help":
                     transactions.helpWithUserCommands(input);
                     break;
+                case "add-acc":
+                    accountManager.processAddAccount(input);
+                    break;
                 default:
                     UserInterface.printNoCommandExists();
                 }
@@ -88,6 +92,8 @@ public class BudgetBuddy {
                 UserInterface.printInvalidInput("Please check your command syntax");
             } catch (InvalidEditTransactionData e){
                 UserInterface.printInvalidInput(e.getMessage());
+            } catch (InvalidArgumentSyntaxException e){
+                UserInterface.printInvalidArgumentSyntax(e.getMessage());
             } catch (Exception e) {
                 UserInterface.printUnknownError(e.getMessage());
             }
