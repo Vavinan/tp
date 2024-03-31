@@ -76,6 +76,9 @@ public class BudgetBuddy {
                 case "list-acc":
                     UserInterface.printListOfAccounts(accountManager.accounts);
                     break;
+                case "delete-acc":
+                    accountManager.removeAccount(input);
+                    break;
                 default:
                     UserInterface.printNoCommandExists();
                 }
