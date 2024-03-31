@@ -368,5 +368,11 @@ public class UserInterface {
         System.out.println(LINE);
     }
 
+    public static void printInvalidArgumentSyntax(String message) {
+        System.out.println(LINE);
+        System.out.println(TAB_SPACE + message);
+        System.out.println(TAB_SPACE + "Please ensure that you have entered all the arguments correctly.");
+        System.out.println(LINE);
+    }
 }
 
