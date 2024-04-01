@@ -1,5 +1,6 @@
 package budgetbuddy.ui;
 
+import budgetbuddy.account.Account;
 import budgetbuddy.categories.Category;
 import budgetbuddy.transaction.type.Transaction;
 
@@ -19,6 +20,8 @@ public class UserInterface {
             "-----------------------";
     private static final String TABLE_BORDER = "________________________________________" +
             "_________________________________________________________________________________";
+    private static final String ACCOUNT_TABLE_BORDER = "____________________________________________________________" +
+            "_____________";
 
     private static final String TAB_SPACE = "    ";
     public static Scanner in = new Scanner(System.in);
@@ -372,6 +375,37 @@ public class UserInterface {
         System.out.println(LINE);
         System.out.println(TAB_SPACE + message);
         System.out.println(TAB_SPACE + "Please ensure that you have entered all the arguments correctly.");
+        System.out.println(LINE);
+    }
+
+    public static void printListOfAccounts(ArrayList<Account> accounts) {
+        int maxIndex = accounts.size();
+        System.out.println(LINE);
+        System.out.println(TAB_SPACE + "Your accounts:");
+        System.out.println(TAB_SPACE + ACCOUNT_TABLE_BORDER);
+        System.out.printf(TAB_SPACE + TAB_SPACE + "%-5s %-20s %-30s %-15s ", "ID", "Account Number",
+                "Account Name", "Balance");
+
+        for (int i = START_INDEX; i < maxIndex; i++) {
+            Account account = accounts.get(i);
+            int accountNumber = account.getAccountNumber();
+            String name = account.getName();
+            double balance = account.getBalance();
+
+            System.out.printf("\n" +TAB_SPACE + TAB_SPACE + "%-5d %-20d %-30.45s %-15.2f", i + 1,
+                    accountNumber, name, balance);
+        }
+        System.out.println("\n" + TAB_SPACE + ACCOUNT_TABLE_BORDER);
+        System.out.println(LINE);
+    }
+
+    public static void printDeleteAccountMessage(String account) {
+        String[] parts = account.split("\\|");
+        System.out.println(LINE);
+        System.out.println(TAB_SPACE + "Got it. I have removed the following account \n");
+        for (String part : parts) {
+            System.out.println(TAB_SPACE + part.trim());
+        }
         System.out.println(LINE);
     }
 }
