@@ -9,6 +9,7 @@ import budgetbuddy.exceptions.InvalidTransactionTypeException;
 import budgetbuddy.exceptions.InvalidEditTransactionData;
 
 import budgetbuddy.categories.Category;
+import budgetbuddy.insights.Insight;
 import budgetbuddy.parser.Parser;
 import budgetbuddy.storage.DataStorage;
 import budgetbuddy.transaction.type.Transaction;
@@ -250,5 +251,9 @@ public class TransactionList {
             UserInterface.printUseAvailableHelp();
             break;
         }
+    }
+
+    public void displayInsights() {
+        Insight.displayCategoryInsight(transactions);
     }
 }
