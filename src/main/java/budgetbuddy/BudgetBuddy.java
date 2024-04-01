@@ -75,6 +75,7 @@ public class BudgetBuddy {
                     break;
                 case "insights":
                     transactions.displayInsights();
+                    break;
                 case "list-acc":
                     UserInterface.printListOfAccounts(accountManager.accounts);
                     break;
