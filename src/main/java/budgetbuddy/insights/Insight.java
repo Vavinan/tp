@@ -10,7 +10,6 @@ import org.knowm.xchart.SwingWrapper;
 import org.knowm.xchart.style.PieStyler;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static java.lang.Math.abs;
 
