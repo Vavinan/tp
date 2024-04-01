@@ -4,7 +4,10 @@ import budgetbuddy.categories.Category;
 import budgetbuddy.transaction.type.Expense;
 import budgetbuddy.transaction.type.Income;
 import budgetbuddy.transaction.type.Transaction;
-
+import org.knowm.xchart.PieChart;
+import org.knowm.xchart.PieChartBuilder;
+import org.knowm.xchart.SwingWrapper;
+import org.knowm.xchart.style.PieStyler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,8 +35,12 @@ public class Insight {
                 incomeArray[index] += abs(t.getAmount());
             }
         }
+        displayPieChart(categoryArray, incomeArray, expenseArray);
     }
 
+    private static void displayPieChart(Category[] categoryArray, Double[] incomeArray, Double[] expenseArray) {
+
+    }
 
     private static int indexOf(Category[] array, Category target) {
         for (int i = 0; i < array.length; i++) {
