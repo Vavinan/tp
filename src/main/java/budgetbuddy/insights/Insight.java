@@ -54,6 +54,22 @@ public class Insight {
 
         // Show it
         new SwingWrapper<>(chart1).displayChart();
+
+        PieChart chart2 = new PieChartBuilder().width(800).height(600).title("Expense Divide").build();
+
+        // Customize Chart
+        chart2.getStyler().setCircular(true);
+        chart2.getStyler().setLegendVisible(true);
+        chart2.getStyler().setAnnotationType(PieStyler.AnnotationType.LabelAndPercentage);
+
+        for (int i = 0; i < categoryArray.length; i++) {
+            if (expenseArray[i] != 0) {
+                chart2.addSeries(categoryArray[i].getCategoryName(), expenseArray[i]);
+            }
+        }
+
+        // Show it
+        new SwingWrapper<>(chart2).displayChart();
     }
 
     private static int indexOf(Category[] array, Category target) {
