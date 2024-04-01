@@ -73,6 +73,9 @@ public class BudgetBuddy {
                 case "add-acc":
                     accountManager.processAddAccount(input);
                     break;
+                case "insights":
+                    transactions.displayInsights();
+                    break;
                 case "list-acc":
                     UserInterface.printListOfAccounts(accountManager.accounts);
                     break;
