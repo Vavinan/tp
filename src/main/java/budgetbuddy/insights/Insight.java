@@ -39,7 +39,21 @@ public class Insight {
     }
 
     private static void displayPieChart(Category[] categoryArray, Double[] incomeArray, Double[] expenseArray) {
+        PieChart chart1 = new PieChartBuilder().width(800).height(600).title("Income Divide").build();
 
+        // Customize Chart
+        chart1.getStyler().setCircular(true);
+        chart1.getStyler().setLegendVisible(true);
+        chart1.getStyler().setAnnotationType(PieStyler.AnnotationType.LabelAndPercentage);
+
+        for (int i = 0; i < categoryArray.length; i++) {
+            if (incomeArray[i] != 0) {
+                chart1.addSeries(categoryArray[i].getCategoryName(), incomeArray[i]);
+            }
+        }
+
+        // Show it
+        new SwingWrapper<>(chart1).displayChart();
     }
 
     private static int indexOf(Category[] array, Category target) {
