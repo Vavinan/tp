@@ -56,7 +56,6 @@ public class TransactionList {
         UserInterface.printAllTransactions(transactions, account.getBalance());
     }
 
-    //@@author Vavinan
     public void removeTransaction(String input, Account account) throws EmptyArgumentException,
             NumberFormatException, InvalidIndexException {
         if (input.trim().length() < DELETE_BEGIN_INDEX) {
@@ -80,7 +79,6 @@ public class TransactionList {
         }
     }
 
-    //@@author vibes-863
     public static boolean isNotInteger(String data) {
         try {
             Integer.parseInt(data);
@@ -98,7 +96,7 @@ public class TransactionList {
             return true;
         }
     }
-    //@@author ShyamKrishna33
+
     void addTransaction(Transaction t) {
         transactions.add(t);
     }
@@ -252,7 +250,7 @@ public class TransactionList {
             break;
         }
     }
-
+    //@@author
     public void displayInsights() {
         Insight.displayCategoryInsight(transactions);
     }

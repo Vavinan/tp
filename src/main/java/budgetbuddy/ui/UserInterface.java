@@ -112,7 +112,7 @@ public class UserInterface {
         System.out.println(LINE);
     }
 
-    //@@author Vavinan
+    //@@author
     public static void printAllTransactions(ArrayList<Transaction> transactions, double balance) {
         int index = transactions.size();
         System.out.println(LINE);
@@ -150,6 +150,7 @@ public class UserInterface {
         System.out.println(LINE);
     }
 
+    //@@author Vavinan
     public static String getEditInformation(String string) {
         System.out.println(LINE);
         System.out.println(TAB_SPACE + "Please edit the following transaction");
@@ -174,6 +175,7 @@ public class UserInterface {
         return type + " | " + description + " | " + date + " | " + amount + " | " + category;
 
     }
+    //@@author
 
     public static void printUpdatedTransaction() {
         System.out.println("\n" + TAB_SPACE + "Updated Successfully");
@@ -359,8 +361,9 @@ public class UserInterface {
         System.out.println(TAB_SPACE + TABLE_BORDER);
         System.out.println(LINE);
     }
+    //@@author
 
-
+    //@@author vibes-863
     public static void printAddAccountMessage(String account) {
         String[] parts = account.split("\\|");
         System.out.println(LINE);
@@ -408,5 +411,6 @@ public class UserInterface {
         }
         System.out.println(LINE);
     }
+    //@@author
 }
 
