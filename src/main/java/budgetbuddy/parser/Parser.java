@@ -147,17 +147,26 @@ public class Parser {
     }
 
     public static int parseRemoveAccount(String input)
-            throws NumberFormatException, EmptyArgumentException, InvalidArgumentSyntaxException {
-        String[] parts = input.split(" ");
-        if(parts.length == 2){
-            if(TransactionList.isNotInteger(parts[1])) {
-                throw new NumberFormatException(parts[1]);
-            }
-            return Integer.parseInt(parts[1]);
-        } else if (parts.length == 1) {
-            throw new EmptyArgumentException("delete account id ");
-        } else {
-            throw new InvalidArgumentSyntaxException("Invalid delete account syntax.");
+            throws NumberFormatException, EmptyArgumentException {
+        if (input.trim().length() < 11) {
+            throw new EmptyArgumentException("delete-acc index ");
         }
+        String data = input.substring(11).trim();
+        if (TransactionList.isNotInteger(data)) {
+            throw new NumberFormatException(data);
+        }
+        return Integer.parseInt(data);
+    }
+
+
+    public static int parseEditAccount(String input) throws EmptyArgumentException {
+        if (input.trim().length() < 9) {
+            throw new EmptyArgumentException("edit-acc index ");
+        }
+        String data = input.substring(9).trim();
+        if (TransactionList.isNotInteger(data)) {
+            throw new NumberFormatException(data);
+        }
+        return Integer.parseInt(data);
     }
 }

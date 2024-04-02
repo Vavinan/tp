@@ -393,7 +393,7 @@ public class UserInterface {
         System.out.println(LINE);
         System.out.println(TAB_SPACE + "Your accounts:");
         System.out.println(TAB_SPACE + ACCOUNT_TABLE_BORDER);
-        System.out.printf(TAB_SPACE + TAB_SPACE + "%-5s %-20s %-30s %-15s ", "ID", "Account Number",
+        System.out.printf(TAB_SPACE + TAB_SPACE + "%-20s %-30s %-15s ", "Account Number",
                 "Account Name", "Balance");
 
         for (int i = START_INDEX; i < maxIndex; i++) {
@@ -402,8 +402,7 @@ public class UserInterface {
             String name = account.getName();
             double balance = account.getBalance();
 
-            System.out.printf("\n" +TAB_SPACE + TAB_SPACE + "%-5d %-20d %-30.45s %-15.2f", i + 1,
-                    accountNumber, name, balance);
+            System.out.printf("\n" +TAB_SPACE + TAB_SPACE + "%-20d %-30.45s %-15.2f", accountNumber, name, balance);
         }
         System.out.println("\n" + TAB_SPACE + ACCOUNT_TABLE_BORDER);
         System.out.println(LINE);
@@ -418,6 +417,27 @@ public class UserInterface {
         }
         System.out.println(LINE);
     }
+
+    public static String getNewAccountName(String account) {
+        String[] parts = account.split("\\|");
+        System.out.println(LINE);
+        System.out.println(TAB_SPACE + "Please edit the following account \n");
+        for (String part : parts) {
+            System.out.println(TAB_SPACE + part.trim());
+        }
+        System.out.println(LINE);
+        System.out.print(TAB_SPACE + "Enter new account name: ");
+        return in.nextLine().trim();
+    }
+
+    public static void printUpdatedAccount(String account) {
+        String[] parts = account.split("\\|");
+        System.out.println(LINE);
+        System.out.println(TAB_SPACE + "Updated Successfully! Updated account details: \n");
+        for (String part : parts) {
+            System.out.println(TAB_SPACE + part.trim());
+        }
+        System.out.println(LINE);
+    }
     //@@author
 }
-

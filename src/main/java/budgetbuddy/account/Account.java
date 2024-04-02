@@ -2,7 +2,7 @@ package budgetbuddy.account;
 
 public class Account {
     private final int accountNumber;
-    private final String name;
+    private String name;
     private double balance;
 
     public Account(int accountNumber) {
@@ -31,6 +31,10 @@ public class Account {
 
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
