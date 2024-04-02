@@ -42,10 +42,13 @@ public class TransactionList {
 
     private final DataStorage dataStorage = new DataStorage();
 
-    public TransactionList() throws IOException {
-        // Initialise ArrayList in the constructor
-        this.transactions = dataStorage.readFileContents();
-        assert transactions != null : "Transaction list is null after reading from file";
+    public TransactionList() {
+        this.transactions = new ArrayList<>();
+        this.parser = new Parser();
+    }
+
+    public TransactionList(ArrayList<Transaction> transactions) {
+        this.transactions = transactions;
         this.parser = new Parser();
     }
 
@@ -128,10 +131,6 @@ public class TransactionList {
 
     public void saveTransactionList() throws IOException {
         dataStorage.saveTransactions(transactions);
-    }
-
-    public void updateBalance(Account account) {
-        account.setBalance(dataStorage.getBalance());
     }
 
     //@@author isaaceng7

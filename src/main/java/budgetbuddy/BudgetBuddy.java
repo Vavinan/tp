@@ -9,40 +9,35 @@ import budgetbuddy.exceptions.InvalidEditTransactionData;
 import budgetbuddy.exceptions.InvalidIndexException;
 import budgetbuddy.exceptions.InvalidTransactionTypeException;
 import budgetbuddy.parser.Parser;
+import budgetbuddy.storage.DataStorage;
 import budgetbuddy.transaction.TransactionList;
 import budgetbuddy.ui.UserInterface;
 
-import java.io.IOException;
 import java.util.Scanner;
 
 public class BudgetBuddy {
+    private final AccountManager accountManager;
+    private final TransactionList transactions;
+
+    public BudgetBuddy() {
+        DataStorage dataStorage = new DataStorage();
+        this.accountManager = dataStorage.loadAccounts();
+        this.transactions = dataStorage.loadTransactions();
+    }
 
     /**
      * Main entry-point for the java.BudgetBuddy application.
      */
-    public static void main(String[] args) {
-        String logo = "BUDGET BUDDY";
-        System.out.println("Hello from\n" + logo);
 
+    public static void main(String[] args){
+        new BudgetBuddy().run();
+    }
 
-        TransactionList transactions = null;
-        try {
-            transactions = new TransactionList();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        transactions.updateBalance(new Account(1));
-
-
-        System.out.println("Let's first create an account for you! What do you want to call it?");
+    public void run() {
         Scanner in = UserInterface.in;
-        String accountName = in.nextLine();
-        System.out.println("Great! What's the initial balance?");
-        double initialBalance = Double.parseDouble(in.nextLine());
-        AccountManager accountManager = new AccountManager();
-        accountManager.addAccount(accountName, initialBalance);
+        String logo = "BUDGET BUDDY";
 
+        System.out.println("Hello from\n" + logo);
         System.out.println("What can I do for you?");
 
 
@@ -92,6 +87,8 @@ public class BudgetBuddy {
                     UserInterface.printNoCommandExists();
                 }
                 transactions.saveTransactionList();
+                accountManager.saveAccounts();
+
             } catch (InvalidAddTransactionSyntax e) {
                 UserInterface.printInvalidAddSyntax(e.getMessage());
             } catch (NumberFormatException e) {
