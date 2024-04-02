@@ -68,7 +68,7 @@ public class BudgetBuddy {
                     transactions.processTransaction(input, account);
                     break;
                 case "edit":
-                    transactions.processEditTransaction(input, accountManager.getAccount(0));
+                    transactions.processEditTransaction(input, accountManager);
                     break;
                 case "help":
                     transactions.helpWithUserCommands(input);

@@ -207,7 +207,7 @@ public class TransactionList {
     }
 
     //@@author Vavinan
-    public void processEditTransaction(String input, Account account) throws EmptyArgumentException,
+    public void processEditTransaction(String input, AccountManager accountManager) throws EmptyArgumentException,
             NumberFormatException, InvalidIndexException, InvalidEditTransactionData {
         if (input.trim().length() < EDIT_BEGIN_INDEX) {
             throw new EmptyArgumentException("edit index ");
@@ -220,6 +220,7 @@ public class TransactionList {
         int index = Integer.parseInt(data) - INDEX_OFFSET;
         if ((index >= LOWER_BOUND) && (index < transactions.size())) {
             Transaction transaction = transactions.get(index);
+            Account account = accountManager.getAccountByAccountNumber(transaction.getAccountNumber());
             String newTransaction = UserInterface.getEditInformation(transaction.toString());
             Transaction t = parser.parseTransactionType(newTransaction, account);
             transactions.set(index, t);
