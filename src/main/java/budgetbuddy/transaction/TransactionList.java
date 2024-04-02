@@ -57,7 +57,7 @@ public class TransactionList {
         UserInterface.printAllTransactions(transactions, account.getBalance());
     }
 
-    public void removeTransaction(String input, Account account) throws EmptyArgumentException,
+    public void removeTransaction(String input, AccountManager accountManager) throws EmptyArgumentException,
             NumberFormatException, InvalidIndexException {
         if (input.trim().length() < DELETE_BEGIN_INDEX) {
             throw new EmptyArgumentException("delete index");
@@ -70,6 +70,7 @@ public class TransactionList {
         int size = transactions.size();
         if (id >= LOWER_BOUND && id < size) {
             String itemRemoved = transactions.get(id).toString();
+            Account account = accountManager.getAccountByAccountNumber(transactions.get(id).getAccountNumber());
             assert itemRemoved != null : "String representation of item to remove is null";
             account.setBalance(account.getBalance() - transactions.get(id).getAmount());
             transactions.remove(id);

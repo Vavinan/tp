@@ -97,11 +97,11 @@ public class Parser {
             throw new InvalidEditTransactionData("Choose category number from the list 1-9");
         }
         if (type.equalsIgnoreCase("income")) {
-            Income income = new Income(description, Double.parseDouble(amount), date, account);
+            Income income = new Income(account.getAccountNumber(), account.getName(), description, Double.parseDouble(amount), date, account);
             income.setCategory(Category.fromNumber(categoryValue));
             return income;
         } else if (type.equalsIgnoreCase("expense")) {
-            Expense expense = new Expense(description, Double.parseDouble(amount), date, account);
+            Expense expense = new Expense(account.getAccountNumber(), account.getName(), description, Double.parseDouble(amount), date, account);
             expense.setCategory(Category.fromNumber(categoryValue));
             return expense;
         } else {
