@@ -56,13 +56,13 @@ public class Parser {
         if(description.trim().isEmpty() || type.trim().isEmpty()){
             throw new EmptyArgumentException("data for the arguments ");
         } else if (type.equalsIgnoreCase("income")) {
-            Income income = new Income(description, Double.parseDouble(amount), date, account);
+            Income income = new Income(account.getAccountNumber(), account.getName(), description, Double.parseDouble(amount), date, account);
             if (category != null){
                 income.setCategory(Category.fromNumber(Integer.parseInt(category)));
             }
             return income;
         } else if (type.equalsIgnoreCase("expense")) {
-            Expense expense = new Expense(description, Double.parseDouble(amount), date, account);
+            Expense expense = new Expense(account.getAccountNumber(), account.getName(), description, Double.parseDouble(amount), date, account);
             if (category != null){
                 expense.setCategory(Category.fromNumber(Integer.parseInt(category)));
             }

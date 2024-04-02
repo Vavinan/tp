@@ -2,6 +2,7 @@ package budgetbuddy.transaction;
 
 import budgetbuddy.account.Account;
 
+import budgetbuddy.account.AccountManager;
 import budgetbuddy.exceptions.EmptyArgumentException;
 import budgetbuddy.exceptions.InvalidAddTransactionSyntax;
 import budgetbuddy.exceptions.InvalidIndexException;
@@ -36,8 +37,8 @@ public class TransactionList {
     private static final int DAYS_IN_MONTH = 30;
     private static final int DAYS_OFFSET = 1;
 
-    private ArrayList<Transaction> transactions;
-    private Parser parser;
+    private final ArrayList<Transaction> transactions;
+    private final Parser parser;
 
     private final DataStorage dataStorage = new DataStorage();
 
@@ -104,7 +105,7 @@ public class TransactionList {
     public void processTransaction(String input, Account account)
             throws InvalidTransactionTypeException, InvalidAddTransactionSyntax, EmptyArgumentException {
         // Check for syntax for add transaction
-        String[] arguments = {"/t/", "/n/", "/$/", "/d/"};
+        String[] arguments = {"/a/","/t/", "/n/", "/$/", "/d/"};
         for (String argument : arguments) {
             if (!input.contains(argument)) {
                 throw new InvalidAddTransactionSyntax("Invalid add syntax.");

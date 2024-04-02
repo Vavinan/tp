@@ -60,12 +60,12 @@ public class DataStorage {
 
         switch (transactionInfo[2]) {
         case "Income":
-            Income incomeObj = new Income(transactionInfo[0], Double.parseDouble(transactionInfo[4]),
+            Income incomeObj = new Income(account.getAccountNumber(), account.getName(), transactionInfo[0], Double.parseDouble(transactionInfo[4]),
                     transactionInfo[3], account);
             incomeObj.setCategory(Category.fromNumber(categoryNum));
             return incomeObj;
         case "Expense":
-            Expense expenseObj = new Expense(transactionInfo[0], -Double.parseDouble(transactionInfo[4]),
+            Expense expenseObj = new Expense(account.getAccountNumber(), account.getName(), transactionInfo[0], -Double.parseDouble(transactionInfo[4]),
                     transactionInfo[3], account);
             expenseObj.setCategory(Category.fromNumber(categoryNum));
             return expenseObj;

@@ -8,6 +8,7 @@ import budgetbuddy.exceptions.InvalidArgumentSyntaxException;
 import budgetbuddy.exceptions.InvalidEditTransactionData;
 import budgetbuddy.exceptions.InvalidIndexException;
 import budgetbuddy.exceptions.InvalidTransactionTypeException;
+import budgetbuddy.parser.Parser;
 import budgetbuddy.transaction.TransactionList;
 import budgetbuddy.ui.UserInterface;
 
@@ -56,16 +57,18 @@ public class BudgetBuddy {
                     isRunning = false;
                     break;
                 case "list":
-                    transactions.processList(accountManager.accounts.get(0));
+                    transactions.processList(accountManager.getAccount(0));
                     break;
                 case "delete":
-                    transactions.removeTransaction(input, accountManager.accounts.get(0));
+                    transactions.removeTransaction(input, accountManager);
                     break;
                 case "add":
-                    transactions.processTransaction(input, accountManager.accounts.get(0));
+                    int accountNumber = Parser.parseAccountNumber(input);
+                    Account account = accountManager.getAccountByAccountNumber(accountNumber);
+                    transactions.processTransaction(input, account);
                     break;
                 case "edit":
-                    transactions.processEditTransaction(input, accountManager.accounts.get(0));
+                    transactions.processEditTransaction(input, accountManager.getAccount(0));
                     break;
                 case "help":
                     transactions.helpWithUserCommands(input);
@@ -77,7 +80,7 @@ public class BudgetBuddy {
                     transactions.displayInsights();
                     break;
                 case "list-acc":
-                    UserInterface.printListOfAccounts(accountManager.accounts);
+                    UserInterface.printListOfAccounts(accountManager.getAccounts());
                     break;
                 case "delete-acc":
                     accountManager.removeAccount(input);
