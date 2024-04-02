@@ -16,6 +16,10 @@ public class Expense extends Transaction {
         account.setBalance(account.getBalance() + this.getAmount());
     }
 
+    public Expense(int accountNumber, String accountName, String description, double amount, String date) {
+        super(accountNumber, accountName, description, -amount, date);
+    }
+
     @Override
     public String getTransactionType() {
         return TRANSACTION_TYPE;
