@@ -1,19 +1,32 @@
 package budgetbuddy.transaction.type;
 
+import budgetbuddy.categories.Category;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public abstract class Transaction {
-    private String description;
-    private double amount;
-    private String category;
-    private LocalDate date;
+    private final int accountNumber;
+    private final String accountName;
+    private final String description;
+    private final double amount;
+    private Category category;
+    private final LocalDate date;
 
-    public Transaction(String description, double amount, String category,String date) {
+    public Transaction(int accountNumber, String accountName, String description, double amount,String date) {
+        this.accountNumber = accountNumber;
+        this.accountName = accountName;
         this.description = description;
         this.amount = amount;
-        this.category = category;
         this.date = parseDate(date);
+    }
+
+    public int getAccountNumber() {
+        return accountNumber;
+    }
+
+    public String getAccountName() {
+        return accountName;
     }
 
     public String getDescription() {
@@ -32,7 +45,7 @@ public abstract class Transaction {
         return LocalDate.parse(by, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
     }
   
-    public String getCategory() {
+    public Category getCategory() {
         return category;
     }
 
@@ -40,10 +53,16 @@ public abstract class Transaction {
 
     @Override
     public String toString() {
-        return  (" Transaction Type: " + getTransactionType() + " | " +
+        return  (" Account Number: " + getAccountNumber() + " | " +
+                " Account Name: " + getAccountName() + " | " +
+                " Transaction Type: " + getTransactionType() + " | " +
                 " Description: " + getDescription() + " | " +
                 " Date: " + getDate() + " | " +
                 " Amount: " + getAmount() + " | " +
-                " Category: " + getCategory()) ;
+                " Category: " + getCategory().getCategoryName()) ;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }
