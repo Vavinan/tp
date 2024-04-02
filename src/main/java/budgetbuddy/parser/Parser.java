@@ -17,6 +17,17 @@ public class Parser {
     public static final int ADD_COMMAND_INDEX = 3;
     public static final int HELP_BEGIN_INDEX = 4;
 
+    public static int parseAccountNumber(String input) throws InvalidArgumentSyntaxException {
+        String data = input.substring(ADD_COMMAND_INDEX + 1);
+        String[] parseData = data.split("/");
+        for (int i = 0; i < parseData.length - 1; i++) {
+            if (parseData[i].trim().equals("a")) {
+                return Integer.parseInt(parseData[i + 1].trim());
+            }
+        }
+        throw new InvalidArgumentSyntaxException("Invalid add syntax.");
+    }
+
     public Transaction parseTransaction(String input, Account account)
             throws InvalidTransactionTypeException, NumberFormatException, EmptyArgumentException {
         String data = input.substring(ADD_COMMAND_INDEX + 1);
