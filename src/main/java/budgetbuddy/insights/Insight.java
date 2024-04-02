@@ -6,9 +6,11 @@ import budgetbuddy.transaction.type.Income;
 import budgetbuddy.transaction.type.Transaction;
 import org.knowm.xchart.PieChart;
 import org.knowm.xchart.PieChartBuilder;
-import org.knowm.xchart.SwingWrapper;
+import org.knowm.xchart.XChartPanel;
 import org.knowm.xchart.style.PieStyler;
 
+import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 
 import static java.lang.Math.abs;
@@ -38,6 +40,16 @@ public class Insight {
     }
 
     private static void displayPieChart(Category[] categoryArray, Double[] incomeArray, Double[] expenseArray) {
+        JFrame incomeFrame = new JFrame("Income Insights");
+        incomeFrame.setLayout(new BorderLayout());
+        JFrame expenseFrame = new JFrame("Expense Insights");
+        expenseFrame.setLayout(new BorderLayout());
+
+        JPanel incomePanel = new JPanel();
+        incomeFrame.add(incomePanel, BorderLayout.CENTER);
+        JPanel expensePanel = new JPanel();
+        expenseFrame.add(expensePanel, BorderLayout.CENTER);
+
         PieChart chart1 = new PieChartBuilder().width(800).height(600).title("Income Divide").build();
 
         // Customize Chart
@@ -52,7 +64,10 @@ public class Insight {
         }
 
         // Show it
-        new SwingWrapper<>(chart1).displayChart();
+        incomePanel.add(new XChartPanel<>(chart1));
+        incomeFrame.pack();
+        incomeFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        incomeFrame.setVisible(true);
 
         PieChart chart2 = new PieChartBuilder().width(800).height(600).title("Expense Divide").build();
 
@@ -68,7 +83,11 @@ public class Insight {
         }
 
         // Show it
-        new SwingWrapper<>(chart2).displayChart();
+        expensePanel.add(new XChartPanel<>(chart2));
+        expenseFrame.pack();
+        expenseFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        expenseFrame.setVisible(true);
+
     }
 
     private static int indexOf(Category[] array, Category target) {
