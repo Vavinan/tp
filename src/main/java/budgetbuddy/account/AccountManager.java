@@ -13,7 +13,7 @@ public class AccountManager {
     public static final int INDEX_OFFSET = 1;
     public static final int LOWER_BOUND = 0;
 
-    public ArrayList<Account> accounts;
+    private final ArrayList<Account> accounts;
     private final ArrayList<Integer> existingAccountNumbers;
     private int accountCount = 0;
 
@@ -73,5 +73,22 @@ public class AccountManager {
         } else {
             throw new InvalidIndexException(String.valueOf(size));
         }
+    }
+
+    public Account getAccount(int accountId){
+        return accounts.get(accountId);
+    }
+
+    public Account getAccountByAccountNumber(int accountNumber) {
+        for (Account account: accounts) {
+            if (account.getAccountNumber() == accountNumber) {
+                return account;
+            }
+        }
+        throw new IllegalArgumentException("Account not found.");
+    }
+
+    public ArrayList<Account> getAccounts() {
+        return accounts;
     }
 }
