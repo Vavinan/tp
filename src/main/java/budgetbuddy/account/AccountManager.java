@@ -4,6 +4,7 @@ import budgetbuddy.exceptions.EmptyArgumentException;
 import budgetbuddy.exceptions.InvalidArgumentSyntaxException;
 import budgetbuddy.exceptions.InvalidIndexException;
 import budgetbuddy.parser.Parser;
+import budgetbuddy.storage.DataStorage;
 import budgetbuddy.ui.UserInterface;
 
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ public class AccountManager {
     public static final int INDEX_OFFSET = 1;
     public static final int LOWER_BOUND = 0;
 
+    private final DataStorage dataStorage = new DataStorage();
     private final ArrayList<Account> accounts;
     private final ArrayList<Integer> existingAccountNumbers;
     private int accountCount = 0;
@@ -20,6 +22,11 @@ public class AccountManager {
     public AccountManager() {
         this.accounts = new ArrayList<>();
         this.existingAccountNumbers = new ArrayList<>();
+    }
+
+    public AccountManager(ArrayList<Account> accounts, ArrayList<Integer> existingAccountNumbers) {
+        this.accounts = accounts;
+        this.existingAccountNumbers = existingAccountNumbers;
     }
 
     public void addAccount(String name, double initialBalance) {
@@ -93,5 +100,9 @@ public class AccountManager {
         String newName = UserInterface.getNewAccountName(account.toString());
         account.setName(newName);
         UserInterface.printUpdatedAccount(account.toString());
+    }
+
+    public void saveAccounts() {
+        dataStorage.saveAccounts(accounts);
     }
 }
