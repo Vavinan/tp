@@ -27,15 +27,15 @@ public class DataStorageTest {
         transactionArrayList.add(t);
 
         try {
-            dataStorage.readFileContents();
+            dataStorage.readTransactionFile();
             dataStorage.saveTransactions(transactionArrayList);
 
-            File file = new File(DataStorage.STORAGE_FILE_PATH);
+            File file = new File(DataStorage.TRANSACTIONS_FILE_PATH);
             assertTrue(file.exists()); // Check if file exists after saving transactions
         } catch (IOException e) {
             fail("Exception thrown while saving transactions: " + e.getMessage());
         } finally {
-            FileWriter fw = new FileWriter(DataStorage.STORAGE_FILE_PATH, false);
+            FileWriter fw = new FileWriter(DataStorage.TRANSACTIONS_FILE_PATH, false);
         }
     }
 
@@ -47,10 +47,10 @@ public class DataStorageTest {
                 "25-03-2024", new Account(1));
         t.setCategory(Category.fromNumber(1));
         expectedTransactions.add(t);
-        dataStorage.readFileContents();
+        dataStorage.readTransactionFile();
         dataStorage.saveTransactions(expectedTransactions);
         try {
-            ArrayList<Transaction> actualTransactions = dataStorage.readFileContents();
+            ArrayList<Transaction> actualTransactions = dataStorage.readTransactionFile();
 
             // Check if read transactions match the expected transactions
             assertEquals(expectedTransactions.size(), actualTransactions.size());
@@ -66,7 +66,7 @@ public class DataStorageTest {
         } catch (IOException e) {
             fail("Exception thrown while reading from file: " + e.getMessage());
         } finally {
-            FileWriter fw = new FileWriter(DataStorage.STORAGE_FILE_PATH, false);
+            FileWriter fw = new FileWriter(DataStorage.TRANSACTIONS_FILE_PATH, false);
         }
     }
 }
