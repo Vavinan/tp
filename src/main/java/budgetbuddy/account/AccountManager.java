@@ -86,4 +86,12 @@ public class AccountManager {
     public ArrayList<Account> getAccounts() {
         return accounts;
     }
+
+    public void processEditAccount(String input) throws EmptyArgumentException, IllegalArgumentException {
+        int accountNumber = Parser.parseEditAccount(input);
+        Account account = getAccountByAccountNumber(accountNumber);
+        String newName = UserInterface.getNewAccountName(account.toString());
+        account.setName(newName);
+        UserInterface.printUpdatedAccount(account.toString());
+    }
 }
