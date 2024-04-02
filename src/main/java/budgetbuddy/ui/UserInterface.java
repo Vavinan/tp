@@ -257,11 +257,12 @@ public class UserInterface {
     public static void printUseAvailableHelp(){
         System.out.println(HELP_BORDER);
         System.out.println(TAB_SPACE + "Please use the following commands for help");
-        System.out.println(TAB_SPACE + "To get idea about all commands use: help");
+        System.out.println(TAB_SPACE + "To get idea about all commands use: help all");
         System.out.println(TAB_SPACE + "Add transaction: help add");
         System.out.println(TAB_SPACE + "Delete transaction: help delete");
         System.out.println(TAB_SPACE + "Edit transaction: help edit");
         System.out.println(TAB_SPACE + "List transaction: help list");
+        System.out.println(TAB_SPACE + "Help related to accounts: help acc");
         System.out.println(HELP_BORDER);
     }
     //@@author isaaceng7
@@ -438,6 +439,17 @@ public class UserInterface {
             System.out.println(TAB_SPACE + part.trim());
         }
         System.out.println(LINE);
+    }
+    //@@author Vavinan
+    public static void printAccountHelp(){
+        System.out.println(HELP_BORDER);
+        System.out.printf("%-30s %-90s%n", "Command", "Syntax");
+        System.out.printf("%-30s %-90s%n", "Add account", "add-acc /n/ [ACCOUNT_NAME] /$/ " +
+                "[INITIAL_BALANCE]");
+        System.out.printf("%-30s %-90s%n", "Delete Account", "delete-acc [ACCOUNT_NUMBER]");
+        System.out.printf("%-30s %-90s%n", "Delete Account", "edit-acc [ACCOUNT_NUMBER]");
+        System.out.printf("%-30s %-90s%n", "List all Accounts", "list-acc");
+        System.out.println(HELP_BORDER);
     }
     //@@author
 }

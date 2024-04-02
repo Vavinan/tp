@@ -36,6 +36,7 @@ public class TransactionList {
     private static final int DAYS_IN_WEEK = 7;
     private static final int DAYS_IN_MONTH = 30;
     private static final int DAYS_OFFSET = 1;
+    public static final String ACCOUNT = "acc";
 
     private final ArrayList<Transaction> transactions;
     private final Parser parser;
@@ -246,6 +247,9 @@ public class TransactionList {
             break;
         case LIST:
             UserInterface.printListHelp();
+            break;
+        case ACCOUNT:
+            UserInterface.printAccountHelp();
             break;
         default:
             UserInterface.printUseAvailableHelp();
