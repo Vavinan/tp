@@ -6,15 +6,27 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public abstract class Transaction {
-    private String description;
-    private double amount;
+    private final int accountNumber;
+    private final String accountName;
+    private final String description;
+    private final double amount;
     private Category category;
-    private LocalDate date;
+    private final LocalDate date;
 
-    public Transaction(String description, double amount,String date) {
+    public Transaction(int accountNumber, String accountName, String description, double amount,String date) {
+        this.accountNumber = accountNumber;
+        this.accountName = accountName;
         this.description = description;
         this.amount = amount;
         this.date = parseDate(date);
+    }
+
+    public int getAccountNumber() {
+        return accountNumber;
+    }
+
+    public String getAccountName() {
+        return accountName;
     }
 
     public String getDescription() {
@@ -41,7 +53,9 @@ public abstract class Transaction {
 
     @Override
     public String toString() {
-        return  (" Transaction Type: " + getTransactionType() + " | " +
+        return  (" Account Number: " + getAccountNumber() + " | " +
+                " Account Name: " + getAccountName() + " | " +
+                " Transaction Type: " + getTransactionType() + " | " +
                 " Description: " + getDescription() + " | " +
                 " Date: " + getDate() + " | " +
                 " Amount: " + getAmount() + " | " +

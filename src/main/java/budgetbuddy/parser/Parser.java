@@ -17,6 +17,17 @@ public class Parser {
     public static final int ADD_COMMAND_INDEX = 3;
     public static final int HELP_BEGIN_INDEX = 4;
 
+    public static int parseAccountNumber(String input) throws InvalidArgumentSyntaxException {
+        String data = input.substring(ADD_COMMAND_INDEX + 1);
+        String[] parseData = data.split("/");
+        for (int i = 0; i < parseData.length - 1; i++) {
+            if (parseData[i].trim().equals("a")) {
+                return Integer.parseInt(parseData[i + 1].trim());
+            }
+        }
+        throw new InvalidArgumentSyntaxException("Invalid add syntax.");
+    }
+
     public Transaction parseTransaction(String input, Account account)
             throws InvalidTransactionTypeException, NumberFormatException, EmptyArgumentException {
         String data = input.substring(ADD_COMMAND_INDEX + 1);
@@ -56,13 +67,15 @@ public class Parser {
         if(description.trim().isEmpty() || type.trim().isEmpty()){
             throw new EmptyArgumentException("data for the arguments ");
         } else if (type.equalsIgnoreCase("income")) {
-            Income income = new Income(description, Double.parseDouble(amount), date, account);
+            Income income = new Income(account.getAccountNumber(), account.getName(), description,
+                    Double.parseDouble(amount), date, account);
             if (category != null){
                 income.setCategory(Category.fromNumber(Integer.parseInt(category)));
             }
             return income;
         } else if (type.equalsIgnoreCase("expense")) {
-            Expense expense = new Expense(description, Double.parseDouble(amount), date, account);
+            Expense expense = new Expense(account.getAccountNumber(), account.getName(), description,
+                    Double.parseDouble(amount), date, account);
             if (category != null){
                 expense.setCategory(Category.fromNumber(Integer.parseInt(category)));
             }
@@ -86,11 +99,13 @@ public class Parser {
             throw new InvalidEditTransactionData("Choose category number from the list 1-9");
         }
         if (type.equalsIgnoreCase("income")) {
-            Income income = new Income(description, Double.parseDouble(amount), date, account);
+            Income income = new Income(account.getAccountNumber(), account.getName(), description,
+                    Double.parseDouble(amount), date, account);
             income.setCategory(Category.fromNumber(categoryValue));
             return income;
         } else if (type.equalsIgnoreCase("expense")) {
-            Expense expense = new Expense(description, Double.parseDouble(amount), date, account);
+            Expense expense = new Expense(account.getAccountNumber(), account.getName(), description,
+                    Double.parseDouble(amount), date, account);
             expense.setCategory(Category.fromNumber(categoryValue));
             return expense;
         } else {

@@ -17,9 +17,9 @@ public class UserInterface {
 
     private static final String LINE = "-------------------------------------------" +
             "----------------------------------------------------------------------" +
-            "-----------------------";
+            "-------------------------------------------";
     private static final String TABLE_BORDER = "________________________________________" +
-            "_________________________________________________________________________________";
+            "_________________________________________________________________________________________________";
     private static final String ACCOUNT_TABLE_BORDER = "____________________________________________________________" +
             "_____________";
 
@@ -113,26 +113,27 @@ public class UserInterface {
     }
 
     //@@author
-    public static void printAllTransactions(ArrayList<Transaction> transactions, double balance) {
+    public static void printAllTransactions(ArrayList<Transaction> transactions) {
         int index = transactions.size();
         System.out.println(LINE);
         System.out.println(TAB_SPACE + "Your Transaction history:");
         System.out.println(TAB_SPACE + TABLE_BORDER);
-        System.out.printf(TAB_SPACE + TAB_SPACE + "%-5s %-10s %-50s %-20s %-15s %-15s%n", "ID", "Type", "Transaction",
-                "Date", "Amount", "Category");
+        System.out.printf(TAB_SPACE + TAB_SPACE + "%-5s %-10s %-20s %-20s %-30s %-15s %-15s %-15s%n", "ID", "Type",
+                "Account Number", "Account Name", "Transaction", "Date", "Amount", "Category");
         for (int i = START_INDEX; i < index; i++) {
             Transaction transaction = transactions.get(i);
+            int accountNumber = transaction.getAccountNumber();
+            String accountName = transaction.getAccountName();
             String type = transaction.getTransactionType();
             String description = transaction.getDescription();
             LocalDate date = transaction.getDate();
             double amount = transaction.getAmount();
             String category = transaction.getCategory().getCategoryName();
 
-            System.out.printf(TAB_SPACE + TAB_SPACE + "%-5d %-10s %-50.45s %-20s %-15.2f  %-15s%n", i + 1, type,
-                    description, date, amount, category);
+            System.out.printf(TAB_SPACE + TAB_SPACE + "%-5d %-10s %-20d %-20.45s %-30.45s %-15s %-15.2f %-15s%n",
+                    i + 1, type, accountNumber, accountName, description, date, amount, category);
         }
         System.out.println(TAB_SPACE + TABLE_BORDER);
-        System.out.println("\n" + TAB_SPACE + "Your current account balance is $" + balance);
         System.out.println(LINE);
     }
 
@@ -299,18 +300,20 @@ public class UserInterface {
         System.out.println(LINE);
         System.out.println(TAB_SPACE + "Displaying transactions from the past week:");
         System.out.println(TAB_SPACE + TABLE_BORDER);
-        System.out.printf(TAB_SPACE + TAB_SPACE + "%-5s %-10s %-50s %-20s %-15s %-15s%n", "ID", "Type", "Transaction",
-                "Date", "Amount", "Category");
+        System.out.printf(TAB_SPACE + TAB_SPACE + "%-5s %-10s %-20s %-20s %-30s %-15s %-15s %-15s%n", "ID", "Type",
+                "Account Number", "Account Name", "Transaction", "Date", "Amount", "Category");
         for (int i = START_INDEX; i < index; i++) {
             Transaction transaction = transactions.get(i);
+            int accountNumber = transaction.getAccountNumber();
+            String accountName = transaction.getAccountName();
             String type = transaction.getTransactionType();
             String description = transaction.getDescription();
             LocalDate date = transaction.getDate();
             double amount = transaction.getAmount();
             String category = transaction.getCategory().getCategoryName();
 
-            System.out.printf(TAB_SPACE + TAB_SPACE + "%-5d %-10s %-50.45s %-20s %-15.2f  %-15s%n", i + 1, type,
-                    description, date, amount, category);
+            System.out.printf(TAB_SPACE + TAB_SPACE + "%-5d %-10s %-20d %-20.45s %-30.45s %-15s %-15.2f %-15s%n",
+                    i + 1, type, accountNumber, accountName, description, date, amount, category);
         }
         System.out.println(TAB_SPACE + TABLE_BORDER);
         System.out.println(LINE);
@@ -322,18 +325,20 @@ public class UserInterface {
         System.out.println(LINE);
         System.out.println(TAB_SPACE + "Displaying transactions from the past month:");
         System.out.println(TAB_SPACE + TABLE_BORDER);
-        System.out.printf(TAB_SPACE + TAB_SPACE + "%-5s %-10s %-50s %-20s %-15s %-15s%n", "ID", "Type", "Transaction",
-                "Date", "Amount", "Category");
+        System.out.printf(TAB_SPACE + TAB_SPACE + "%-5s %-10s %-20s %-20s %-30s %-15s %-15s %-15s%n", "ID", "Type",
+                "Account Number", "Account Name", "Transaction", "Date", "Amount", "Category");
         for (int i = START_INDEX; i < index; i++) {
             Transaction transaction = transactions.get(i);
+            int accountNumber = transaction.getAccountNumber();
+            String accountName = transaction.getAccountName();
             String type = transaction.getTransactionType();
             String description = transaction.getDescription();
             LocalDate date = transaction.getDate();
             double amount = transaction.getAmount();
             String category = transaction.getCategory().getCategoryName();
 
-            System.out.printf(TAB_SPACE + TAB_SPACE + "%-5d %-10s %-50.45s %-20s %-15.2f  %-15s%n", i + 1, type,
-                    description, date, amount, category);
+            System.out.printf(TAB_SPACE + TAB_SPACE + "%-5d %-10s %-20d %-20.45s %-30.45s %-15s %-15.2f %-15s%n",
+                    i + 1, type, accountNumber, accountName, description, date, amount, category);
         }
         System.out.println(TAB_SPACE + TABLE_BORDER);
         System.out.println(LINE);
@@ -345,18 +350,20 @@ public class UserInterface {
         System.out.println(LINE);
         System.out.println(TAB_SPACE + "Displaying transactions of specified date range:");
         System.out.println(TAB_SPACE + TABLE_BORDER);
-        System.out.printf(TAB_SPACE + TAB_SPACE + "%-5s %-10s %-50s %-20s %-15s %-15s%n", "ID", "Type", "Transaction",
-                "Date", "Amount", "Category");
+        System.out.printf(TAB_SPACE + TAB_SPACE + "%-5s %-10s %-20s %-20s %-30s %-15s %-15s %-15s%n", "ID", "Type",
+                "Account Number", "Account Name", "Transaction", "Date", "Amount", "Category");
         for (int i = START_INDEX; i < index; i++) {
             Transaction transaction = transactions.get(i);
+            int accountNumber = transaction.getAccountNumber();
+            String accountName = transaction.getAccountName();
             String type = transaction.getTransactionType();
             String description = transaction.getDescription();
             LocalDate date = transaction.getDate();
             double amount = transaction.getAmount();
             String category = transaction.getCategory().getCategoryName();
 
-            System.out.printf(TAB_SPACE + TAB_SPACE + "%-5d %-10s %-50.45s %-20s %-15.2f  %-15s%n", i + 1, type,
-                    description, date, amount, category);
+            System.out.printf(TAB_SPACE + TAB_SPACE + "%-5d %-10s %-20d %-20.45s %-30.45s %-15s %-15.2f %-15s%n",
+                    i + 1, type, accountNumber, accountName, description, date, amount, category);
         }
         System.out.println(TAB_SPACE + TABLE_BORDER);
         System.out.println(LINE);

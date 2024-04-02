@@ -21,7 +21,8 @@ public class DataStorageTest {
     public void testSaveTransactions() throws IOException {
         DataStorage dataStorage = new DataStorage();
         ArrayList<Transaction> transactionArrayList = new ArrayList<>();
-        Transaction t = new Expense("Groceries", 50.0, "25-03-2024", new Account(1));
+        Transaction t = new Expense(1, "test","Groceries", 50.0,
+                "25-03-2024", new Account(1));
         t.setCategory(Category.fromNumber(1));
         transactionArrayList.add(t);
 
@@ -42,7 +43,8 @@ public class DataStorageTest {
     public void testReadFromFile() throws IOException {
         DataStorage dataStorage = new DataStorage();
         ArrayList<Transaction> expectedTransactions = new ArrayList<>();
-        Transaction t = new Expense("Groceries", 50.0, "25-03-2024", new Account(1));
+        Transaction t = new Expense( 1, "test","Groceries", 50.0,
+                "25-03-2024", new Account(1));
         t.setCategory(Category.fromNumber(1));
         expectedTransactions.add(t);
         dataStorage.readFileContents();

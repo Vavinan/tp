@@ -2,6 +2,7 @@ package budgetbuddy.transaction;
 
 import budgetbuddy.account.Account;
 
+import budgetbuddy.account.AccountManager;
 import budgetbuddy.exceptions.EmptyArgumentException;
 import budgetbuddy.exceptions.InvalidAddTransactionSyntax;
 import budgetbuddy.exceptions.InvalidIndexException;
@@ -36,8 +37,8 @@ public class TransactionList {
     private static final int DAYS_IN_MONTH = 30;
     private static final int DAYS_OFFSET = 1;
 
-    private ArrayList<Transaction> transactions;
-    private Parser parser;
+    private final ArrayList<Transaction> transactions;
+    private final Parser parser;
 
     private final DataStorage dataStorage = new DataStorage();
 
@@ -52,11 +53,11 @@ public class TransactionList {
         return transactions;
     }
 
-    public void printTransactions(Account account) {
-        UserInterface.printAllTransactions(transactions, account.getBalance());
+    public void printTransactions() {
+        UserInterface.printAllTransactions(transactions);
     }
 
-    public void removeTransaction(String input, Account account) throws EmptyArgumentException,
+    public void removeTransaction(String input, AccountManager accountManager) throws EmptyArgumentException,
             NumberFormatException, InvalidIndexException {
         if (input.trim().length() < DELETE_BEGIN_INDEX) {
             throw new EmptyArgumentException("delete index");
@@ -69,6 +70,7 @@ public class TransactionList {
         int size = transactions.size();
         if (id >= LOWER_BOUND && id < size) {
             String itemRemoved = transactions.get(id).toString();
+            Account account = accountManager.getAccountByAccountNumber(transactions.get(id).getAccountNumber());
             assert itemRemoved != null : "String representation of item to remove is null";
             account.setBalance(account.getBalance() - transactions.get(id).getAmount());
             transactions.remove(id);
@@ -104,7 +106,7 @@ public class TransactionList {
     public void processTransaction(String input, Account account)
             throws InvalidTransactionTypeException, InvalidAddTransactionSyntax, EmptyArgumentException {
         // Check for syntax for add transaction
-        String[] arguments = {"/t/", "/n/", "/$/", "/d/"};
+        String[] arguments = {"/a/","/t/", "/n/", "/$/", "/d/"};
         for (String argument : arguments) {
             if (!input.contains(argument)) {
                 throw new InvalidAddTransactionSyntax("Invalid add syntax.");
@@ -173,14 +175,14 @@ public class TransactionList {
     }
 
 
-    public void processList(Account account) throws InvalidIndexException {
+    public void processList() throws InvalidIndexException {
         UserInterface.printListOptions();
         String data = UserInterface.getListOption().trim();
         int option = Integer.parseInt(data);
         switch (option) {
         // 1 - ALL TRANSACTIONS
         case 1:
-            printTransactions(account);
+            printTransactions();
             break;
         // 2 - PAST WEEK TRANSACTIONS
         case 2:
@@ -205,7 +207,7 @@ public class TransactionList {
     }
 
     //@@author Vavinan
-    public void processEditTransaction(String input, Account account) throws EmptyArgumentException,
+    public void processEditTransaction(String input, AccountManager accountManager) throws EmptyArgumentException,
             NumberFormatException, InvalidIndexException, InvalidEditTransactionData {
         if (input.trim().length() < EDIT_BEGIN_INDEX) {
             throw new EmptyArgumentException("edit index ");
@@ -218,6 +220,7 @@ public class TransactionList {
         int index = Integer.parseInt(data) - INDEX_OFFSET;
         if ((index >= LOWER_BOUND) && (index < transactions.size())) {
             Transaction transaction = transactions.get(index);
+            Account account = accountManager.getAccountByAccountNumber(transaction.getAccountNumber());
             String newTransaction = UserInterface.getEditInformation(transaction.toString());
             Transaction t = parser.parseTransactionType(newTransaction, account);
             transactions.set(index, t);
