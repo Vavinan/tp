@@ -63,16 +63,11 @@ public class AccountManager {
     public void removeAccount(String input)
             throws NumberFormatException, InvalidArgumentSyntaxException, EmptyArgumentException,
             InvalidIndexException {
-        int deleteId = Parser.parseRemoveAccount(input) - INDEX_OFFSET;
-        int size = accounts.size();
-        if (deleteId >= LOWER_BOUND && deleteId < size) {
-            String accountRemoved = accounts.get(deleteId).toString();
-            accounts.remove(deleteId);
-            accountCount--;
-            UserInterface.printDeleteAccountMessage(accountRemoved);
-        } else {
-            throw new InvalidIndexException(String.valueOf(size));
-        }
+        int accountNumber = Parser.parseRemoveAccount(input);
+        Account accountRemoved = getAccountByAccountNumber(accountNumber);
+        accounts.remove(accountRemoved);
+        accountCount--;
+        UserInterface.printDeleteAccountMessage(accountRemoved.toString());
     }
 
     public Account getAccount(int accountId){
