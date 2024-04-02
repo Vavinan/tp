@@ -53,8 +53,8 @@ public class TransactionList {
         return transactions;
     }
 
-    public void printTransactions(Account account) {
-        UserInterface.printAllTransactions(transactions, account.getBalance());
+    public void printTransactions() {
+        UserInterface.printAllTransactions(transactions);
     }
 
     public void removeTransaction(String input, AccountManager accountManager) throws EmptyArgumentException,
@@ -175,14 +175,14 @@ public class TransactionList {
     }
 
 
-    public void processList(Account account) throws InvalidIndexException {
+    public void processList() throws InvalidIndexException {
         UserInterface.printListOptions();
         String data = UserInterface.getListOption().trim();
         int option = Integer.parseInt(data);
         switch (option) {
         // 1 - ALL TRANSACTIONS
         case 1:
-            printTransactions(account);
+            printTransactions();
             break;
         // 2 - PAST WEEK TRANSACTIONS
         case 2:
