@@ -159,6 +159,14 @@ public class Parser {
     }
 
 
+    public static int parseEditAccount(String input) throws EmptyArgumentException {
+        if (input.trim().length() < 9) {
+            throw new EmptyArgumentException("edit-acc index ");
         }
+        String data = input.substring(9).trim();
+        if (TransactionList.isNotInteger(data)) {
+            throw new NumberFormatException(data);
+        }
+        return Integer.parseInt(data);
     }
 }
