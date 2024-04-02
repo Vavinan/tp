@@ -87,8 +87,8 @@ public class DataStorage {
             incomeObj.setCategory(Category.fromNumber(categoryNum));
             return incomeObj;
         case "Expense":
-            Expense expenseObj = new Expense(Integer.parseInt(transactionInfo[5]), transactionInfo[6], transactionInfo[0],
-                    -Double.parseDouble(transactionInfo[4]), transactionInfo[3]);
+            Expense expenseObj = new Expense(Integer.parseInt(transactionInfo[5]), transactionInfo[6],
+                    transactionInfo[0], -Double.parseDouble(transactionInfo[4]), transactionInfo[3]);
             expenseObj.setCategory(Category.fromNumber(categoryNum));
             return expenseObj;
         default:
