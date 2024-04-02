@@ -67,13 +67,15 @@ public class Parser {
         if(description.trim().isEmpty() || type.trim().isEmpty()){
             throw new EmptyArgumentException("data for the arguments ");
         } else if (type.equalsIgnoreCase("income")) {
-            Income income = new Income(account.getAccountNumber(), account.getName(), description, Double.parseDouble(amount), date, account);
+            Income income = new Income(account.getAccountNumber(), account.getName(), description,
+                    Double.parseDouble(amount), date, account);
             if (category != null){
                 income.setCategory(Category.fromNumber(Integer.parseInt(category)));
             }
             return income;
         } else if (type.equalsIgnoreCase("expense")) {
-            Expense expense = new Expense(account.getAccountNumber(), account.getName(), description, Double.parseDouble(amount), date, account);
+            Expense expense = new Expense(account.getAccountNumber(), account.getName(), description,
+                    Double.parseDouble(amount), date, account);
             if (category != null){
                 expense.setCategory(Category.fromNumber(Integer.parseInt(category)));
             }
@@ -97,11 +99,13 @@ public class Parser {
             throw new InvalidEditTransactionData("Choose category number from the list 1-9");
         }
         if (type.equalsIgnoreCase("income")) {
-            Income income = new Income(account.getAccountNumber(), account.getName(), description, Double.parseDouble(amount), date, account);
+            Income income = new Income(account.getAccountNumber(), account.getName(), description,
+                    Double.parseDouble(amount), date, account);
             income.setCategory(Category.fromNumber(categoryValue));
             return income;
         } else if (type.equalsIgnoreCase("expense")) {
-            Expense expense = new Expense(account.getAccountNumber(), account.getName(), description, Double.parseDouble(amount), date, account);
+            Expense expense = new Expense(account.getAccountNumber(), account.getName(), description,
+                    Double.parseDouble(amount), date, account);
             expense.setCategory(Category.fromNumber(categoryValue));
             return expense;
         } else {
