@@ -79,7 +79,7 @@ public class DataStorage {
     // description, categoryNum, type, date, amount, accountNumber, accountName
     private Transaction parseDataToTransaction(String s) throws FileCorruptedException {
         String[] transactionInfo = s.split(" ,");
-        int categoryNum = 0;
+        int categoryNum;
         try {
             categoryNum = Integer.parseInt(transactionInfo[1]);
         } catch (NumberFormatException e) {
@@ -98,7 +98,7 @@ public class DataStorage {
             throw new FileCorruptedException("Invalid transaction type");
         }
 
-        double amount = 0;
+        double amount;
 
         try {
             amount = Double.parseDouble(transactionInfo[4]);
