@@ -36,7 +36,9 @@ public class DataStorage {
             }
             FileWriter fw = new FileWriter(ACCOUNTS_FILE_PATH, false);
             for (Account account : accounts) {
-                fw.write(account.getAccountNumber() + " ," + account.getName() + " ," + account.getBalance() + "\n");
+                String stringToWrite = account.getAccountNumber() + " ," + account.getName() + " ,"
+                        + account.getBalance() + "\n";
+                writeToFile(stringToWrite, ACCOUNTS_FILE_PATH);
             }
             fw.close();
         } catch (IOException e) {
@@ -48,18 +50,19 @@ public class DataStorage {
         File f = new File(TRANSACTIONS_FILE_PATH);
 
         assert f.exists() : "File does not exist";
+        FileWriter fw = new FileWriter(TRANSACTIONS_FILE_PATH, false);
 
         for (Transaction transaction : transactionArrayList) {
             if (transaction == null) {
                 break;
             }
             String stringToWrite = getStringToWrite(transaction);
-            writeToFile(stringToWrite);
+            writeToFile(stringToWrite, TRANSACTIONS_FILE_PATH);
         }
     }
 
-    private static void writeToFile(String stringToWrite) throws IOException {
-        FileWriter fw = new FileWriter(TRANSACTIONS_FILE_PATH, false);
+    private static void writeToFile(String stringToWrite, String filePath) throws IOException {
+        FileWriter fw = new FileWriter(filePath, true);
         fw.write(stringToWrite);
         fw.close();
     }
