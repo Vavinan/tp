@@ -2,18 +2,19 @@
 
 ## Introduction
 
-BudgetBuddy is a desktop app for managing personal finances, optimized for use via a Command Line Interface (CLI). It
-offers the tracking of income and expenses of multiple accounts and even provides insights of your financial activities.
+BudgetBuddy is a desktop app for managing personal finances, optimized for use via a Command Line Interface (CLI).
+It offers the tracking of income and expenses of multiple accounts and even provides insights of your financial
+activities.
 
 ## Quick Start
 
 1. Ensure that you have Java 11 or above installed.
 2. Down the latest version of `tp.jar` from [here](https://github.com/AY2324S2-CS2113-T15-2/tp/releases/latest).
 3. Copy the file to the folder you want to use as the home folder for your BudgetBuddy app.
-4. Open a command terminal, `cd` into the folder you put the jar file in, and use the `java -jar tp.jar` command to run
-   the application.
-5. Type the command in the command box and press Enter to execute it. e.g. typing `help` and pressing Enter will prompt
-   the help feature.
+4. Open a command terminal, `cd` into the folder you added the jar file to, and use the `java -jar tp.jar` command to
+   run the application.
+5. When prompted, type the command into the terminal and press Enter to execute it. e.g. typing `help` and pressing
+   Enter will prompt the help feature.
 
 ## Features
 
