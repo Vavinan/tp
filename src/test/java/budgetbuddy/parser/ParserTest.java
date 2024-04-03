@@ -33,7 +33,7 @@ public class ParserTest {
 
         // Test case for valid income transaction
         String incomeTransactionString = "income | test1 | 10-11-2022 | 1000.00 | 1";
-        Transaction incomeTransaction = parser.parseTransactionType(incomeTransactionString, account);
+        Transaction incomeTransaction = parser.parseEditTransaction(incomeTransactionString, account);
         assertEquals("test1", incomeTransaction.getDescription());
         assertEquals(1000.00, incomeTransaction.getAmount(), 0.001);
         assertEquals("Dining", incomeTransaction.getCategory().getCategoryName());
@@ -42,7 +42,7 @@ public class ParserTest {
 
         // Test case for valid expense transaction
         String expenseTransactionString = "expense | Grocery | 12-11-2022 | 50.00 | 2";
-        Transaction expenseTransaction = parser.parseTransactionType(expenseTransactionString, account);
+        Transaction expenseTransaction = parser.parseEditTransaction(expenseTransactionString, account);
         assertEquals("Grocery", expenseTransaction.getDescription());
         assertEquals(-50.00, expenseTransaction.getAmount(), 0.001);
         assertEquals("Groceries", expenseTransaction.getCategory().getCategoryName());

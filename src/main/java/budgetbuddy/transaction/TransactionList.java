@@ -219,7 +219,7 @@ public class TransactionList {
             Transaction transaction = transactions.get(index);
             Account account = accountManager.getAccountByAccountNumber(transaction.getAccountNumber());
             String newTransaction = UserInterface.getEditInformation(transaction.toString());
-            Transaction t = parser.parseTransactionType(newTransaction, account);
+            Transaction t = parser.parseEditTransaction(newTransaction, account);
             transactions.set(index, t);
             UserInterface.printUpdatedTransaction(t);
         } else {

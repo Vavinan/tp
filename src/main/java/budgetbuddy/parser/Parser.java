@@ -87,7 +87,7 @@ public class Parser {
     }
 
     //@@author Vavinan
-    public Transaction parseTransactionType(String newTransaction, Account account) throws InvalidEditTransactionData {
+    public Transaction parseEditTransaction(String newTransaction, Account account) throws InvalidEditTransactionData {
         String[] parts = newTransaction.split(" \\| ");
 
         String type = parts[0].trim();
