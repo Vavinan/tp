@@ -21,6 +21,9 @@ offers the tracking of income and expenses of multiple accounts and even provide
 
 Shows the instructions for using BudgetBuddy.
 Format: `help`
+This command gives the list to search for commands, specific for each task. The commands `help all` and 
+`help acc` covers the basic structure of all commands. Instructions for command-specific help will be 
+provided in the `help all` and `help acc` accordingly.
 
 ### Adding a transaction: `add`
 
@@ -61,6 +64,8 @@ Removes a transaction from transaction history.
 Parameters: Transaction ID
 Format: `delete TRANSACTION_ID`
 
+* The `TRANSACTION_ID` is an integer value ranges from one to the size of the transaction history (index
+  ID of the last transaction).
 * The `TRANSACTION_ID` can be viewed using the command `list` followed by `1`.
 
 Example of usage:
@@ -72,10 +77,16 @@ Edits the details of an existing transaction.
 Parameters: Transaction ID
 Format: `edit TRANSACTION_ID`
 
+* The `TRANSACTION_ID` is an integer value ranges from one to the size of the transaction history (index 
+  ID of the last transaction).
 * The `TRANSACTION_ID` can be viewed using the command `list` followed by `1`.
+* Edit transaction will only update the existing entry, so it won't change the index ID of that transaction. 
+  The edited transaction will still be accessible from the same index ID.
 
 Example of usage:
 `edit 2`
+
+Then the user will be asked to edit each information from that specific transaction one by one.
 
 ### Add an account: `add-acc`
 
@@ -143,6 +154,9 @@ the data of your previous BudgetBuddy home folder.
 {Give a 'cheat sheet' of commands here}
 
 * View help `help`
+* View help for all commands `help all`. Ths can be used to see all the commands related to transactions
+* View help for accounts `help acc`. This can be used to see all the commands related to account
+* Further help for each transaction command will be provided in the `help all`
 * Add transaction `add /a/ACCOUNT_NUMBER /t/TRANSACTION_TYPE /n/NAME /$/AMOUNT /d/DATE /c/CATEGORY`
 * List transactions `list`
 * Delete transaction `delete TRANSACTION_ID`
