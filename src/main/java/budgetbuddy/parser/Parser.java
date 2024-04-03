@@ -16,6 +16,7 @@ public class Parser {
 
     public static final int ADD_COMMAND_INDEX = 3;
     public static final int HELP_BEGIN_INDEX = 4;
+    private static final int ADD_ACC_COMMAND_INDEX = 7;
 
     public static int parseAccountNumber(String input) throws InvalidArgumentSyntaxException {
         String data = input.substring(ADD_COMMAND_INDEX + 1);
@@ -119,15 +120,15 @@ public class Parser {
     //@@author
 
     public static String[] parseAddAccount(String input) throws NumberFormatException, EmptyArgumentException {
-        String[] parts = input.trim().split(" /n/ | /\\$/ " );
+        String data = input.substring(ADD_ACC_COMMAND_INDEX + 1).trim();
+        String[] parseData = data.split("/");
         String name = null;
         String initialBalance = null;
-
-        for (int i = 1; i < parts.length; i++) {
-            if (input.contains("/n/ " + parts[i])) {
-                name = parts[i].trim();
-            } else if (input.contains("/$/ " + parts[i])) {
-                initialBalance = parts[i].trim();
+        for (int i = 0; i < parseData.length - 1; i++) {
+            if (parseData[i].trim().equals("n")) {
+                name = parseData[i + 1].trim();
+            } else if (parseData[i].trim().equals("$")) {
+                initialBalance = parseData[i + 1].trim();
             }
         }
 
