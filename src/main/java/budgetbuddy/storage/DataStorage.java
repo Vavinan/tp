@@ -145,6 +145,7 @@ public class DataStorage {
             }
         } catch (FileCorruptedException e) {
             UserInterface.printFileCorruptedError();
+            FileWriter fw = new FileWriter(TRANSACTIONS_FILE_PATH, false);
             return new ArrayList<>();
         }
         return transactionList;
