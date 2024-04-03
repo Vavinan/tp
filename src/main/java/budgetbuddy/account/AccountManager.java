@@ -12,12 +12,10 @@ import java.util.Random;
 
 public class AccountManager {
     public static final int INDEX_OFFSET = 1;
-    public static final int LOWER_BOUND = 0;
 
     private final DataStorage dataStorage = new DataStorage();
     private final ArrayList<Account> accounts;
     private final ArrayList<Integer> existingAccountNumbers;
-    private int accountCount = 0;
 
     public AccountManager() {
         this.accounts = new ArrayList<>();
@@ -30,7 +28,6 @@ public class AccountManager {
     }
 
     public void addAccount(String name, double initialBalance) {
-        accountCount ++;
         int newAccountNumber = generateAccountNumber();
         accounts.add(new Account(newAccountNumber, name, initialBalance));
         existingAccountNumbers.add(newAccountNumber);
@@ -64,7 +61,7 @@ public class AccountManager {
         }
         String[] parsedData = Parser.parseAddAccount(input);
         addAccount(parsedData[0], Double.parseDouble(parsedData[1]));
-        UserInterface.printAddAccountMessage(accounts.get(accountCount - 1).toString());
+        UserInterface.printAddAccountMessage(getAccount(accounts.size() - INDEX_OFFSET).toString());
     }
 
     public void removeAccount(String input)
@@ -73,7 +70,6 @@ public class AccountManager {
         int accountNumber = Parser.parseRemoveAccount(input);
         Account accountRemoved = getAccountByAccountNumber(accountNumber);
         accounts.remove(accountRemoved);
-        accountCount--;
         UserInterface.printDeleteAccountMessage(accountRemoved.toString());
     }
 
