@@ -3,6 +3,7 @@ package budgetbuddy.storage;
 import budgetbuddy.account.Account;
 import budgetbuddy.account.AccountManager;
 import budgetbuddy.categories.Category;
+import budgetbuddy.exceptions.FileCorruptedException;
 import budgetbuddy.transaction.TransactionList;
 import budgetbuddy.transaction.type.Expense;
 import budgetbuddy.transaction.type.Income;
@@ -76,12 +77,17 @@ public class DataStorage {
     }
 
     // description, categoryNum, type, date, amount, accountNumber, accountName
-    private Transaction processData(String s) {
+    private Transaction processData(String s) throws FileCorruptedException {
         String[] transactionInfo = s.split(" ,");
         int categoryNum = Integer.parseInt(transactionInfo[1]);
 
-        assert transactionInfo.length ==  7: "Invalid transaction information format";
-        assert transactionInfo[2].equals("Income") || transactionInfo[2].equals("Expense") : "Invalid transaction type";
+        if (transactionInfo.length !=  7) {
+            throw new FileCorruptedException("Invalid transaction information format");
+        }
+
+        if(!transactionInfo[2].equals("Income") && !transactionInfo[2].equals("Expense")) {
+            throw new FileCorruptedException("Invalid transaction type");
+        }
 
         switch (transactionInfo[2]) {
         case "Income":
@@ -133,8 +139,13 @@ public class DataStorage {
 
         Scanner s = new Scanner(f);
         ArrayList<Transaction> transactionList = new ArrayList<>();
-        while(s.hasNext()) {
-            transactionList.add(processData(s.nextLine()));
+        try {
+            while(s.hasNext()) {
+                transactionList.add(processData(s.nextLine()));
+            }
+        } catch (FileCorruptedException e) {
+            UserInterface.printFileCorruptedError();
+            return new ArrayList<>();
         }
         return transactionList;
     }
