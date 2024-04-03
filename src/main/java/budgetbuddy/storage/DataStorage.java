@@ -150,6 +150,9 @@ public class DataStorage {
                 return createNewAccountManager();
             }
             ArrayList<Account> accounts = readAccountFile();
+            if (accounts.isEmpty()) {
+                return createNewAccountManager();
+            }
             ArrayList<Integer> existingAccountNumbers = new ArrayList<>();
             for (Account account : accounts) {
                 existingAccountNumbers.add(account.getAccountNumber());
