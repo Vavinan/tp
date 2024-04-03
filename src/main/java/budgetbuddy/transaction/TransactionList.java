@@ -256,4 +256,15 @@ public class TransactionList {
     public void displayInsights() {
         Insight.displayCategoryInsight(transactions);
     }
+
+    public ArrayList<Transaction> removeTransactionsByAccountNumber(int accountNumber) {
+        ArrayList<Transaction> transactionsToRemove = new ArrayList<>();
+        for (Transaction transaction : transactions) {
+            if (transaction.getAccountNumber() == accountNumber) {
+                transactionsToRemove.add(transaction);
+            }
+        }
+        transactions.removeAll(transactionsToRemove);
+        return transactionsToRemove;
+    }
 }
