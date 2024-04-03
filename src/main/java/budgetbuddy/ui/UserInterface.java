@@ -464,4 +464,11 @@ public class UserInterface {
         System.out.println(LINE);
     }
     //@@author
+
+    public static void printFileCorruptedError() {
+        System.out.println(LINE);
+        System.out.println(TAB_SPACE + "The storage file is corrupted :(");
+        System.out.println(TAB_SPACE + "So, a new file will be created!");
+        System.out.println(LINE);
+    }
 }

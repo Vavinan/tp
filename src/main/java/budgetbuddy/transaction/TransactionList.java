@@ -116,7 +116,7 @@ public class TransactionList {
             }
         }
 
-        Transaction t = parser.parseTransaction(input, account);
+        Transaction t = parser.parseUserInputToTransaction(input, account);
         assert t != null : "Parsed transaction is null";
         if (t.getCategory() == null) {
             UserInterface.listCategories();

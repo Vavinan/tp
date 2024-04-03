@@ -3,6 +3,7 @@ package budgetbuddy.storage;
 import budgetbuddy.account.Account;
 import budgetbuddy.account.AccountManager;
 import budgetbuddy.categories.Category;
+import budgetbuddy.exceptions.FileCorruptedException;
 import budgetbuddy.transaction.TransactionList;
 import budgetbuddy.transaction.type.Expense;
 import budgetbuddy.transaction.type.Income;
@@ -72,26 +73,48 @@ public class DataStorage {
         String stringDate = date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
         return t.getDescription() + " ," + t.getCategory().getCategoryNum() + " ,"
                 + t.getTransactionType() + " ," + stringDate + " ," + t.getAmount() + " ," + t.getAccountNumber()
-                + " ," + t.getAccountName()+ "\n";
+                + " ," + t.getAccountName() + "\n";
     }
 
     // description, categoryNum, type, date, amount, accountNumber, accountName
-    private Transaction processData(String s) {
+    private Transaction parseDataToTransaction(String s) throws FileCorruptedException {
         String[] transactionInfo = s.split(" ,");
-        int categoryNum = Integer.parseInt(transactionInfo[1]);
+        int categoryNum;
+        try {
+            categoryNum = Integer.parseInt(transactionInfo[1]);
+        } catch (NumberFormatException e) {
+            throw new FileCorruptedException("Invalid type for category number");
+        }
 
-        assert transactionInfo.length ==  7: "Invalid transaction information format";
-        assert transactionInfo[2].equals("Income") || transactionInfo[2].equals("Expense") : "Invalid transaction type";
+        if (categoryNum < 1 || categoryNum > 9) {
+            throw new FileCorruptedException("Invalid category number");
+        }
+
+        if (transactionInfo.length != 7) {
+            throw new FileCorruptedException("Invalid transaction information format");
+        }
+
+        if (!transactionInfo[2].equals("Income") && !transactionInfo[2].equals("Expense")) {
+            throw new FileCorruptedException("Invalid transaction type");
+        }
+
+        double amount;
+
+        try {
+            amount = Double.parseDouble(transactionInfo[4]);
+        } catch (NumberFormatException e) {
+            throw new FileCorruptedException("Invalid type for transaction amount");
+        }
 
         switch (transactionInfo[2]) {
         case "Income":
             Income incomeObj = new Income(Integer.parseInt(transactionInfo[5]), transactionInfo[6], transactionInfo[0],
-                    Double.parseDouble(transactionInfo[4]), transactionInfo[3]);
+                    amount, transactionInfo[3]);
             incomeObj.setCategory(Category.fromNumber(categoryNum));
             return incomeObj;
         case "Expense":
             Expense expenseObj = new Expense(Integer.parseInt(transactionInfo[5]), transactionInfo[6],
-                    transactionInfo[0], -Double.parseDouble(transactionInfo[4]), transactionInfo[3]);
+                    transactionInfo[0], -amount, transactionInfo[3]);
             expenseObj.setCategory(Category.fromNumber(categoryNum));
             return expenseObj;
         default:
@@ -133,8 +156,14 @@ public class DataStorage {
 
         Scanner s = new Scanner(f);
         ArrayList<Transaction> transactionList = new ArrayList<>();
-        while(s.hasNext()) {
-            transactionList.add(processData(s.nextLine()));
+        try {
+            while (s.hasNext()) {
+                transactionList.add(parseDataToTransaction(s.nextLine()));
+            }
+        } catch (FileCorruptedException e) {
+            UserInterface.printFileCorruptedError();
+            FileWriter fw = new FileWriter(TRANSACTIONS_FILE_PATH, false);
+            return new ArrayList<>();
         }
         return transactionList;
     }
@@ -144,7 +173,7 @@ public class DataStorage {
             File f = new File(ACCOUNTS_FILE_PATH);
             if (!f.exists()) {
                 createDataFolderIfNotExists();
-                if(!f.createNewFile()) {
+                if (!f.createNewFile()) {
                     throw new IOException("Failed to create file");
                 }
                 return createNewAccountManager();
