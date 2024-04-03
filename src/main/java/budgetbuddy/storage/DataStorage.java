@@ -77,7 +77,7 @@ public class DataStorage {
     }
 
     // description, categoryNum, type, date, amount, accountNumber, accountName
-    private Transaction processData(String s) throws FileCorruptedException {
+    private Transaction parseDataToTransaction(String s) throws FileCorruptedException {
         String[] transactionInfo = s.split(" ,");
         int categoryNum = Integer.parseInt(transactionInfo[1]);
 
@@ -141,7 +141,7 @@ public class DataStorage {
         ArrayList<Transaction> transactionList = new ArrayList<>();
         try {
             while(s.hasNext()) {
-                transactionList.add(processData(s.nextLine()));
+                transactionList.add(parseDataToTransaction(s.nextLine()));
             }
         } catch (FileCorruptedException e) {
             UserInterface.printFileCorruptedError();
