@@ -136,28 +136,27 @@ public class TransactionList {
     }
 
     //@@author isaaceng7
-    public static ArrayList<Transaction> getPastWeekTransactions(ArrayList<Transaction> transactions) {
-        LocalDate today = LocalDate.now();
-        LocalDate lastWeek = today.minusDays(DAYS_IN_WEEK + DAYS_OFFSET);
-        ArrayList<Transaction> pastWeekTransactions = new ArrayList<>();
-        for (Transaction transaction : transactions) {
-            if (transaction.getDate().isAfter(lastWeek)) {
-                pastWeekTransactions.add(transaction);
-            }
-        }
-        return pastWeekTransactions;
-    }
 
-    public static ArrayList<Transaction> getPastMonthTransactions(ArrayList<Transaction> transactions) {
+    public static ArrayList<Transaction> getPastTransactions(ArrayList<Transaction> transactions, String duration) {
         LocalDate today = LocalDate.now();
-        LocalDate lastMonth = today.minusDays(DAYS_IN_MONTH + DAYS_OFFSET);
-        ArrayList<Transaction> pastWeekTransactions = new ArrayList<>();
+        LocalDate startDate = null;
+        switch(duration) {
+        case "week":
+            startDate = today.minusDays(DAYS_IN_WEEK + DAYS_OFFSET);
+            break;
+        case "month":
+            startDate = today.minusDays(DAYS_IN_MONTH + DAYS_OFFSET);
+            break;
+        default:
+            break;
+        }
+        ArrayList<Transaction> pastTransactions = new ArrayList<>();
         for (Transaction transaction : transactions) {
-            if (transaction.getDate().isAfter(lastMonth)) {
-                pastWeekTransactions.add(transaction);
+            if (transaction.getDate().isAfter(startDate)) {
+                pastTransactions.add(transaction);
             }
         }
-        return pastWeekTransactions;
+        return pastTransactions;
     }
 
     public static ArrayList<Transaction> getCustomDateTransactions(ArrayList<Transaction> transactions) {
@@ -187,13 +186,13 @@ public class TransactionList {
             break;
         // 2 - PAST WEEK TRANSACTIONS
         case 2:
-            ArrayList<Transaction> pastWeekTransactions = getPastWeekTransactions(transactions);
-            UserInterface.printPastWeekTransactions(pastWeekTransactions);
+            ArrayList<Transaction> pastWeekTransactions = getPastTransactions(transactions, "week");
+            UserInterface.printPastTransactions(pastWeekTransactions, "week");
             break;
         // 3 - PAST MONTH TRANSACTIONS
         case 3:
-            ArrayList<Transaction> pastMonthTransactions = getPastMonthTransactions(transactions);
-            UserInterface.printPastMonthTransactions(pastMonthTransactions);
+            ArrayList<Transaction> pastMonthTransactions = getPastTransactions(transactions, "month");
+            UserInterface.printPastTransactions(pastMonthTransactions, "month");
             break;
         // 4 - CUSTOM DATE TRANSACTIONS
         case 4:
