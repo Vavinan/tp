@@ -71,6 +71,10 @@ public class AccountManager {
             InvalidIndexException {
         int accountNumber = Parser.parseRemoveAccount(input);
         Account accountRemoved = getAccountByAccountNumber(accountNumber);
+        if (accounts.size() == 1) {
+            UserInterface.printCannotDeleteLastAccountMessage();
+            return;
+        }
         accounts.remove(accountRemoved);
         existingAccountNumbers.remove(Integer.valueOf(accountNumber));
         ArrayList<Transaction> transactionsRemoved = transactions.removeTransactionsByAccountNumber(accountNumber);
