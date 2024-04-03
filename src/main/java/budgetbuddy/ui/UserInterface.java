@@ -455,5 +455,13 @@ public class UserInterface {
         }
         System.out.println(LINE);
     }
+
+    public static void printCannotDeleteLastAccountMessage() {
+        System.out.println(LINE);
+        System.out.println(TAB_SPACE + "You cannot delete the last account.");
+        System.out.println(TAB_SPACE + "Please edit the current account or add a new account before deleting " +
+                "this one.");
+        System.out.println(LINE);
+    }
     //@@author
 }
