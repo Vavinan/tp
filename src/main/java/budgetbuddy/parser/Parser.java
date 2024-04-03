@@ -29,7 +29,7 @@ public class Parser {
         throw new InvalidArgumentSyntaxException("Invalid add syntax.");
     }
 
-    public Transaction parseTransaction(String input, Account account)
+    public Transaction parseUserInputToTransaction(String input, Account account)
             throws InvalidTransactionTypeException, NumberFormatException, EmptyArgumentException {
         String data = input.substring(ADD_COMMAND_INDEX + 1);
         String[] parseData = data.split("/");

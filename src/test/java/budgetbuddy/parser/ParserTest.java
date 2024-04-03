@@ -17,7 +17,7 @@ public class ParserTest {
     public void testParseTransaction() throws InvalidTransactionTypeException, EmptyArgumentException {
         Parser parser = new Parser();
         Account account = new Account(1);
-        Transaction transaction = parser.parseTransaction("add /t/Income /n/Shopping /$/50 /d/14-03-2024 " +
+        Transaction transaction = parser.parseUserInputToTransaction("add /t/Income /n/Shopping /$/50 /d/14-03-2024 " +
                 "/c/1", account);
         assertEquals("Shopping", transaction.getDescription());
         assertEquals(50.0f, transaction.getAmount(), 0.001);
