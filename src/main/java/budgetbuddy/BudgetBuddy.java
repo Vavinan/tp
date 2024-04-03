@@ -107,7 +107,7 @@ public class BudgetBuddy {
             } catch (InvalidArgumentSyntaxException e){
                 UserInterface.printInvalidArgumentSyntax(e.getMessage());
             } catch (Exception e) {
-                UserInterface.printUnknownError(e.getMessage());
+                UserInterface.printExceptionErrorMessage(e.getMessage());
             }
         }
 
