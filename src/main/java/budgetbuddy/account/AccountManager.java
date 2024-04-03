@@ -5,6 +5,8 @@ import budgetbuddy.exceptions.InvalidArgumentSyntaxException;
 import budgetbuddy.exceptions.InvalidIndexException;
 import budgetbuddy.parser.Parser;
 import budgetbuddy.storage.DataStorage;
+import budgetbuddy.transaction.TransactionList;
+import budgetbuddy.transaction.type.Transaction;
 import budgetbuddy.ui.UserInterface;
 
 import java.util.ArrayList;
@@ -64,13 +66,15 @@ public class AccountManager {
         UserInterface.printAddAccountMessage(getAccount(accounts.size() - INDEX_OFFSET).toString());
     }
 
-    public void removeAccount(String input)
+    public void removeAccount(String input, TransactionList transactions)
             throws NumberFormatException, InvalidArgumentSyntaxException, EmptyArgumentException,
             InvalidIndexException {
         int accountNumber = Parser.parseRemoveAccount(input);
         Account accountRemoved = getAccountByAccountNumber(accountNumber);
         accounts.remove(accountRemoved);
-        UserInterface.printDeleteAccountMessage(accountRemoved.toString());
+        existingAccountNumbers.remove(Integer.valueOf(accountNumber));
+        ArrayList<Transaction> transactionsRemoved = transactions.removeTransactionsByAccountNumber(accountNumber);
+        UserInterface.printDeleteAccountMessage(accountRemoved.toString(), transactionsRemoved);
     }
 
     public Account getAccount(int accountId){
