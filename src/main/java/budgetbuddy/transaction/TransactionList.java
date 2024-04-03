@@ -28,6 +28,7 @@ public class TransactionList {
     public static final int LOWER_BOUND = 0;
     public static final int EDIT_BEGIN_INDEX = 5;
 
+    public static final String ACCOUNT = "acc";
     public static final String ALL = "all";
     public static final String ADD = "add";
     public static final String DELETE = "delete";
@@ -36,6 +37,7 @@ public class TransactionList {
     private static final int DAYS_IN_WEEK = 7;
     private static final int DAYS_IN_MONTH = 30;
     private static final int DAYS_OFFSET = 1;
+
 
     private final ArrayList<Transaction> transactions;
     private final Parser parser;
@@ -223,7 +225,7 @@ public class TransactionList {
             String newTransaction = UserInterface.getEditInformation(transaction.toString());
             Transaction t = parser.parseTransactionType(newTransaction, account);
             transactions.set(index, t);
-            UserInterface.printUpdatedTransaction();
+            UserInterface.printUpdatedTransaction(t);
         } else {
             throw new InvalidIndexException(String.valueOf(transactions.size()));
         }
@@ -246,6 +248,9 @@ public class TransactionList {
             break;
         case LIST:
             UserInterface.printListHelp();
+            break;
+        case ACCOUNT:
+            UserInterface.printAccountHelp();
             break;
         default:
             UserInterface.printUseAvailableHelp();
