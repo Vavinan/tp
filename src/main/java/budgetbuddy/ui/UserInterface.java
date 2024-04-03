@@ -178,8 +178,9 @@ public class UserInterface {
     }
     //@@author
 
-    public static void printUpdatedTransaction() {
+    public static void printUpdatedTransaction(Transaction t) {
         System.out.println("\n" + TAB_SPACE + "Updated Successfully");
+        System.out.println(t.toString());
         System.out.println(LINE);
     }
 

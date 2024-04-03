@@ -224,7 +224,7 @@ public class TransactionList {
             String newTransaction = UserInterface.getEditInformation(transaction.toString());
             Transaction t = parser.parseTransactionType(newTransaction, account);
             transactions.set(index, t);
-            UserInterface.printUpdatedTransaction();
+            UserInterface.printUpdatedTransaction(t);
         } else {
             throw new InvalidIndexException(String.valueOf(transactions.size()));
         }
