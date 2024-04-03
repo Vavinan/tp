@@ -68,9 +68,6 @@ public class TransactionList {
             throw new EmptyArgumentException("delete index");
         }
         String data = input.substring(DELETE_BEGIN_INDEX).trim();
-        if (isNotInteger(data)) {
-            throw new NumberFormatException(data);
-        }
         int id = Integer.parseInt(data) - INDEX_OFFSET;
         int size = transactions.size();
         if (id >= LOWER_BOUND && id < size) {
@@ -222,7 +219,7 @@ public class TransactionList {
             Transaction transaction = transactions.get(index);
             Account account = accountManager.getAccountByAccountNumber(transaction.getAccountNumber());
             String newTransaction = UserInterface.getEditInformation(transaction.toString());
-            Transaction t = parser.parseTransactionType(newTransaction, account);
+            Transaction t = parser.parseEditTransaction(newTransaction, account);
             transactions.set(index, t);
             UserInterface.printUpdatedTransaction(t);
         } else {

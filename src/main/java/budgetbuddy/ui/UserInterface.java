@@ -72,9 +72,11 @@ public class UserInterface {
         System.out.println(LINE);
     }
 
-    public static void printUnknownError(String message) {
+    public static void printExceptionErrorMessage(String message) {
         System.out.println(LINE);
-        System.out.println(TAB_SPACE + "Unknown error occurred with message: " + message);
+        System.out.println(TAB_SPACE + "An error occurred with the message: " + message);
+        System.out.println(TAB_SPACE + "Please check your command Syntax. \n" + TAB_SPACE +
+                " If you need assistance use `help` command to know further about each command syntax.");
         System.out.println(LINE);
     }
 
