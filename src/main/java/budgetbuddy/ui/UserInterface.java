@@ -410,13 +410,29 @@ public class UserInterface {
         System.out.println(LINE);
     }
 
-    public static void printDeleteAccountMessage(String account) {
+    public static void printDeleteAccountMessage(String account, ArrayList<Transaction> transactionsRemoved) {
         String[] parts = account.split("\\|");
         System.out.println(LINE);
         System.out.println(TAB_SPACE + "Got it. I have removed the following account \n");
         for (String part : parts) {
             System.out.println(TAB_SPACE + part.trim());
         }
+        System.out.println("\n" + TAB_SPACE + "Transactions related to this account have also been removed:");
+        System.out.println(TAB_SPACE + TABLE_BORDER);
+        System.out.printf(TAB_SPACE + TAB_SPACE + "%-10s %-30s %-15s %-15s %-15s%n", "Type", "Transaction", "Date",
+                "Amount", "Category");
+        for (Transaction transaction : transactionsRemoved) {
+            String type = transaction.getTransactionType();
+            String description = transaction.getDescription();
+            LocalDate date = transaction.getDate();
+            double amount = transaction.getAmount();
+            String category = transaction.getCategory().getCategoryName();
+
+            System.out.printf(TAB_SPACE + TAB_SPACE + "%-10s %-30.45s %-15s %-15.2f %-15s%n",type, description, date,
+                    amount, category);
+        }
+        System.out.println(TAB_SPACE + TABLE_BORDER);
+
         System.out.println(LINE);
     }
 
@@ -441,8 +457,17 @@ public class UserInterface {
         }
         System.out.println(LINE);
     }
+
+    public static void printCannotDeleteLastAccountMessage() {
+        System.out.println(LINE);
+        System.out.println(TAB_SPACE + "You cannot delete the last account.");
+        System.out.println(TAB_SPACE + "Please edit the current account or add a new account before deleting " +
+                "this one.");
+        System.out.println(LINE);
+    }
+
     //@@author Vavinan
-    public static void printAccountHelp(){
+    public static void printAccountHelp() {
         System.out.println(HELP_BORDER);
         System.out.printf("%-30s %-90s%n", "Command", "Syntax");
         System.out.printf("%-30s %-90s%n", "Add account", "add-acc /n/ [ACCOUNT_NAME] /$/ " +
@@ -452,5 +477,13 @@ public class UserInterface {
         System.out.printf("%-30s %-90s%n", "List all Accounts", "list-acc");
         System.out.println(HELP_BORDER);
     }
-    //@@author
+
+
+    //@@author ShyamKrishna33
+    public static void printFileCorruptedError() {
+        System.out.println(LINE);
+        System.out.println(TAB_SPACE + "The storage file is corrupted :(");
+        System.out.println(TAB_SPACE + "So, a new file will be created!");
+        System.out.println(LINE);
+    }
 }

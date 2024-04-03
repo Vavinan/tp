@@ -5,6 +5,8 @@ import budgetbuddy.exceptions.InvalidArgumentSyntaxException;
 import budgetbuddy.exceptions.InvalidIndexException;
 import budgetbuddy.parser.Parser;
 import budgetbuddy.storage.DataStorage;
+import budgetbuddy.transaction.TransactionList;
+import budgetbuddy.transaction.type.Transaction;
 import budgetbuddy.ui.UserInterface;
 
 import java.util.ArrayList;
@@ -12,12 +14,10 @@ import java.util.Random;
 
 public class AccountManager {
     public static final int INDEX_OFFSET = 1;
-    public static final int LOWER_BOUND = 0;
 
     private final DataStorage dataStorage = new DataStorage();
     private final ArrayList<Account> accounts;
     private final ArrayList<Integer> existingAccountNumbers;
-    private int accountCount = 0;
 
     public AccountManager() {
         this.accounts = new ArrayList<>();
@@ -30,7 +30,6 @@ public class AccountManager {
     }
 
     public void addAccount(String name, double initialBalance) {
-        accountCount ++;
         int newAccountNumber = generateAccountNumber();
         accounts.add(new Account(newAccountNumber, name, initialBalance));
         existingAccountNumbers.add(newAccountNumber);
@@ -64,17 +63,22 @@ public class AccountManager {
         }
         String[] parsedData = Parser.parseAddAccount(input);
         addAccount(parsedData[0], Double.parseDouble(parsedData[1]));
-        UserInterface.printAddAccountMessage(accounts.get(accountCount - 1).toString());
+        UserInterface.printAddAccountMessage(getAccount(accounts.size() - INDEX_OFFSET).toString());
     }
 
-    public void removeAccount(String input)
+    public void removeAccount(String input, TransactionList transactions)
             throws NumberFormatException, InvalidArgumentSyntaxException, EmptyArgumentException,
             InvalidIndexException {
         int accountNumber = Parser.parseRemoveAccount(input);
         Account accountRemoved = getAccountByAccountNumber(accountNumber);
+        if (accounts.size() == 1) {
+            UserInterface.printCannotDeleteLastAccountMessage();
+            return;
+        }
         accounts.remove(accountRemoved);
-        accountCount--;
-        UserInterface.printDeleteAccountMessage(accountRemoved.toString());
+        existingAccountNumbers.remove(Integer.valueOf(accountNumber));
+        ArrayList<Transaction> transactionsRemoved = transactions.removeTransactionsByAccountNumber(accountNumber);
+        UserInterface.printDeleteAccountMessage(accountRemoved.toString(), transactionsRemoved);
     }
 
     public Account getAccount(int accountId){

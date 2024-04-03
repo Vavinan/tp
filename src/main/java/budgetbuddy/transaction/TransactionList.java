@@ -28,6 +28,7 @@ public class TransactionList {
     public static final int LOWER_BOUND = 0;
     public static final int EDIT_BEGIN_INDEX = 5;
 
+    public static final String ACCOUNT = "acc";
     public static final String ALL = "all";
     public static final String ADD = "add";
     public static final String DELETE = "delete";
@@ -36,7 +37,7 @@ public class TransactionList {
     private static final int DAYS_IN_WEEK = 7;
     private static final int DAYS_IN_MONTH = 30;
     private static final int DAYS_OFFSET = 1;
-    public static final String ACCOUNT = "acc";
+
 
     private final ArrayList<Transaction> transactions;
     private final Parser parser;
@@ -117,7 +118,7 @@ public class TransactionList {
             }
         }
 
-        Transaction t = parser.parseTransaction(input, account);
+        Transaction t = parser.parseUserInputToTransaction(input, account);
         assert t != null : "Parsed transaction is null";
         if (t.getCategory() == null) {
             UserInterface.listCategories();
@@ -259,5 +260,16 @@ public class TransactionList {
     //@@author
     public void displayInsights() {
         Insight.displayCategoryInsight(transactions);
+    }
+
+    public ArrayList<Transaction> removeTransactionsByAccountNumber(int accountNumber) {
+        ArrayList<Transaction> transactionsToRemove = new ArrayList<>();
+        for (Transaction transaction : transactions) {
+            if (transaction.getAccountNumber() == accountNumber) {
+                transactionsToRemove.add(transaction);
+            }
+        }
+        transactions.removeAll(transactionsToRemove);
+        return transactionsToRemove;
     }
 }

@@ -78,7 +78,7 @@ public class BudgetBuddy {
                     UserInterface.printListOfAccounts(accountManager.getAccounts());
                     break;
                 case "delete-acc":
-                    accountManager.removeAccount(input);
+                    accountManager.removeAccount(input, transactions);
                     break;
                 case "edit-acc":
                     accountManager.processEditAccount(input);
