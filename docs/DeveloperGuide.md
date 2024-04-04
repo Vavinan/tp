@@ -9,19 +9,41 @@ original source as well}
 
 {Describe the design and implementation of the product. Use UML diagrams and short code snippets where applicable.}
 
-### [Implemented] Account feature
+### [Implemented] Add Account
 
-#### Implementation
+#### Description
 
-The Account feature in the BudgetBuddy application serves as a core component for tracking the user's current financial
-balance. This feature is primarily facilitated through the `Account` class, which encapsulates the balance attribute and
-provides mechanisms to get and set the balance. The Account object interacts closely with transactions, being updated
-whenever transactions are added or deleted.
+This method is used to add a new account to the list of accounts based on the user input provided. The input should
+include the account name and initial balance. After the account is successfully added, the account balance is
+initialized with the provided initial balance, and a unique account number is generated and assigned to the account. A
+message is displayed to the user indicating the success of the operation. This allows users to manage multiple accounts
+by adding new ones as needed.
 
-Looking ahead, users will have the flexibility to manage multiple accounts—such as Wallet, Savings, Checking, and
-Investment accounts—each encapsulated within the application's framework for seamless financial oversight. This
-expansion will provide a comprehensive view of diverse financial sources and enhance personal financial management
-within BudgetBuddy.
+#### Parameters
+
+1. String input: A string containing the user input, which should include the account name and initial balance,
+   separated by specific delimiters.
+
+#### Design and Implementation
+
+The method starts by validating the syntax of the user input to ensure it contains the necessary delimiters for the
+account name and initial balance. If the input does not meet the expected format, it throws an
+InvalidArgumentSyntaxException. It then parses the input to extract the account name and initial balance. If either the
+name or initial balance is missing or empty, an EmptyArgumentException is thrown. Additionally, if the initial balance
+is not a valid double value, a NumberFormatException is thrown.
+
+After successfully parsing and validating the input, the method proceeds to generate a unique account number for the new
+account. It ensures that the generated number is not already in use by any existing account. Once a unique number is
+obtained, a new Account object is created with the generated account number, provided account name, and initial balance.
+This new account is then added to the list of accounts, and its number is added to the list of existing account numbers
+to ensure uniqueness.
+
+Finally, the method notifies the user of the successful addition of the account by displaying the details of the newly
+created account.
+
+The following sequence diagram shows how the add account process works:
+
+![](./uml/uml-images/addAccountDiagram.png)
 
 ### [Implemented] Category feature
 
