@@ -62,6 +62,62 @@ Upon invoking the `Add` command, users are presented with a selection prompt fea
 input, typically in the form of a numerical identifier corresponding to a category within the enum class, facilitates
 the assignment of the appropriate enum object to the transaction's category attribute.
 
+### [Implemented] Process transaction
+
+#### Description
+
+This method adds a transaction to the list of transactions based on the necessary input details given by the user.
+
+#### Parameters
+
+1. String input: A string containing the user input, which should include the `NAME`, `AMOUNT`, `DATE` and `TYPE` of the
+   transaction.
+2. Account account: The account object associated with the transaction list.
+
+#### Design and Implementation
+
+1. ##### Syntax Validation:
+
+   The method first checks whether the input string contains all necessary arguments ("/a/", "/t/", "/n/", "/$/", "/d/")
+   required for adding a transaction. If any argument is missing, it throws an InvalidAddTransactionSyntax exception.
+
+2. #### Transaction Parsing:
+
+   It utilizes a parser object to parse the user input string into a Transaction object using the
+   parseUserInputToTransaction method.
+
+3. #### Assertion Checks:
+
+   Assertions are used for debugging purposes to ensure that the parsed transaction and added transaction are not null.
+   If they are null, assertion errors are thrown.
+
+4. #### Category Assignment:
+
+   If the category of the transaction is null, it prompts the user to choose a category from a list and assigns the
+   chosen category to the transaction.
+
+5. #### Transaction Addition:
+
+   After parsing and category assignment, the transaction is added to the account using the addTransaction method.
+
+6. #### Feedback to User:
+
+   Upon successful addition of the transaction, a message is printed to the user indicating the details of the added
+   transaction and the updated account balance.
+
+#### Exceptions:
+
+1. `InvalidTransactionTypeException`: This exception is thrown when the transaction type is not one of `income`
+and `expense`.
+
+2. `InvalidAddTransactionSyntax`: This exception is thrown when the syntax of the add transaction is invalid.
+
+3. `EmptyArgumentException`: This exception is thrown when an empty argument is encountered.
+
+The following sequence diagram shows how a remove transaction goes works:
+
+![](./uml/uml-images/addTransactionDiagram.png)
+
 ### [Implemented] Remove transaction
 
 #### Description
