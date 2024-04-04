@@ -2,24 +2,48 @@
 
 ## Acknowledgements
 
-{list here sources of all reused/adapted ideas, code, documentation, and third-party libraries -- include links to the original source as well}
+{list here sources of all reused/adapted ideas, code, documentation, and third-party libraries -- include links to the
+original source as well}
 
 ## Design & implementation
 
 {Describe the design and implementation of the product. Use UML diagrams and short code snippets where applicable.}
 
-### [Implemented] Account feature
-#### Implementation
-The Account feature in the BudgetBuddy application serves as a core component for tracking the user's current financial 
-balance. This feature is primarily facilitated through the `Account` class, which encapsulates the balance attribute and
-provides mechanisms to get and set the balance. The Account object interacts closely with transactions, being updated 
-whenever transactions are added or deleted.
+### [Implemented] Add Account
 
-Looking ahead, users will have the flexibility to manage multiple accounts—such as Wallet, Savings, Checking, and 
-Investment accounts—each encapsulated within the application's framework for seamless financial oversight. This 
-expansion will provide a comprehensive view of diverse financial sources and enhance personal financial management 
-within BudgetBuddy.
+#### Description
 
+This method is used to add a new account to the list of accounts based on the user input provided. The input should
+include the account name and initial balance. After the account is successfully added, the account balance is
+initialized with the provided initial balance, and a unique account number is generated and assigned to the account. A
+message is displayed to the user indicating the success of the operation. This allows users to manage multiple accounts
+by adding new ones as needed.
+
+#### Parameters
+
+1. String input: A string containing the user input, which should include the account name and initial balance,
+   separated by specific delimiters.
+
+#### Design and Implementation
+
+The method starts by validating the syntax of the user input to ensure it contains the necessary delimiters for the
+account name and initial balance. If the input does not meet the expected format, it throws an
+InvalidArgumentSyntaxException. It then parses the input to extract the account name and initial balance. If either the
+name or initial balance is missing or empty, an EmptyArgumentException is thrown. Additionally, if the initial balance
+is not a valid double value, a NumberFormatException is thrown.
+
+After successfully parsing and validating the input, the method proceeds to generate a unique account number for the new
+account. It ensures that the generated number is not already in use by any existing account. Once a unique number is
+obtained, a new Account object is created with the generated account number, provided account name, and initial balance.
+This new account is then added to the list of accounts, and its number is added to the list of existing account numbers
+to ensure uniqueness.
+
+Finally, the method notifies the user of the successful addition of the account by displaying the details of the newly
+created account.
+
+The following sequence diagram shows how the add account process works:
+
+![](./uml/uml-images/addAccountDiagram.png)
 
 ### [Implemented] Category feature
 
@@ -38,19 +62,22 @@ Upon invoking the `Add` command, users are presented with a selection prompt fea
 input, typically in the form of a numerical identifier corresponding to a category within the enum class, facilitates
 the assignment of the appropriate enum object to the transaction's category attribute.
 
-
 ### [Implemented] Remove transaction
+
 #### Description
+
 This method is used to remove a transaction from the list of transactions based on the transaction ID provided
 by the user. After the transaction is removed, the account balance is updated accordingly and a message is
 displayed to the user indicating the success of the operation. This helps user to remove the transaction
 from the list they added by mistake or those transactions they no longer need to keep track off.
 
 #### Parameters
+
 1. String input: A string containing the user input, which should include the transaction ID to be removed.
 2. Account account: The account object associated with the transaction list.
 
 #### Design and Implementation
+
 The method first validates the user input to ensure it's not empty or null. If the input is invalid, it throws
 an EmptyArgumentException. Next, it extracts the transaction ID from the input and verifies its integrity as a
 valid integer. If the ID is invalid, a NumberFormatException is thrown.
@@ -68,9 +95,10 @@ The following sequence diagram shows how a remove transaction goes works:
 
 ![](./uml/uml-images/removeTransactionDiagram.png)
 
-
 ### [Implemented] Edit Transaction
+
 #### Description
+
 This method facilitates the editing of a transaction within the list of transactions associated with a
 specific account. Users can edit transactions by providing the index of the transaction they wish to modify
 along with the updated transaction details. After the edit operation is completed, the system updates the
@@ -78,24 +106,33 @@ transaction accordingly and notifies the user of the successful operation. This 
 flexibility by allowing them to correct erroneous transactions or update transaction details as needed.
 
 #### Parameters
+
 1. String input: A string representing user input, including the index of the transaction to be edited and
    the updated transaction details.
 2. Account account: The account object associated with the transaction list.
 
 #### Design and Implementation
+
 The processEditTransaction method follows a structured approach to ensure the successful editing of
 transactions while maintaining data integrity:
+
 1. Input Validation: The method begins by validating the user input to ensure it is not empty or null. If
    the input is invalid, an EmptyArgumentException is thrown to prompt the user to provide valid input.
 2. Transaction Index Extraction: After validating the input, the method extracts the index of the
-   transaction to be edited from the input string. It ensures the extracted data is a valid integer; otherwise, a NumberFormatException is thrown to indicate invalid input.
+   transaction to be edited from the input string. It ensures the extracted data is a valid integer; otherwise, a
+   NumberFormatException is thrown to indicate invalid input.
 3. Index Calculation: Once a valid transaction index is obtained, the method calculates the corresponding
    index in the transactions ArrayList. As ArrayList indices start from 0, the provided index is decremented
    by 1 to align with the ArrayList index.
 4. Index Bounds Verification: The method verifies whether the calculated index falls within the bounds of
-   the transactions ArrayList. If the index is out of bounds, an InvalidIndexException is thrown to notify the user of the invalid index provided.
+   the transactions ArrayList. If the index is out of bounds, an InvalidIndexException is thrown to notify the user of
+   the invalid index provided.
 5. Transaction Editing: Upon successful validation, the method retrieves the transaction object at the
-   calculated index from the transactions ArrayList. It prompts the user to input the updated transaction details through the UserInterface.getEditInformation() method. The edited transaction is then parsed using the parser.parseTransactionType() method to ensure its validity and association with the provided account. Finally, the edited transaction replaces the original transaction at the specified index in the transactions ArrayList using the transactions.set() method.
+   calculated index from the transactions ArrayList. It prompts the user to input the updated transaction details
+   through the UserInterface.getEditInformation() method. The edited transaction is then parsed using the
+   parser.parseTransactionType() method to ensure its validity and association with the provided account. Finally, the
+   edited transaction replaces the original transaction at the specified index in the transactions ArrayList using the
+   transactions.set() method.
 6. User Notification: After editing the transaction, the method notifies the user of the successful
    operation by displaying a message through the UserInterface.printUpdatedTransaction() method.
 
@@ -104,11 +141,14 @@ The following sequence diagram illustrates the sequence of interactions involved
 ![](./uml/uml-images/processEditTransactionDiagram.png)
 
 ### [Implemented] List feature
+
 ### Description
-The list feature allows users to view their existing transactions. This feature includes viewing all the transactions, 
+
+The list feature allows users to view their existing transactions. This feature includes viewing all the transactions,
 past week's transactions, past month's transactions and transactions from a specified date range.
 
 #### Implementation
+
 This feature is facilitated through the `TransactionList#processList`, where it prompts the user for their choice of
 list they wish to see. After the user inputs the choice, the get functions will store the transactions in a new
 ArrayList and `UserInterface#printPastTransactions` will handle the output of the list.
@@ -118,6 +158,7 @@ The following sequence diagram illustrates the sequence of interactions involved
 ![](./uml/uml-images/processList.png)
 
 ## Product scope
+
 ### Target user profile
 
 {Describe the target user profile}
@@ -128,10 +169,10 @@ The following sequence diagram illustrates the sequence of interactions involved
 
 ## User Stories
 
-|Version| As a ... | I want to ... | So that I can ...|
-|--------|----------|---------------|------------------|
-|v1.0|new user|see usage instructions|refer to them when I forget how to use the application|
-|v2.0|user|find a to-do item by name|locate a to-do without having to go through the entire list|
+| Version | As a ... | I want to ...             | So that I can ...                                           |
+|---------|----------|---------------------------|-------------------------------------------------------------|
+| v1.0    | new user | see usage instructions    | refer to them when I forget how to use the application      |
+| v2.0    | user     | find a to-do item by name | locate a to-do without having to go through the entire list |
 
 ## Non-Functional Requirements
 
