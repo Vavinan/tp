@@ -104,13 +104,18 @@ The following sequence diagram illustrates the sequence of interactions involved
 ![](./uml/uml-images/processEditTransactionDiagram.png)
 
 ### [Implemented] List feature
-#### Implementation
-The list feature in the BudgetBuddy application allows users to view all their past transactions. This feature is
-facilitated through the `UserInterface#printAllTransactions`, which loops through the entire ArrayList of transactions
-and extract all the details of each transaction.
+### Description
+The list feature allows users to view their existing transactions. This feature includes viewing all the transactions, 
+past week's transactions, past month's transactions and transactions from a specified date range.
 
-This feature will be further enhanced to include options to view transactions that the user is interested in only. For
-example, transactions of the past week, past month, specified date range.
+#### Implementation
+This feature is facilitated through the `TransactionList#processList`, where it prompts the user for their choice of
+list they wish to see. After the user inputs the choice, the get functions will store the transactions in a new
+ArrayList and `UserInterface#printPastTransactions` will handle the output of the list.
+
+Sequence Diagram
+The following sequence diagram illustrates the sequence of interactions involved in the editing of a transaction:
+![](./uml/uml-images/processList.png)
 
 ## Product scope
 ### Target user profile

@@ -1,0 +1,61 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+actor User
+participant "TransactionManager" as TM
+participant "UserInterface" as UI
+participant "LocalDate" as LD
+
+User -> TM: processList()
+TM -> UI: printListOptions()
+activate UI
+UI --> User: Display list options
+deactivate UI
+User -> TM: selectOption(option)
+TM -> TM: determineAction(option)
+
+alt Option 1 (All Transactions)
+    TM -> TM: printTransactions()
+    TM -> UI: printTransactions()
+    activate UI
+    UI --> User: Display all transactions
+    deactivate UI
+else Option 2 (Past Week Transactions)
+    TM -> LD: now()
+    activate LD
+    LD --> TM: today
+    deactivate LD
+    TM -> TM: calculateStartDate("week")
+    TM -> TM: filterTransactions(startDate)
+    TM -> UI: printPastTransactions(transactions, "week")
+    activate UI
+    UI --> User: Display past week transactions
+    deactivate UI
+else Option 3 (Past Month Transactions)
+    TM -> LD: now()
+    LD --> TM: today
+    TM -> TM: calculateStartDate("month")
+    TM -> TM: filterTransactions(startDate)
+    TM -> UI: printPastTransactions(transactions, "month")
+    activate UI
+    UI --> User: Display past month transactions
+    deactivate UI
+else Option 4 (Custom Date Transactions)
+    TM -> UI: getStartDate()
+    activate UI
+    UI --> TM: startDate
+    deactivate UI
+    TM -> UI: getEndDate()
+    activate UI
+    UI --> TM: endDate
+    deactivate UI
+    TM -> TM: parseDates(startDate, endDate)
+    TM -> TM: filterTransactions(startDate, endDate)
+    TM -> UI: printCustomDateTransactions(transactions)
+    activate UI
+    UI --> User: Display custom date transactions
+    deactivate UI
+end
+@enduml
