@@ -1,0 +1,30 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+actor User
+participant "TransactionManager" as TM
+participant "UserInterface" as UI
+participant "AccountManager" as AM
+participant "Parser" as P
+
+User -> TM: editTransaction [edit index]
+TM -> UI: getEditInformation(transaction)
+activate UI
+UI --> TM: newTransaction
+deactivate UI
+TM -> P: parseEditTransaction(newTransaction, account)
+activate P
+P --> TM: updatedTransaction
+deactivate P
+TM -> AM: getAccountByAccountNumber(accountNumber)
+activate AM
+AM --> TM: account
+deactivate AM
+TM -> TM: setTransaction(updatedTransaction)
+TM -> UI: printUpdatedTransaction(updatedTransaction)
+activate UI
+UI --> User: Display updated transaction
+deactivate UI
+@enduml
