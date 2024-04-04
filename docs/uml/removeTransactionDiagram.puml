@@ -1,0 +1,27 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+actor User
+participant "TransactionManager" as TM
+participant "UserInterface" as UI
+participant "AccountManager" as AM
+
+User -> TM: removeTransaction [delete index]
+TM -> UI: validateInput(input)  // Implicit interaction to check for empty input
+activate UI
+deactivate UI
+TM -> TM: parseData(data)
+TM -> AM: getAccountByAccountNumber(accountNumber)
+activate AM
+AM --> TM: account
+deactivate AM
+TM -> TM: getTransaction(id)
+TM --> TM: removeTransaction(id)
+TM -> account: setBalance(newBalance)
+TM -> UI: printDeleteMessage(itemRemoved, newBalance)
+activate UI
+UI --> User: Display delete confirmation message
+deactivate UI
+@enduml
