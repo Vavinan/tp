@@ -42,8 +42,8 @@ the assignment of the appropriate enum object to the transaction's category attr
 ### [Implemented] Remove transaction
 #### Description
 This method is used to remove a transaction from the list of transactions based on the transaction ID provided
-by the user. After the transaction is removed, the account balance is updated accordingly and a message is 
-displayed to the user indicating the success of the operation. This helps user to remove the transaction 
+by the user. After the transaction is removed, the account balance is updated accordingly and a message is
+displayed to the user indicating the success of the operation. This helps user to remove the transaction
 from the list they added by mistake or those transactions they no longer need to keep track off.
 
 #### Parameters
@@ -55,15 +55,67 @@ The method first validates the user input to ensure it's not empty or null. If t
 an EmptyArgumentException. Next, it extracts the transaction ID from the input and verifies its integrity as a
 valid integer. If the ID is invalid, a NumberFormatException is thrown.
 
-Once a valid transaction ID is obtained, the method calculates its corresponding index in the transactions 
+Once a valid transaction ID is obtained, the method calculates its corresponding index in the transactions
 ArrayList by subtracting 1 from the provided ID, as ArrayList indices start from 0 . It then verifies
-if the calculated index falls within the bounds of the ArrayList. If the index is out of bounds, an 
+if the calculated index falls within the bounds of the ArrayList. If the index is out of bounds, an
 InvalidIndexException is thrown.
 
 Upon successful validation, the method removes the transaction at the calculated index from the transactions
-ArrayList. Subsequently, it updates the account balance to reflect the removed transaction. Finally, it 
+ArrayList. Subsequently, it updates the account balance to reflect the removed transaction. Finally, it
 notifies the user of the successful removal along with displaying the details of the removed transaction.
 
+The following sequence diagram shows how a remove transaction goes works:
+
+![](./uml/uml-images/removeTransactionDiagram.png)
+
+
+### [Implemented] Edit Transaction
+#### Description
+This method facilitates the editing of a transaction within the list of transactions associated with a
+specific account. Users can edit transactions by providing the index of the transaction they wish to modify
+along with the updated transaction details. After the edit operation is completed, the system updates the
+transaction accordingly and notifies the user of the successful operation. This feature enhances user
+flexibility by allowing them to correct erroneous transactions or update transaction details as needed.
+
+#### Parameters
+1. String input: A string representing user input, including the index of the transaction to be edited and
+   the updated transaction details.
+2. Account account: The account object associated with the transaction list.
+
+#### Design and Implementation
+The processEditTransaction method follows a structured approach to ensure the successful editing of
+transactions while maintaining data integrity:
+1. Input Validation: The method begins by validating the user input to ensure it is not empty or null. If
+   the input is invalid, an EmptyArgumentException is thrown to prompt the user to provide valid input.
+2. Transaction Index Extraction: After validating the input, the method extracts the index of the
+   transaction to be edited from the input string. It ensures the extracted data is a valid integer; otherwise, a NumberFormatException is thrown to indicate invalid input.
+3. Index Calculation: Once a valid transaction index is obtained, the method calculates the corresponding
+   index in the transactions ArrayList. As ArrayList indices start from 0, the provided index is decremented
+   by 1 to align with the ArrayList index.
+4. Index Bounds Verification: The method verifies whether the calculated index falls within the bounds of
+   the transactions ArrayList. If the index is out of bounds, an InvalidIndexException is thrown to notify the user of the invalid index provided.
+5. Transaction Editing: Upon successful validation, the method retrieves the transaction object at the
+   calculated index from the transactions ArrayList. It prompts the user to input the updated transaction details through the UserInterface.getEditInformation() method. The edited transaction is then parsed using the parser.parseTransactionType() method to ensure its validity and association with the provided account. Finally, the edited transaction replaces the original transaction at the specified index in the transactions ArrayList using the transactions.set() method.
+6. User Notification: After editing the transaction, the method notifies the user of the successful
+   operation by displaying a message through the UserInterface.printUpdatedTransaction() method.
+
+Sequence Diagram
+The following sequence diagram illustrates the sequence of interactions involved in the editing of a transaction:
+![](./uml/uml-images/processEditTransactionDiagram.png)
+
+### [Implemented] List feature
+### Description
+The list feature allows users to view their existing transactions. This feature includes viewing all the transactions, 
+past week's transactions, past month's transactions and transactions from a specified date range.
+
+#### Implementation
+This feature is facilitated through the `TransactionList#processList`, where it prompts the user for their choice of
+list they wish to see. After the user inputs the choice, the get functions will store the transactions in a new
+ArrayList and `UserInterface#printPastTransactions` will handle the output of the list.
+
+Sequence Diagram
+The following sequence diagram illustrates the sequence of interactions involved in the editing of a transaction:
+![](./uml/uml-images/processList.png)
 
 ## Product scope
 ### Target user profile
