@@ -268,4 +268,29 @@ public class TransactionList {
         transactions.removeAll(transactionsToRemove);
         return transactionsToRemove;
     }
+
+    public void searchTransactions(String input) {
+        try {
+            String keyword = input.split(" ")[1];
+            ArrayList<Transaction> searchResults = new ArrayList<>();
+            ArrayList<Integer> indices = new ArrayList<>();
+            int index = 0;
+            for (Transaction transaction : transactions) {
+                if (transaction.getDescription().toLowerCase().contains(keyword.toLowerCase()) ||
+                        String.valueOf(transaction.getAmount()).contains(keyword) ||
+                        transaction.getCategory().getCategoryName().toLowerCase()
+                                .contains(keyword.toLowerCase()) ||
+                        transaction.getDate().toString().contains(keyword)) {
+                    searchResults.add(transaction);
+                    indices.add(index);
+                }
+                index++;
+            }
+            UserInterface.printSearchResults(searchResults, indices);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            UserInterface.printInvalidInput("Please enter a keyword to search for transactions.");
+        } catch (Exception e) {
+            UserInterface.printExceptionErrorMessage(e.getMessage());
+        }
+    }
 }

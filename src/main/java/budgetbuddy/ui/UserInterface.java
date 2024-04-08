@@ -464,4 +464,10 @@ public class UserInterface {
         System.out.println(TAB_SPACE + "So, a new file will be created!");
         System.out.println(LINE);
     }
+    public static void printSearchResults(ArrayList<Transaction> transactions, ArrayList<Integer> indices) {
+        System.out.println("Search results:");
+        for (int i = 0; i < transactions.size(); i++) {
+            System.out.println((indices.get(i) + 1) + ". " + transactions.get(i));
+        }
+    }
 }
