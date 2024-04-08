@@ -103,6 +103,7 @@ public class Insight {
         return -1;
     }
 
+    //@@author Vavinan
     public static void closeInsightFrames() {
         // Close any open insight frames here
         for (Window window : Window.getWindows()) {
@@ -114,5 +115,6 @@ public class Insight {
             }
         }
     }
+    //@@author 
 
 }
