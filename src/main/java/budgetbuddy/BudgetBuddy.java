@@ -85,6 +85,9 @@ public class BudgetBuddy {
                 case "edit-acc":
                     accountManager.processEditAccount(input);
                     break;
+                case "search":
+                    transactions.searchTransactions(input);
+                    break;
                 default:
                     UserInterface.printNoCommandExists();
                 }
