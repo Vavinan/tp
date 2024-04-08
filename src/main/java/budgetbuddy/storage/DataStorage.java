@@ -4,6 +4,7 @@ import budgetbuddy.account.Account;
 import budgetbuddy.account.AccountManager;
 import budgetbuddy.categories.Category;
 import budgetbuddy.exceptions.FileCorruptedException;
+import budgetbuddy.exceptions.InvalidCategoryException;
 import budgetbuddy.transaction.TransactionList;
 import budgetbuddy.transaction.type.Expense;
 import budgetbuddy.transaction.type.Income;
@@ -77,7 +78,7 @@ public class DataStorage {
     }
 
     // description, categoryNum, type, date, amount, accountNumber, accountName
-    private Transaction parseDataToTransaction(String s) throws FileCorruptedException {
+    private Transaction parseDataToTransaction(String s) throws FileCorruptedException, InvalidCategoryException {
         String[] transactionInfo = s.split(" ,");
         int categoryNum;
         try {
@@ -160,7 +161,7 @@ public class DataStorage {
             while (s.hasNext()) {
                 transactionList.add(parseDataToTransaction(s.nextLine()));
             }
-        } catch (FileCorruptedException e) {
+        } catch (FileCorruptedException | InvalidCategoryException e) {
             UserInterface.printFileCorruptedError();
             FileWriter fw = new FileWriter(TRANSACTIONS_FILE_PATH, false);
             return new ArrayList<>();

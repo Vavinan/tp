@@ -3,11 +3,7 @@ package budgetbuddy.transaction;
 import budgetbuddy.account.Account;
 
 import budgetbuddy.account.AccountManager;
-import budgetbuddy.exceptions.EmptyArgumentException;
-import budgetbuddy.exceptions.InvalidAddTransactionSyntax;
-import budgetbuddy.exceptions.InvalidIndexException;
-import budgetbuddy.exceptions.InvalidTransactionTypeException;
-import budgetbuddy.exceptions.InvalidEditTransactionData;
+import budgetbuddy.exceptions.*;
 
 import budgetbuddy.categories.Category;
 import budgetbuddy.insights.Insight;
@@ -106,7 +102,7 @@ public class TransactionList {
     }
 
     public void processTransaction(String input, Account account)
-            throws InvalidTransactionTypeException, InvalidAddTransactionSyntax, EmptyArgumentException {
+            throws InvalidTransactionTypeException, InvalidAddTransactionSyntax, EmptyArgumentException, InvalidCategoryException {
         // Check for syntax for add transaction
         String[] arguments = {"/a/","/t/", "/n/", "/$/", "/d/"};
         for (String argument : arguments) {
@@ -205,7 +201,7 @@ public class TransactionList {
 
     //@@author Vavinan
     public void processEditTransaction(String input, AccountManager accountManager) throws EmptyArgumentException,
-            NumberFormatException, InvalidIndexException, InvalidEditTransactionData {
+            NumberFormatException, InvalidIndexException, InvalidEditTransactionData, InvalidCategoryException {
         if (input.trim().length() < EDIT_BEGIN_INDEX) {
             throw new EmptyArgumentException("edit index ");
         }

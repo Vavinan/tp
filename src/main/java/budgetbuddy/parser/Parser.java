@@ -2,10 +2,7 @@ package budgetbuddy.parser;
 
 import budgetbuddy.account.Account;
 import budgetbuddy.categories.Category;
-import budgetbuddy.exceptions.EmptyArgumentException;
-import budgetbuddy.exceptions.InvalidArgumentSyntaxException;
-import budgetbuddy.exceptions.InvalidEditTransactionData;
-import budgetbuddy.exceptions.InvalidTransactionTypeException;
+import budgetbuddy.exceptions.*;
 
 import budgetbuddy.transaction.TransactionList;
 import budgetbuddy.transaction.type.Expense;
@@ -30,7 +27,7 @@ public class Parser {
     }
 
     public Transaction parseUserInputToTransaction(String input, Account account)
-            throws InvalidTransactionTypeException, NumberFormatException, EmptyArgumentException {
+            throws InvalidTransactionTypeException, NumberFormatException, EmptyArgumentException, InvalidCategoryException {
         String data = input.substring(ADD_COMMAND_INDEX + 1);
         String[] parseData = data.split("/");
         String type = null;
@@ -87,7 +84,7 @@ public class Parser {
     }
 
     //@@author Vavinan
-    public Transaction parseEditTransaction(String newTransaction, Account account) throws InvalidEditTransactionData {
+    public Transaction parseEditTransaction(String newTransaction, Account account) throws InvalidEditTransactionData, InvalidCategoryException {
         String[] parts = newTransaction.split(" \\| ");
 
         String type = parts[0].trim();
