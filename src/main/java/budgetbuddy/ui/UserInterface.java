@@ -465,9 +465,23 @@ public class UserInterface {
         System.out.println(LINE);
     }
     public static void printSearchResults(ArrayList<Transaction> transactions, ArrayList<Integer> indices) {
-        System.out.println("Search results:");
-        for (int i = 0; i < transactions.size(); i++) {
-            System.out.println((indices.get(i) + 1) + ". " + transactions.get(i));
+        if(transactions.isEmpty()) {
+            System.out.println("No matching Transactions found");
+        } else{
+            System.out.println("Search results:");
+            System.out.println(TAB_SPACE + TABLE_BORDER);
+            System.out.printf(TAB_SPACE + TAB_SPACE + "%-5s %-10s %-20s %-20s %-30s %-15s %-15s %-15s%n", "ID", "Type",
+                    "Account Number", "Account Name", "Transaction", "Date", "Amount", "Category");
+            int i = 0;
+            for (Transaction t : transactions) {
+                //System.out.println((indices.get(i) + 1) + ". " + transactions.get(i));
+                System.out.printf(TAB_SPACE + TAB_SPACE + "%-5d %-10s %-20d %-20.45s %-30.45s %-15s %-15.2f %-15s%n",
+                        indices.get(i)+1, t.getTransactionType(),t.getAccountNumber(),t.getAccountName(),
+                        t.getDescription(), t.getDate(), t.getAmount(), t.getCategory().getCategoryName());
+                i++;
+            }
+            System.out.println(TAB_SPACE + TABLE_BORDER);
         }
+
     }
 }
