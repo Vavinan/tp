@@ -8,6 +8,7 @@ import budgetbuddy.exceptions.InvalidArgumentSyntaxException;
 import budgetbuddy.exceptions.InvalidEditTransactionData;
 import budgetbuddy.exceptions.InvalidIndexException;
 import budgetbuddy.exceptions.InvalidTransactionTypeException;
+import budgetbuddy.insights.Insight;
 import budgetbuddy.parser.Parser;
 import budgetbuddy.storage.DataStorage;
 import budgetbuddy.transaction.TransactionList;
@@ -42,12 +43,13 @@ public class BudgetBuddy {
 
 
         boolean isRunning = true;
-
+        
         while (isRunning) {
             String input = in.nextLine();
             try {
                 switch (input.split(" ")[0]) {
                 case "bye":
+                    Insight.closeInsightFrames();
                     UserInterface.printGoodBye();
                     isRunning = false;
                     break;
