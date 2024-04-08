@@ -464,4 +464,10 @@ public class UserInterface {
         System.out.println(TAB_SPACE + "So, a new file will be created!");
         System.out.println(LINE);
     }
+
+    public static void printInvalidCategoryError() {
+        System.out.println(LINE);
+        System.out.println(TAB_SPACE + "Invalid Category");
+        System.out.println(LINE);
+    }
 }
