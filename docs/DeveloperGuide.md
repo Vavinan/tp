@@ -196,18 +196,23 @@ Sequence Diagram
 The following sequence diagram illustrates the sequence of interactions involved in the editing of a transaction:
 ![](./uml/uml-images/processEditTransactionDiagram.png)
 
-### [Implemented] List feature
+### [Implemented] List Transactions
 
 ### Description
 
 The list feature allows users to view their existing transactions. This feature includes viewing all the transactions,
 past week's transactions, past month's transactions and transactions from a specified date range.
 
-#### Implementation
+#### Design and Implementation
 
-This feature is facilitated through the `TransactionList#processList`, where it prompts the user for their choice of
-list they wish to see. After the user inputs the choice, the get functions will store the transactions in a new
-ArrayList and `UserInterface#printPastTransactions` will handle the output of the list.
+This feature is facilitated through the `TransactionList#processList`, and it is designed to ensure successful viewing 
+of the desired list as inputs are required in a bite-sized manner. 
+
+This method first executes the `UserInterface#printListOptions` to show users the list options and their indexes which 
+is needed for their inputs. The method will throw an InvalidIndexException if the input is out of the range.
+Depending on the list option chosen by the user, different prompts and messages will be output. For options which 
+require more data by the user, this feature will prompt the user to input the data. Once all required information is 
+gathered, the method will call on the various methods to build an ArrayList of the desired list and print out the list.
 
 Sequence Diagram
 The following sequence diagram illustrates the sequence of interactions involved in the editing of a transaction:
