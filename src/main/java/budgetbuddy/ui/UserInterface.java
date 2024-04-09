@@ -1,7 +1,6 @@
 package budgetbuddy.ui;
 
 import budgetbuddy.account.Account;
-import budgetbuddy.account.AccountManager;
 import budgetbuddy.categories.Category;
 import budgetbuddy.transaction.type.Transaction;
 
