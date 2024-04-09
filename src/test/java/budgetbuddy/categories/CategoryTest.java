@@ -3,8 +3,7 @@ package budgetbuddy.categories;
 import budgetbuddy.exceptions.InvalidCategoryException;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class CategoryTest {
     @Test
@@ -44,6 +43,6 @@ public class CategoryTest {
         assertEquals(Category.RENT, Category.fromNumber(7));
         assertEquals(Category.SALARY, Category.fromNumber(8));
         assertEquals(Category.OTHERS, Category.fromNumber(9));
-        assertNull(Category.fromNumber(10)); // Non-existing number
+        assertThrows(InvalidCategoryException.class, () -> Category.fromNumber(10));
     }
 }
