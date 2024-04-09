@@ -5,6 +5,7 @@ import budgetbuddy.account.Account;
 import budgetbuddy.account.AccountManager;
 
 
+import budgetbuddy.categories.Category;
 import budgetbuddy.exceptions.EmptyArgumentException;
 import budgetbuddy.exceptions.InvalidAddTransactionSyntax;
 import budgetbuddy.exceptions.InvalidCategoryException;
@@ -190,7 +191,7 @@ public class TransactionList {
         return categoryTransactions;
     }
 
-    public void processList(ArrayList<Account> accounts, AccountManager accountManager) throws InvalidIndexException {
+    public void processList(ArrayList<Account> accounts, AccountManager accountManager) throws InvalidIndexException, InvalidCategoryException {
         UserInterface.printListOptions();
         String data = UserInterface.getListOption().trim();
         int option = Integer.parseInt(data);
