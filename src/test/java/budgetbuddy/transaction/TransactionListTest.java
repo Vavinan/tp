@@ -3,7 +3,11 @@ package budgetbuddy.transaction;
 import budgetbuddy.account.Account;
 import budgetbuddy.account.AccountManager;
 import budgetbuddy.categories.Category;
-import budgetbuddy.exceptions.*;
+import budgetbuddy.exceptions.EmptyArgumentException;
+import budgetbuddy.exceptions.InvalidAddTransactionSyntax;
+import budgetbuddy.exceptions.InvalidCategoryException;
+import budgetbuddy.exceptions.InvalidIndexException;
+import budgetbuddy.exceptions.InvalidTransactionTypeException;
 import budgetbuddy.transaction.type.Income;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,7 +39,8 @@ public class TransactionListTest {
 
     @Test
     public void processTransaction_addsTransaction()
-            throws InvalidTransactionTypeException, InvalidAddTransactionSyntax, EmptyArgumentException, InvalidCategoryException {
+            throws InvalidTransactionTypeException, InvalidAddTransactionSyntax,
+            EmptyArgumentException, InvalidCategoryException {
         Transaction testTransaction = new Income(1, "test","Test", 200,
                 "14-03-2024",
                 account);
@@ -71,7 +76,8 @@ public class TransactionListTest {
     }
 
     @Test
-    public void removeTransaction_removesCorrectTransaction() throws EmptyArgumentException, InvalidIndexException, InvalidCategoryException {
+    public void removeTransaction_removesCorrectTransaction() throws EmptyArgumentException,
+            InvalidIndexException, InvalidCategoryException {
         Transaction testTransaction1 = new Income(1, "test","Test1", 100,
                 "14-03-2024", account);
         testTransaction1.setCategory(Category.fromNumber(1));

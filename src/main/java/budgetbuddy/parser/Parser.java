@@ -2,8 +2,12 @@ package budgetbuddy.parser;
 
 import budgetbuddy.account.Account;
 import budgetbuddy.categories.Category;
-import budgetbuddy.exceptions.*;
 
+import budgetbuddy.exceptions.EmptyArgumentException;
+import budgetbuddy.exceptions.InvalidArgumentSyntaxException;
+import budgetbuddy.exceptions.InvalidCategoryException;
+import budgetbuddy.exceptions.InvalidEditTransactionData;
+import budgetbuddy.exceptions.InvalidTransactionTypeException;
 import budgetbuddy.transaction.TransactionList;
 import budgetbuddy.transaction.type.Expense;
 import budgetbuddy.transaction.type.Income;
@@ -28,7 +32,8 @@ public class Parser {
     }
 
     public Transaction parseUserInputToTransaction(String input, Account account)
-            throws InvalidTransactionTypeException, NumberFormatException, EmptyArgumentException, InvalidCategoryException {
+            throws InvalidTransactionTypeException, NumberFormatException,
+            EmptyArgumentException, InvalidCategoryException {
         String data = input.substring(ADD_COMMAND_INDEX + 1);
         String[] parseData = data.split("/");
         String type = null;
@@ -36,7 +41,7 @@ public class Parser {
         String date = null;
         String amount = null;
         int category = -1;
-        for(int i = 0; i < parseData.length-1; i++) {
+        for (int i = 0; i < parseData.length - 1; i++) {
             switch (parseData[i].trim()) {
             case "t":
                 type = parseData[i + 1].trim();
@@ -46,7 +51,7 @@ public class Parser {
                 break;
             case "$":
                 if (TransactionList.isNotDouble(parseData[i + 1].trim())) {
-                    throw new NumberFormatException(parseData[i+1].trim());
+                    throw new NumberFormatException(parseData[i + 1].trim());
                 } else {
                     amount = parseData[i + 1].trim();
                     break;
@@ -69,12 +74,12 @@ public class Parser {
             category = UserInterface.getCategoryNum();
         }
 
-        if (category < 1 || category > 9){
+        if (category < 1 || category > 9) {
             throw new InvalidCategoryException("Category Index out of bounds");
         }
 
 
-        if(description.trim().isEmpty() || type.trim().isEmpty()){
+        if (description.trim().isEmpty() || type.trim().isEmpty()) {
             throw new EmptyArgumentException("data for the arguments ");
         } else if (type.equalsIgnoreCase("income")) {
             Income income = new Income(account.getAccountNumber(), account.getName(), description,
@@ -93,7 +98,8 @@ public class Parser {
     }
 
     //@@author Vavinan
-    public Transaction parseEditTransaction(String newTransaction, Account account) throws InvalidEditTransactionData, InvalidCategoryException {
+    public Transaction parseEditTransaction(String newTransaction, Account account) throws InvalidEditTransactionData,
+            InvalidCategoryException {
         String[] parts = newTransaction.split(" \\| ");
 
         String type = parts[0].trim();
@@ -102,7 +108,7 @@ public class Parser {
         String amount = parts[3].trim();
         String category = parts[4].trim();
         int categoryValue = Integer.parseInt(category);
-        if(categoryValue <=0 || categoryValue>9){
+        if (categoryValue <= 0 || categoryValue > 9) {
             throw new InvalidEditTransactionData("Choose category number from the list 1-9");
         }
         if (type.equalsIgnoreCase("income")) {
@@ -120,7 +126,7 @@ public class Parser {
         }
     }
 
-    public String parseHelpCommand(String input){
+    public String parseHelpCommand(String input) {
         return input.substring(HELP_BEGIN_INDEX).trim();
     }
     //@@author
@@ -138,7 +144,7 @@ public class Parser {
             }
         }
 
-        if (name == null || name.isEmpty()){
+        if (name == null || name.isEmpty()) {
             throw new EmptyArgumentException("name ");
         }
 
@@ -150,7 +156,7 @@ public class Parser {
             throw new NumberFormatException(initialBalance);
         }
 
-        return new String[] {name, initialBalance};
+        return new String[]{name, initialBalance};
     }
 
     public static int parseRemoveAccount(String input)

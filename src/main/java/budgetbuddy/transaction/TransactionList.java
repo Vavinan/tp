@@ -3,9 +3,14 @@ package budgetbuddy.transaction;
 import budgetbuddy.account.Account;
 
 import budgetbuddy.account.AccountManager;
-import budgetbuddy.exceptions.*;
 
-import budgetbuddy.categories.Category;
+
+import budgetbuddy.exceptions.EmptyArgumentException;
+import budgetbuddy.exceptions.InvalidAddTransactionSyntax;
+import budgetbuddy.exceptions.InvalidCategoryException;
+import budgetbuddy.exceptions.InvalidEditTransactionData;
+import budgetbuddy.exceptions.InvalidIndexException;
+import budgetbuddy.exceptions.InvalidTransactionTypeException;
 import budgetbuddy.insights.Insight;
 import budgetbuddy.parser.Parser;
 import budgetbuddy.storage.DataStorage;
@@ -102,7 +107,8 @@ public class TransactionList {
     }
 
     public void processTransaction(String input, Account account)
-            throws InvalidTransactionTypeException, InvalidAddTransactionSyntax, EmptyArgumentException, InvalidCategoryException {
+            throws InvalidTransactionTypeException, InvalidAddTransactionSyntax, EmptyArgumentException,
+            InvalidCategoryException {
         // Check for syntax for add transaction
         String[] arguments = {"/a/","/t/", "/n/", "/$/", "/d/"};
         for (String argument : arguments) {

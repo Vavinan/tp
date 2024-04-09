@@ -1,5 +1,6 @@
 package budgetbuddy.categories;
 
+import budgetbuddy.exceptions.InvalidCategoryException;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -33,7 +34,7 @@ public class CategoryTest {
     }
 
     @Test
-    public void testFromNumber() {
+    public void testFromNumber() throws InvalidCategoryException {
         assertEquals(Category.DINING, Category.fromNumber(1));
         assertEquals(Category.GROCERIES, Category.fromNumber(2));
         assertEquals(Category.UTILITIES, Category.fromNumber(3));
