@@ -1,6 +1,7 @@
 package budgetbuddy.ui;
 
 import budgetbuddy.account.Account;
+import budgetbuddy.account.AccountManager;
 import budgetbuddy.categories.Category;
 import budgetbuddy.transaction.type.Transaction;
 
@@ -64,7 +65,7 @@ public class UserInterface {
     public static void printInvalidIndex(String message, int id) {
         System.out.println(LINE);
         System.out.println(TAB_SPACE + message);
-        System.out.println(TAB_SPACE + "Please use index within the range of: 1  to " + id);
+        System.out.println(TAB_SPACE + "Please use index within the range of: 1 to " + id);
         System.out.println(LINE);
     }
 
@@ -273,6 +274,8 @@ public class UserInterface {
         System.out.println(TAB_SPACE + "2. Past Week Transactions");
         System.out.println(TAB_SPACE + "3. Past Month Transactions");
         System.out.println(TAB_SPACE + "4. Custom Date Transactions");
+        System.out.println(TAB_SPACE + "5. Account Transactions");
+        System.out.println(TAB_SPACE + "6. Category Transactions");
         System.out.println(LINE);
     }
     public static String getListOption() {
@@ -290,6 +293,33 @@ public class UserInterface {
 
     public static String getEndDate() {
         System.out.print("End Date: ");
+        String data = in.next();
+        in.nextLine();
+        return data;
+    }
+
+    public static void printAccountList(ArrayList<Account> accounts) {
+        int maxIndex = accounts.size();
+        System.out.println(LINE);
+        System.out.println(TAB_SPACE + "Your accounts:");
+        System.out.println(TAB_SPACE + ACCOUNT_TABLE_BORDER);
+        System.out.printf(TAB_SPACE + TAB_SPACE + "%-20s %-30s", "Account Number",
+                "Account Name");
+
+        for (int i = START_INDEX; i < maxIndex; i++) {
+            Account account = accounts.get(i);
+            int accountNumber = account.getAccountNumber();
+            String name = account.getName();
+
+            System.out.printf("\n" +TAB_SPACE + TAB_SPACE + "%-20d %-30.45s", accountNumber, name);
+        }
+        System.out.println("\n" + TAB_SPACE + ACCOUNT_TABLE_BORDER);
+        System.out.println(LINE);
+    }
+
+    public static String getSelectedAccountNumber(ArrayList<Account> accounts) {
+        printAccountList(accounts);
+        System.out.print("Select an account number: ");
         String data = in.next();
         in.nextLine();
         return data;
@@ -340,6 +370,29 @@ public class UserInterface {
 
             System.out.printf(TAB_SPACE + TAB_SPACE + "%-5d %-10s %-20d %-20.45s %-30.45s %-15s %-15.2f %-15s%n",
                     i + 1, type, accountNumber, accountName, description, date, amount, category);
+        }
+        System.out.println(TAB_SPACE + TABLE_BORDER);
+        System.out.println(LINE);
+    }
+
+    public static void printAccountTransactions(ArrayList<Transaction> transactions, String accountName,
+                                                int accountNumber) {
+        int index = transactions.size();
+        System.out.println(LINE);
+        System.out.println(TAB_SPACE + "Displaying transactions of account: " + accountName + "(" + accountNumber +")");
+        System.out.println(TAB_SPACE + TABLE_BORDER);
+        System.out.printf(TAB_SPACE + TAB_SPACE + "%-5s %-10s %-30s %-15s %-15s %-15s%n", "ID", "Type",
+                  "Transaction", "Date", "Amount", "Category");
+        for (int i = START_INDEX; i < index; i++) {
+            Transaction transaction = transactions.get(i);
+            String type = transaction.getTransactionType();
+            String description = transaction.getDescription();
+            LocalDate date = transaction.getDate();
+            double amount = transaction.getAmount();
+            String category = transaction.getCategory().getCategoryName();
+
+            System.out.printf(TAB_SPACE + TAB_SPACE + "%-5d %-10s %-30.45s %-15s %-15.2f %-15s%n",
+                    i + 1, type, description, date, amount, category);
         }
         System.out.println(TAB_SPACE + TABLE_BORDER);
         System.out.println(LINE);
