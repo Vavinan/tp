@@ -8,6 +8,7 @@ import budgetbuddy.transaction.TransactionList;
 import budgetbuddy.transaction.type.Expense;
 import budgetbuddy.transaction.type.Income;
 import budgetbuddy.transaction.type.Transaction;
+import budgetbuddy.ui.UserInterface;
 
 public class Parser {
 
@@ -34,7 +35,7 @@ public class Parser {
         String description = null;
         String date = null;
         String amount = null;
-        String category = null;
+        int category = -1;
         for(int i = 0; i < parseData.length-1; i++) {
             switch (parseData[i].trim()) {
             case "t":
@@ -54,7 +55,7 @@ public class Parser {
                 date = parseData[i + 1].trim();
                 break;
             case "c":
-                category = parseData[i + 1].trim();
+                category = Integer.parseInt(parseData[i + 1].trim());
                 break;
             default:
                 break;
@@ -62,21 +63,29 @@ public class Parser {
         }
         assert amount != null;
         assert type != null;
+
+        if (category == -1) {
+            UserInterface.listCategories();
+            category = UserInterface.getCategoryNum();
+        }
+
+        if (category < 1 || category > 9){
+            throw new InvalidCategoryException("Category Index out of bounds");
+        }
+
+
         if(description.trim().isEmpty() || type.trim().isEmpty()){
             throw new EmptyArgumentException("data for the arguments ");
         } else if (type.equalsIgnoreCase("income")) {
             Income income = new Income(account.getAccountNumber(), account.getName(), description,
                     Double.parseDouble(amount), date, account);
-            if (category != null){
-                income.setCategory(Category.fromNumber(Integer.parseInt(category)));
-            }
+            income.setCategory(Category.fromNumber(category));
+
             return income;
         } else if (type.equalsIgnoreCase("expense")) {
             Expense expense = new Expense(account.getAccountNumber(), account.getName(), description,
                     Double.parseDouble(amount), date, account);
-            if (category != null){
-                expense.setCategory(Category.fromNumber(Integer.parseInt(category)));
-            }
+            expense.setCategory(Category.fromNumber(category));
             return expense;
         } else {
             throw new InvalidTransactionTypeException(type);
