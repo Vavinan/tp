@@ -18,6 +18,18 @@ import budgetbuddy.ui.UserInterface;
 import java.util.Scanner;
 
 public class BudgetBuddy {
+    public static final String BYE = "bye";
+    public static final String LIST = "list";
+    public static final String DELETE = "delete";
+    public static final String ADD = "add";
+    public static final String EDIT = "edit";
+    public static final String HELP = "help";
+    public static final String ADD_ACC = "add-acc";
+    public static final String INSIGHTS = "insights";
+    public static final String LIST_ACC = "list-acc";
+    public static final String DELETE_ACC = "delete-acc";
+    public static final String EDIT_ACC = "edit-acc";
+    public static final String SEARCH = "search";
     private final AccountManager accountManager;
     private final TransactionList transactions;
 
@@ -48,45 +60,45 @@ public class BudgetBuddy {
         while (isRunning) {
             String input = in.nextLine();
             try {
-                switch (input.split(" ")[0]) {
-                case "bye":
+                switch (input.split(" ")[0].toLowerCase()) {
+                case BYE:
                     Insight.closeInsightFrames();
                     UserInterface.printGoodBye();
                     isRunning = false;
                     break;
-                case "list":
+                case LIST:
                     transactions.processList(accountManager.getAccounts(), accountManager);
                     break;
-                case "delete":
+                case DELETE:
                     transactions.removeTransaction(input, accountManager);
                     break;
-                case "add":
+                case ADD:
                     int accountNumber = Parser.parseAccountNumber(input);
                     Account account = accountManager.getAccountByAccountNumber(accountNumber);
                     transactions.processTransaction(input, account);
                     break;
-                case "edit":
+                case EDIT:
                     transactions.processEditTransaction(input, accountManager);
                     break;
-                case "help":
+                case HELP:
                     transactions.helpWithUserCommands(input);
                     break;
-                case "add-acc":
+                case ADD_ACC:
                     accountManager.processAddAccount(input);
                     break;
-                case "insights":
+                case INSIGHTS:
                     transactions.displayInsights();
                     break;
-                case "list-acc":
+                case LIST_ACC:
                     UserInterface.printListOfAccounts(accountManager.getAccounts());
                     break;
-                case "delete-acc":
+                case DELETE_ACC:
                     accountManager.removeAccount(input, transactions);
                     break;
-                case "edit-acc":
+                case EDIT_ACC:
                     accountManager.processEditAccount(input);
                     break;
-                case "search":
+                case SEARCH:
                     transactions.searchTransactions(input);
                     break;
                 default:

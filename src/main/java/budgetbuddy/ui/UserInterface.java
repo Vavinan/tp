@@ -184,12 +184,12 @@ public class UserInterface {
 
     public static void printAllCommands(){
         System.out.println(HELP_BORDER);
-        System.out.printf("%-20s %-70s %-20s%n", "Command", "Syntax", "Further help");
-        System.out.printf("%-20s %-70s %-20s%n","Add","add /t/[TYPE] /n/[DESCRIPTION] /d/[DD-MM-YYYY] " +
+        System.out.printf("%-20s %-75s %-20s%n", "Command", "Syntax", "Further help");
+        System.out.printf("%-20s %-75s %-20s%n","Add","add /t/[TYPE] /n/[DESCRIPTION] /d/[DD-MM-YYYY] " +
                 "/$/[AMOUNT] /c/[CATEGORY]", "help add");
-        System.out.printf("%-20s %-70s %-20s%n", "Edit", "edit [INDEX]", "help edit");
-        System.out.printf("%-20s %-70s %-20s%n", "Delete", "delete [INDEX]", "help delete");
-        System.out.printf("%-20s %-70s %-20s%n", "List", "list", "help list");
+        System.out.printf("%-20s %-75s %-20s%n", "Edit", "edit [INDEX]", "help edit");
+        System.out.printf("%-20s %-75s %-20s%n", "Delete", "delete [INDEX]", "help delete");
+        System.out.printf("%-20s %-75s %-20s%n", "List", "list", "help list");
         System.out.println(HELP_BORDER);
 
     }
