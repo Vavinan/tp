@@ -5,6 +5,7 @@ import budgetbuddy.account.AccountManager;
 import budgetbuddy.exceptions.EmptyArgumentException;
 import budgetbuddy.exceptions.InvalidAddTransactionSyntax;
 import budgetbuddy.exceptions.InvalidArgumentSyntaxException;
+import budgetbuddy.exceptions.InvalidCategoryException;
 import budgetbuddy.exceptions.InvalidEditTransactionData;
 import budgetbuddy.exceptions.InvalidIndexException;
 import budgetbuddy.exceptions.InvalidTransactionTypeException;
@@ -111,6 +112,8 @@ public class BudgetBuddy {
                 UserInterface.printInvalidInput(e.getMessage());
             } catch (InvalidArgumentSyntaxException e){
                 UserInterface.printInvalidArgumentSyntax(e.getMessage());
+            } catch (InvalidCategoryException e) {
+                UserInterface.printInvalidCategoryError();
             } catch (Exception e) {
                 UserInterface.printExceptionErrorMessage(e.getMessage());
             }

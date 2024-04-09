@@ -563,4 +563,10 @@ public class UserInterface {
         }
 
     }
+
+    public static void printInvalidCategoryError() {
+        System.out.println(LINE);
+        System.out.println(TAB_SPACE + "Invalid Category");
+        System.out.println(LINE);
+    }
 }

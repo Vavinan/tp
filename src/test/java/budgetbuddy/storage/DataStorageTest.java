@@ -2,6 +2,7 @@ package budgetbuddy.storage;
 
 import budgetbuddy.account.Account;
 import budgetbuddy.categories.Category;
+import budgetbuddy.exceptions.InvalidCategoryException;
 import budgetbuddy.transaction.type.Expense;
 import budgetbuddy.transaction.type.Transaction;
 import org.junit.jupiter.api.Test;
@@ -18,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 public class DataStorageTest {
     @Test
-    public void testSaveTransactions() throws IOException {
+    public void testSaveTransactions() throws IOException, InvalidCategoryException {
         DataStorage dataStorage = new DataStorage();
         ArrayList<Transaction> transactionArrayList = new ArrayList<>();
         Transaction t = new Expense(1, "test","Groceries", 50.0,
@@ -40,7 +41,7 @@ public class DataStorageTest {
     }
 
     @Test
-    public void testReadFromFile() throws IOException {
+    public void testReadFromFile() throws IOException, InvalidCategoryException {
         DataStorage dataStorage = new DataStorage();
         ArrayList<Transaction> expectedTransactions = new ArrayList<>();
         Transaction t = new Expense( 1, "test","Groceries", 50.0,
