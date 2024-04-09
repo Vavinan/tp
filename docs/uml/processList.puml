@@ -7,6 +7,7 @@ actor User
 participant ":TransactionManager" as TM
 participant ":UserInterface" as UI
 participant "LocalDate" as LD
+participant ":AccountManager" as AM
 
 User -> TM: processList()
 TM -> UI: printListOptions()
@@ -16,33 +17,33 @@ deactivate UI
 User -> TM: selectOption(option)
 TM -> TM: determineAction(option)
 
-alt Option 1 (All Transactions)
+alt 1: All Transactions
     TM -> TM: printTransactions()
     TM -> UI: printTransactions()
     activate UI
     UI --> User: Display all transactions
     deactivate UI
-else Option 2 (Past Week Transactions)
+else 2: Past Week Transactions
     TM -> LD: now()
     activate LD
     LD --> TM: today
     deactivate LD
     TM -> TM: calculateStartDate("week")
-    TM -> TM: filterTransactions(startDate)
+    TM -> TM: getPastTransactions(startDate)
     TM -> UI: printPastTransactions(transactions, "week")
     activate UI
     UI --> User: Display past week transactions
     deactivate UI
-else Option 3 (Past Month Transactions)
+else 3: Past Month Transactions
     TM -> LD: now()
     LD --> TM: today
     TM -> TM: calculateStartDate("month")
-    TM -> TM: filterTransactions(startDate)
+    TM -> TM: getPastTransactions(startDate)
     TM -> UI: printPastTransactions(transactions, "month")
     activate UI
     UI --> User: Display past month transactions
     deactivate UI
-else Option 4 (Custom Date Transactions)
+else 4: Custom Date Transactions
     TM -> UI: getStartDate()
     activate UI
     UI --> TM: startDate
@@ -52,10 +53,44 @@ else Option 4 (Custom Date Transactions)
     UI --> TM: endDate
     deactivate UI
     TM -> TM: parseDates(startDate, endDate)
-    TM -> TM: filterTransactions(startDate, endDate)
+    TM -> TM: getCustomDateTransactions(startDate, endDate)
     TM -> UI: printCustomDateTransactions(transactions)
     activate UI
     UI --> User: Display custom date transactions
+    deactivate UI
+else 5: Account Transactions
+    TM -> UI: printAccountList(accounts)
+    activate UI
+    UI --> User: Display account list
+    deactivate UI
+    TM -> UI: getSelectedAccountNumber(accounts)
+    activate UI
+    UI --> TM: accountNumber
+    deactivate UI
+    TM -> AM: getAccountByAccountNumber(accountNumber)
+    activate AM
+    AM --> TM: account
+    deactivate AM
+    TM -> TM: getAccountTransactions(transactions, accountNumber)
+    TM -> UI: printAccountTransactions(accountTransactions, accountName, accountNumber)
+    activate UI
+    UI ---> User: Display account transactions
+    deactivate UI
+else 6: Category Transactions
+    TM -> UI: listCategories()
+    activate UI
+    UI --> User: Display category list
+    deactivate UI
+    TM -> UI: getSelectedCategory()
+    activate UI
+    UI --> TM: categorySelected
+    deactivate UI
+    TM -> TM: fromNumber(category)
+    TM -> TM: getCategoryName()
+    TM -> TM: getCategoryTransactions(transactions, categorySelected)
+    TM -> UI: printCategoryTransactions(categoryTransactions, categoryName)
+    activate UI
+    UI --> User: Display category transactions
     deactivate UI
 end
 @enduml
