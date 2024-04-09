@@ -41,10 +41,11 @@ Format: `add /a/ACCOUNT_NUMBER /t/TRANSACTION_TYPE /n/NAME /$/AMOUNT /d/DATE /c/
 * NOTE: A transaction of a particular `CATEGORY` can be of both `TRANSACTION_TYPE`s.
 
 Example of usage:
-
 `add /a/5431 /t/Income /n/March Salary /$/10000 /d/01-03-2024 /c/8`
 
 `add /n/New iPhone /$/2000 /c/9 /t/Expense /a/5431 /d/20-03-2024`
+
+
 
 ### View transaction history: `list`
 
@@ -59,11 +60,11 @@ List the existing transactions. List feature includes options:
 Format: `list`
 
 Example of usage:
-`list` followed by `1` to view All Transactions.
-`list` followed by `2` to view Past Week Transactions.
-`list` followed by `3` to view Past Week Transactions.
-`list` followed by `4` followed by the start date `01-01-2024` followed by the end date `31-03-2024` to view Custom Date
-Transactions from 01-01-2024 to 31-03-2024.
+* `list` followed by `1` to view All Transactions.
+* `list` followed by `2` to view Past Week Transactions.
+* `list` followed by `3` to view Past Week Transactions.
+* `list` followed by `4` followed by the start date `01-01-2024` followed by the end date `31-03-2024`
+to view Custom Date Transactions from 01-01-2024 to 31-03-2024.
 
 ### Deleting a transaction: `delete`
 
