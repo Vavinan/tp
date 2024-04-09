@@ -191,7 +191,8 @@ public class TransactionList {
         return categoryTransactions;
     }
 
-    public void processList(ArrayList<Account> accounts, AccountManager accountManager) throws InvalidIndexException, InvalidCategoryException {
+    public void processList(ArrayList<Account> accounts, AccountManager accountManager) throws InvalidIndexException,
+            InvalidCategoryException {
         UserInterface.printListOptions();
         String data = UserInterface.getListOption().trim();
         int option = Integer.parseInt(data);
