@@ -13,7 +13,9 @@ activities.
 3. Copy the file to the folder you want to use as the home folder for your BudgetBuddy app.
 4. Open a command terminal, `cd` into the folder you added the jar file to, and use the `java -jar tp.jar` command to
    run the application.
-5. When prompted, type the command into the terminal and press Enter to execute it. e.g. typing `help` and pressing
+5. When the application is first run, BudgetBuddy will prompt the user to create a new account, prompting the user to
+   add an account name and initial balance. Type the details in the terminal and press Enter to confirm.
+6. Subsequently, users may type the command into the terminal and press Enter to execute it. e.g. typing `help` and pressing
    Enter will prompt the help feature.
 
 ## Features
@@ -52,7 +54,8 @@ Example of usage:
 
 `add /n/New iPhone /$/2000 /c/9 /t/Expense /a/5431 /d/20-03-2024`
 
-
+Successful add feature output:
+![](./ug/successful_add_feature.png)
 
 ### View transaction history: `list`
 
@@ -72,6 +75,9 @@ Example of usage:
 * `list` followed by `3` to view Past Week Transactions.
 * `list` followed by `4` followed by the start date `01-01-2024` followed by the end date `31-03-2024`
 to view Custom Date Transactions from 01-01-2024 to 31-03-2024.
+
+List feature options:
+![](./ug/list_options.png)
 
 ### Deleting a transaction: `delete`
 
@@ -113,6 +119,9 @@ Format: `add-acc /n/ACCOUNT_NAME /$/INITIAL_BALANCE`
 
 Example of Usage:
 `add-acc /n/DBS Savings /$/10000`
+
+Successful add-acc feature output:
+![](./ug/successful_add_acc_feature.png)
 
 ### List all accounts: `list-acc`
 
