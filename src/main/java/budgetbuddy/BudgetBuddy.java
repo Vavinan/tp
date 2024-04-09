@@ -54,7 +54,7 @@ public class BudgetBuddy {
                     isRunning = false;
                     break;
                 case "list":
-                    transactions.processList();
+                    transactions.processList(accountManager.getAccounts(), accountManager);
                     break;
                 case "delete":
                     transactions.removeTransaction(input, accountManager);

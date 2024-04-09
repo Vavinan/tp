@@ -171,8 +171,29 @@ public class TransactionList {
         return customDateTransactions;
     }
 
+    public static ArrayList<Transaction> getAccountTransactions(ArrayList<Transaction> transactions,
+                                                                int accountNumber) {
+        ArrayList<Transaction> accountTransactions = new ArrayList<>();
+        for (Transaction transaction : transactions) {
+            if (transaction.getAccountNumber() == accountNumber) {
+                accountTransactions.add(transaction);
+            }
+        }
+        return accountTransactions;
+    }
 
-    public void processList() throws InvalidIndexException {
+    public static ArrayList<Transaction> getCategoryTransactions(ArrayList<Transaction> transactions,
+                                                                 Category category) {
+        ArrayList<Transaction> categoryTransactions = new ArrayList<>();
+        for (Transaction transaction : transactions) {
+            if (transaction.getCategory() == category) {
+                categoryTransactions.add(transaction);
+            }
+        }
+        return categoryTransactions;
+    }
+
+    public void processList(ArrayList<Account> accounts, AccountManager accountManager) throws InvalidIndexException {
         UserInterface.printListOptions();
         String data = UserInterface.getListOption().trim();
         int option = Integer.parseInt(data);
@@ -196,9 +217,26 @@ public class TransactionList {
             ArrayList<Transaction> customDateTransactions = getCustomDateTransactions(transactions);
             UserInterface.printCustomDateTransactions(customDateTransactions);
             break;
-
+        // 5 - ACCOUNT TRANSACTIONS
+        case 5:
+            String accountData = UserInterface.getSelectedAccountNumber(accounts);
+            int accountNumber = Integer.parseInt(accountData);
+            Account account = accountManager.getAccountByAccountNumber(accountNumber);
+            String accountName = account.getName();
+            ArrayList<Transaction> accountTransactions = getAccountTransactions(transactions, accountNumber);
+            UserInterface.printAccountTransactions(accountTransactions, accountName, accountNumber);
+            break;
+        // 6 - CATEGORY TRANSACTIONS
+        case 6:
+            UserInterface.listCategories();
+            int input = UserInterface.getSelectedCategory();
+            Category categorySelected = Category.fromNumber(input);
+            String categoryName = categorySelected.getCategoryName();
+            ArrayList<Transaction> categoryTransactions = getCategoryTransactions(transactions, categorySelected);
+            UserInterface.printCategoryTransactions(categoryTransactions, categoryName);
+            break;
         default:
-            throw new InvalidIndexException("4");
+            throw new InvalidIndexException("6");
         }
 
     }
