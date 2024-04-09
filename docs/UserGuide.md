@@ -36,9 +36,16 @@ Format: `add /a/ACCOUNT_NUMBER /t/TRANSACTION_TYPE /n/NAME /$/AMOUNT /d/DATE /c/
 * The `TRANSACTION_TYPE` includes **Expense** or **Income** ONLY.
 * The `AMOUNT` is in dollars ($).
 * The `DATE` should be in the format **DD-MM-YYYY**.
-* The `CATEGORY` is an integer. The categories are mapped to the following integers: 1 (Dining), 2 (Groceries), 3 (
-  Utilities), 4 (Transportation), 5 (Healthcare), 6 (Entertainment), 7 (Rent), 8 (Salary), 9 (Others).
-* NOTE: A transaction of a particular `CATEGORY` can be of both `TRANSACTION_TYPE`s.
+* The `CATEGORY` is an integer. The categories are mapped to the following integers:
+    - 1 - Dining
+    - 2 - Groceries
+    - 3 - Utilities
+    - 4 - Transportation
+    - 5 - Healthcare
+    - 6 - Entertainment
+    - 7 - Rent
+    - 8 - Salary
+    - 9 - Others
 
 Example of usage:
 `add /a/5431 /t/Income /n/March Salary /$/10000 /d/01-03-2024 /c/8`
