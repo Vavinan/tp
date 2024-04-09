@@ -325,6 +325,12 @@ public class UserInterface {
         return data;
     }
 
+    public static int getSelectedCategory() {
+        System.out.print("Select a category number: ");
+        String data = in.nextLine();
+        return Integer.parseInt(data);
+    }
+
 
     public static void printPastTransactions(ArrayList<Transaction> transactions, String duration) {
         int index = transactions.size();
@@ -397,6 +403,31 @@ public class UserInterface {
         System.out.println(TAB_SPACE + TABLE_BORDER);
         System.out.println(LINE);
     }
+
+    public static void printCategoryTransactions(ArrayList<Transaction> transactions, String categoryName) {
+        int index = transactions.size();
+        System.out.println(LINE);
+        System.out.println(TAB_SPACE + "Displaying transactions of category: " + categoryName);
+        System.out.println(TAB_SPACE + TABLE_BORDER);
+        System.out.printf(TAB_SPACE + TAB_SPACE + "%-5s %-10s %-20s %-20s %-30s %-15s %-15s%n", "ID", "Type",
+                "Account Number", "Account Name", "Transaction", "Date", "Amount");
+        for (int i = START_INDEX; i < index; i++) {
+            Transaction transaction = transactions.get(i);
+            int accountNumber = transaction.getAccountNumber();
+            String accountName = transaction.getAccountName();
+            String type = transaction.getTransactionType();
+            String description = transaction.getDescription();
+            LocalDate date = transaction.getDate();
+            double amount = transaction.getAmount();
+
+            System.out.printf(TAB_SPACE + TAB_SPACE + "%-5d %-10s %-20d %-20.45s %-30.45s %-15s %-15.2f%n",
+                    i + 1, type, accountNumber, accountName, description, date, amount);
+        }
+        System.out.println(TAB_SPACE + TABLE_BORDER);
+        System.out.println(LINE);
+    }
+
+
     //@@author
 
     //@@author vibes-863

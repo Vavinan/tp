@@ -182,6 +182,16 @@ public class TransactionList {
         return accountTransactions;
     }
 
+    public static ArrayList<Transaction> getCategoryTransactions(ArrayList<Transaction> transactions,
+                                                                 Category category) {
+        ArrayList<Transaction> categoryTransactions = new ArrayList<>();
+        for (Transaction transaction : transactions) {
+            if (transaction.getCategory() == category) {
+                categoryTransactions.add(transaction);
+            }
+        }
+        return categoryTransactions;
+    }
 
     public void processList(ArrayList<Account> accounts, AccountManager accountManager) throws InvalidIndexException {
         UserInterface.printListOptions();
@@ -218,9 +228,13 @@ public class TransactionList {
             break;
         // 6 - CATEGORY TRANSACTIONS
         case 6:
-
+            UserInterface.listCategories();
+            int input = UserInterface.getSelectedCategory();
+            Category categorySelected = Category.fromNumber(input);
+            String categoryName = categorySelected.getCategoryName();
+            ArrayList<Transaction> categoryTransactions = getCategoryTransactions(transactions, categorySelected);
+            UserInterface.printCategoryTransactions(categoryTransactions, categoryName);
             break;
-
         default:
             throw new InvalidIndexException("6");
         }
