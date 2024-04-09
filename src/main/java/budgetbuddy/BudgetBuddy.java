@@ -55,7 +55,7 @@ public class BudgetBuddy {
                     isRunning = false;
                     break;
                 case "list":
-                    transactions.processList();
+                    transactions.processList(accountManager.getAccounts(), accountManager);
                     break;
                 case "delete":
                     transactions.removeTransaction(input, accountManager);
@@ -85,6 +85,9 @@ public class BudgetBuddy {
                     break;
                 case "edit-acc":
                     accountManager.processEditAccount(input);
+                    break;
+                case "search":
+                    transactions.searchTransactions(input);
                     break;
                 default:
                     UserInterface.printNoCommandExists();

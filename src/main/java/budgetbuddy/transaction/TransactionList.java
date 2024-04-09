@@ -168,8 +168,29 @@ public class TransactionList {
         return customDateTransactions;
     }
 
+    public static ArrayList<Transaction> getAccountTransactions(ArrayList<Transaction> transactions,
+                                                                int accountNumber) {
+        ArrayList<Transaction> accountTransactions = new ArrayList<>();
+        for (Transaction transaction : transactions) {
+            if (transaction.getAccountNumber() == accountNumber) {
+                accountTransactions.add(transaction);
+            }
+        }
+        return accountTransactions;
+    }
 
-    public void processList() throws InvalidIndexException {
+    public static ArrayList<Transaction> getCategoryTransactions(ArrayList<Transaction> transactions,
+                                                                 Category category) {
+        ArrayList<Transaction> categoryTransactions = new ArrayList<>();
+        for (Transaction transaction : transactions) {
+            if (transaction.getCategory() == category) {
+                categoryTransactions.add(transaction);
+            }
+        }
+        return categoryTransactions;
+    }
+
+    public void processList(ArrayList<Account> accounts, AccountManager accountManager) throws InvalidIndexException {
         UserInterface.printListOptions();
         String data = UserInterface.getListOption().trim();
         int option = Integer.parseInt(data);
@@ -193,9 +214,26 @@ public class TransactionList {
             ArrayList<Transaction> customDateTransactions = getCustomDateTransactions(transactions);
             UserInterface.printCustomDateTransactions(customDateTransactions);
             break;
-
+        // 5 - ACCOUNT TRANSACTIONS
+        case 5:
+            String accountData = UserInterface.getSelectedAccountNumber(accounts);
+            int accountNumber = Integer.parseInt(accountData);
+            Account account = accountManager.getAccountByAccountNumber(accountNumber);
+            String accountName = account.getName();
+            ArrayList<Transaction> accountTransactions = getAccountTransactions(transactions, accountNumber);
+            UserInterface.printAccountTransactions(accountTransactions, accountName, accountNumber);
+            break;
+        // 6 - CATEGORY TRANSACTIONS
+        case 6:
+            UserInterface.listCategories();
+            int input = UserInterface.getSelectedCategory();
+            Category categorySelected = Category.fromNumber(input);
+            String categoryName = categorySelected.getCategoryName();
+            ArrayList<Transaction> categoryTransactions = getCategoryTransactions(transactions, categorySelected);
+            UserInterface.printCategoryTransactions(categoryTransactions, categoryName);
+            break;
         default:
-            throw new InvalidIndexException("4");
+            throw new InvalidIndexException("6");
         }
 
     }
@@ -264,5 +302,30 @@ public class TransactionList {
         }
         transactions.removeAll(transactionsToRemove);
         return transactionsToRemove;
+    }
+
+    public void searchTransactions(String input) {
+        try {
+            String keyword = input.split(" ")[1];
+            ArrayList<Transaction> searchResults = new ArrayList<>();
+            ArrayList<Integer> indices = new ArrayList<>();
+            int index = 0;
+            for (Transaction transaction : transactions) {
+                if (transaction.getDescription().toLowerCase().contains(keyword.toLowerCase()) ||
+                        String.valueOf(transaction.getAmount()).contains(keyword) ||
+                        transaction.getCategory().getCategoryName().toLowerCase()
+                                .contains(keyword.toLowerCase()) ||
+                        transaction.getDate().toString().contains(keyword)) {
+                    searchResults.add(transaction);
+                    indices.add(index);
+                }
+                index++;
+            }
+            UserInterface.printSearchResults(searchResults, indices);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            UserInterface.printInvalidInput("Please enter a keyword to search for transactions.");
+        } catch (Exception e) {
+            UserInterface.printExceptionErrorMessage(e.getMessage());
+        }
     }
 }
