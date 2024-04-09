@@ -266,7 +266,7 @@ public class TransactionList {
 
     public void helpWithUserCommands(String input){
         String helpCommand = parser.parseHelpCommand(input);
-        switch(helpCommand){
+        switch(helpCommand.toLowerCase()){
         case ALL:
             UserInterface.printAllCommands();
             break;
