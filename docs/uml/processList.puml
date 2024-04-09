@@ -4,8 +4,8 @@
 autonumber
 
 actor User
-participant "TransactionManager" as TM
-participant "UserInterface" as UI
+participant ":TransactionManager" as TM
+participant ":UserInterface" as UI
 participant "LocalDate" as LD
 
 User -> TM: processList()
