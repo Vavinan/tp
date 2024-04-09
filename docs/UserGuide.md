@@ -48,8 +48,14 @@ Example of usage:
 
 ### View transaction history: `list`
 
-List the transactions. List options will include 1. All Transactions, 2. Past Week Transactions, 3. Past Month
-Transactions, 4. Custom Date Transactions.
+List the existing transactions. List feature includes options:
+1. All Transactions
+2. Past Week Transactions - list transactions from the past 7 days
+3. Past Month Transactions - list transactions from the past month
+4. Custom Date Transactions - list transactions between the specified dates(inclusive)
+5. Account Transactions - list all transactions in the specified account
+6. Category Transactions - list all transactions in the category type
+
 Format: `list`
 
 Example of usage:
