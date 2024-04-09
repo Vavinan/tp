@@ -15,13 +15,9 @@ public class UserInterface {
 
     public static final String HELP_BORDER = "```````````````````````````````````````````````````";
 
-    private static final String LINE = "-------------------------------------------" +
-            "----------------------------------------------------------------------" +
-            "-------------------------------------------";
-    private static final String TABLE_BORDER = "________________________________________" +
-            "_________________________________________________________________________________________________";
-    private static final String ACCOUNT_TABLE_BORDER = "____________________________________________________________" +
-            "_____________";
+    private static final String LINE = "----------------------------------------------------";
+    private static final String TABLE_BORDER = "____________________________________________________";
+    private static final String ACCOUNT_TABLE_BORDER = "____________________________________________________";
 
     private static final String TAB_SPACE = "    ";
     public static Scanner in = new Scanner(System.in);
@@ -190,7 +186,7 @@ public class UserInterface {
         System.out.println(HELP_BORDER);
         System.out.printf("%-20s %-70s %-20s%n", "Command", "Syntax", "Further help");
         System.out.printf("%-20s %-70s %-20s%n","Add","add /t/[TYPE] /n/[DESCRIPTION] /d/[DD-MM-YYYY] " +
-                "/$/[AMOUNT] /c/[1:9]", "help add");
+                "/$/[AMOUNT] /c/[CATEGORY]", "help add");
         System.out.printf("%-20s %-70s %-20s%n", "Edit", "edit [INDEX]", "help edit");
         System.out.printf("%-20s %-70s %-20s%n", "Delete", "delete [INDEX]", "help delete");
         System.out.printf("%-20s %-70s %-20s%n", "List", "list", "help list");
@@ -211,7 +207,7 @@ public class UserInterface {
 
         System.out.println("\n Method 2");
         System.out.println(TAB_SPACE + " SYNTAX : add /t/[TYPE] /n/[DESCRIPTION] /d/[DD-MM-YYYY] " +
-                "/$/[AMOUNT] /c/[1:9] \n");
+                "/$/[AMOUNT] /c/[CATEGORY] \n");
         System.out.println("Provide the category number along with the add command");
         System.out.println("\n ");
         System.out.println(HELP_BORDER);
