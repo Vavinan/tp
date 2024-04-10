@@ -576,6 +576,12 @@ public class UserInterface {
         System.out.println(LINE);
     }
 
+    private static void printInvalidAccountBalanceError() {
+        System.out.println(LINE);
+        System.out.println(TAB_SPACE + "Account Balance cannot be a valid number");
+        System.out.println(LINE);
+    }
+
     public static String getInitialAccountName() {
         System.out.println("Let's first create an account for you! What do you want to call it?");
         String accountName = in.nextLine();
@@ -585,5 +591,17 @@ public class UserInterface {
             accountName = getInitialAccountName();
         }
         return accountName;
+    }
+
+    public static Double getInitialAccountBalance() {
+        System.out.println("Great! What's the initial balance?");
+        double initialBalance = 0;
+        try {
+            initialBalance = Double.parseDouble(UserInterface.in.nextLine().trim());
+        } catch (NumberFormatException e) {
+            printInvalidAccountBalanceError();
+            getInitialAccountBalance();
+        }
+        return initialBalance;
     }
 }
