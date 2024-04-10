@@ -569,4 +569,21 @@ public class UserInterface {
         System.out.println(TAB_SPACE + "Invalid Category");
         System.out.println(LINE);
     }
+
+    private static void printInvalidAccountNameError() {
+        System.out.println(LINE);
+        System.out.println(TAB_SPACE + "Account Name cannot be blank");
+        System.out.println(LINE);
+    }
+
+    public static String getInitialAccountName() {
+        System.out.println("Let's first create an account for you! What do you want to call it?");
+        String accountName = in.nextLine();
+
+        if (accountName.trim().isEmpty()) {
+            printInvalidAccountNameError();
+            accountName = getInitialAccountName();
+        }
+        return accountName;
+    }
 }
