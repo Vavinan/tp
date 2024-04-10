@@ -3,11 +3,7 @@ package budgetbuddy.parser;
 import budgetbuddy.account.Account;
 import budgetbuddy.categories.Category;
 
-import budgetbuddy.exceptions.EmptyArgumentException;
-import budgetbuddy.exceptions.InvalidArgumentSyntaxException;
-import budgetbuddy.exceptions.InvalidCategoryException;
-import budgetbuddy.exceptions.InvalidEditTransactionData;
-import budgetbuddy.exceptions.InvalidTransactionTypeException;
+import budgetbuddy.exceptions.*;
 import budgetbuddy.transaction.TransactionList;
 import budgetbuddy.transaction.type.Expense;
 import budgetbuddy.transaction.type.Income;
@@ -33,7 +29,7 @@ public class Parser {
 
     public Transaction parseUserInputToTransaction(String input, Account account)
             throws InvalidTransactionTypeException, NumberFormatException,
-            EmptyArgumentException, InvalidCategoryException {
+            EmptyArgumentException, InvalidCategoryException, InvalidAddTransactionSyntax {
         String data = input.substring(ADD_COMMAND_INDEX + 1);
         String[] parseData = data.split("/");
         String type = null;
@@ -78,6 +74,9 @@ public class Parser {
             throw new InvalidCategoryException("Category Index out of bounds");
         }
 
+        if (Double.parseDouble(amount) < 0) {
+            throw new InvalidAddTransactionSyntax("Amount cannot be negative");
+        }
 
         if (description.trim().isEmpty() || type.trim().isEmpty()) {
             throw new EmptyArgumentException("data for the arguments ");
