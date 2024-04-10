@@ -195,10 +195,8 @@ public class DataStorage {
     }
 
     private AccountManager createNewAccountManager() {
-        System.out.println("Let's first create an account for you! What do you want to call it?");
-        String accountName = UserInterface.in.nextLine();
-        System.out.println("Great! What's the initial balance?");
-        double initialBalance = Double.parseDouble(UserInterface.in.nextLine());
+        String accountName = UserInterface.getInitialAccountName();
+        Double initialBalance = UserInterface.getInitialAccountBalance();
         AccountManager accountManager = new AccountManager();
         accountManager.addAccount(accountName, initialBalance);
         return accountManager;
@@ -209,7 +207,6 @@ public class DataStorage {
             ArrayList<Transaction> transactions = readTransactionFile();
             return new TransactionList(transactions);
         } catch (IOException e) {
-            System.out.println("Error reading transactions file. Creating new transaction list.");
             return new TransactionList();
         }
     }
