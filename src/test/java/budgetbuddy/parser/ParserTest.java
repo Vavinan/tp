@@ -1,6 +1,7 @@
 package budgetbuddy.parser;
 import budgetbuddy.account.Account;
 import budgetbuddy.exceptions.EmptyArgumentException;
+import budgetbuddy.exceptions.InvalidAddTransactionSyntax;
 import budgetbuddy.exceptions.InvalidCategoryException;
 import budgetbuddy.exceptions.InvalidEditTransactionData;
 import budgetbuddy.exceptions.InvalidTransactionTypeException;
@@ -16,7 +17,7 @@ public class ParserTest {
 
     @Test
     public void testParseTransaction() throws InvalidTransactionTypeException, EmptyArgumentException,
-            InvalidCategoryException {
+            InvalidCategoryException, InvalidAddTransactionSyntax {
         Parser parser = new Parser();
         Account account = new Account(1);
         String input = "add /t/Income /n/Shopping /$/50 /d/14-03-2024 /c/1";
