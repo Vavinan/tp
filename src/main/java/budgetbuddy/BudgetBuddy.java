@@ -18,6 +18,7 @@ import budgetbuddy.ui.UserInterface;
 import java.util.Scanner;
 
 public class BudgetBuddy {
+    public static final int LIST_LENGTH = 5;
     public static final String BYE = "bye";
     public static final String LIST = "list";
     public static final String DELETE = "delete";
@@ -67,7 +68,11 @@ public class BudgetBuddy {
                     isRunning = false;
                     break;
                 case LIST:
-                    transactions.processList(accountManager.getAccounts(), accountManager);
+                    if (input.length() >= LIST_LENGTH) {
+                        UserInterface.printNoCommandExists();
+                    } else {
+                        transactions.processList(accountManager.getAccounts(), accountManager);
+                    }
                     break;
                 case DELETE:
                     transactions.removeTransaction(input, accountManager);
