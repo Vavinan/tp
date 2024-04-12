@@ -24,7 +24,7 @@ package budgetbuddy.transaction.type {
         +getAmount(): double
         +getCategory(): Category
         +setCategory(category: Category): void
-        {abstract} +_getTransactionType(): String
+        {abstract} +getTransactionType(): String
     }
 }
 
