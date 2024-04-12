@@ -1,5 +1,8 @@
 @startuml
 skinparam classAttributeIconSize 0
+hide abstract circle
+hide class circle
+hide enum circle
 package budgetbuddy.insight {
     class Insight {
         +displayCategoryInsight(transactionArrayList: ArrayList<Transaction>): void
@@ -10,7 +13,7 @@ package budgetbuddy.insight {
 }
 
 package budgetbuddy.categories {
-    enum Category {
+    enum Category <<enumeration>> {
         +Category(categoryNum: int, categoryName: String)
         +getCategoryName(): String
         +getCategoryNum(): int
@@ -18,13 +21,14 @@ package budgetbuddy.categories {
 }
 
 package budgetbuddy.transaction.type {
-    abstract class Transaction {
+    abstract class Transaction{
         -category: Category {dependency}
-        +Transaction(accountNumber: int, accountName: String, description: String, amount: double, date: String)
+        +Transaction(accountNumber: int, accountName: String,
+            description: String, amount: double, date: String)
         +getAmount(): double
         +getCategory(): Category
         +setCategory(category: Category): void
-        {abstract} +getTransactionType(): String
+        <color: Red>{abstract} +getTransactionType() </color>: String
     }
 }
 
