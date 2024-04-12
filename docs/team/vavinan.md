@@ -14,6 +14,7 @@ It is optimized for use via a Command Line Interface (CLI) and is written in Jav
    * Developer Guide:
       * Added implementation details for the feature `delete`.
       * Added implementation details for the feature `edit`.
+      * Added implementation details for the feature `insights`.
 ### Feature 1 - Deleting Transaction
 
 1. Created the `removeTransaction` method to handle deletion of a transaction based on its index in the list.
