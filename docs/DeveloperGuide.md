@@ -218,6 +218,38 @@ Sequence Diagram
 The following sequence diagram illustrates the sequence of interactions involved in the editing of a transaction:
 ![](./uml/uml-images/processList.png)
 
+
+### [Implemented] Insights
+
+#### Description
+
+This feature provides insights into the categorized expenses and incomes of the user. It utilizes the Insight
+class to calculate and display pie charts representing the distribution of expenses and incomes across 
+different categories. <br>
+
+#### Design and Implementation
+
+1. The displayCategoryInsight method iterates through the list of transactions and calculates the total income
+and expense amounts for each category. It then calls the displayPieChart method to visualize these insights 
+using pie charts.
+
+2. The displayPieChart method creates separate pie charts for income and expense categories using the XChart 
+library. It customizes the appearance of the charts and adds series for each category with their respective
+income or expense amounts.
+
+3. The indexOf method is a private helper function used to find the index of a specific category within an 
+array
+of categories.
+
+4. The closeInsightFrames method is responsible for closing any open frames related to insights, specifically 
+targeting frames related to income and expense insights to ensure proper cleanup and resource management.
+
+The following is the class diagram for Insights class
+
+![](./uml/uml-images/insightDiagram.png)
+
+
+
 ## Product scope
 
 ### Target user profile
