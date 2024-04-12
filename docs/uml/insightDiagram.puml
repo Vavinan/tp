@@ -1,0 +1,53 @@
+@startuml
+skinparam classAttributeIconSize 0
+package budgetbuddy.insight {
+    class Insight {
+        +displayCategoryInsight(transactionArrayList: ArrayList<Transaction>): void
+        -displayPieChart(categoryArray: Category[], incomeArray: Double[], expenseArray: Double[]): void
+        -indexOf(array: Category[], target: Category): int
+        +closeInsightFrames(): void
+    }
+}
+
+package budgetbuddy.categories {
+    enum Category {
+        +Category(categoryNum: int, categoryName: String)
+        +getCategoryName(): String
+        +getCategoryNum(): int
+    }
+}
+
+package budgetbuddy.transaction.type {
+    abstract class Transaction {
+        -category: Category {dependency}
+        +Transaction(accountNumber: int, accountName: String, description: String, amount: double, date: String)
+        +getAmount(): double
+        +getCategory(): Category
+        +setCategory(category: Category): void
+        {abstract} +_getTransactionType(): String
+    }
+}
+
+package org.knowm.xchart {
+    class PieChart
+    class PieChartBuilder
+    class XChartPanel
+    class PieStyler
+}
+
+class JFrame {
+    +dispose(): void
+}
+class JPanel
+
+Insight ...>  Category : " {dependency}        "
+Insight ..>   Transaction: {dependency}
+Transaction --> "*" Category: {association}
+Insight ..>  JFrame :{creates 2}
+Insight ..>  JPanel: {creates 2}
+Insight ..>  PieChart: {uses 2}
+Insight ..>  PieChartBuilder: {uses 2}
+Insight ..>  XChartPanel :{uses 2}
+Insight ..>  PieStyler: {uses 2}
+
+@enduml
