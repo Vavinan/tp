@@ -136,10 +136,16 @@ public class DataStorage {
 
         ArrayList<Account> accounts = new ArrayList<>();
         while (s.hasNext()) {
-            String[] accountInfo = s.nextLine().split(" ,");
+            String line = s.nextLine();
+            if (line.trim().isEmpty()) {
+                continue;
+            }
+            String[] accountInfo = line.split(" ,");
             int accountNumber;
             double balance;
             String accountName = accountInfo[1].trim();
+
+
             if (accountInfo.length != 3) {
                 throw new FileCorruptedException("Invalid account information format");
             }
@@ -184,7 +190,11 @@ public class DataStorage {
         ArrayList<Transaction> transactionList = new ArrayList<>();
         try {
             while (s.hasNext()) {
-                transactionList.add(parseDataToTransaction(s.nextLine()));
+                String line = s.nextLine();
+                if (line.trim().isEmpty()) {
+                    continue;
+                }
+                transactionList.add(parseDataToTransaction(line));
             }
         } catch (FileCorruptedException | InvalidCategoryException e) {
             UserInterface.printFileCorruptedError();
