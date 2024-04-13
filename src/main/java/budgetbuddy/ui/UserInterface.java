@@ -15,13 +15,9 @@ public class UserInterface {
 
     public static final String HELP_BORDER = "```````````````````````````````````````````````````";
 
-    private static final String LINE = "-------------------------------------------" +
-            "----------------------------------------------------------------------" +
-            "-------------------------------------------";
-    private static final String TABLE_BORDER = "________________________________________" +
-            "_________________________________________________________________________________________________";
-    private static final String ACCOUNT_TABLE_BORDER = "____________________________________________________________" +
-            "_____________";
+    private static final String LINE = "----------------------------------------------------";
+    private static final String TABLE_BORDER = "____________________________________________________";
+    private static final String ACCOUNT_TABLE_BORDER = "____________________________________________________";
 
     private static final String TAB_SPACE = "    ";
     public static Scanner in = new Scanner(System.in);
@@ -68,7 +64,7 @@ public class UserInterface {
     public static void printInvalidIndex(String message, int id) {
         System.out.println(LINE);
         System.out.println(TAB_SPACE + message);
-        System.out.println(TAB_SPACE + "Please use index within the range of: 1  to " + id);
+        System.out.println(TAB_SPACE + "Please use index within the range of: 1 to " + id);
         System.out.println(LINE);
     }
 
@@ -188,12 +184,12 @@ public class UserInterface {
 
     public static void printAllCommands(){
         System.out.println(HELP_BORDER);
-        System.out.printf("%-20s %-70s %-20s%n", "Command", "Syntax", "Further help");
-        System.out.printf("%-20s %-70s %-20s%n","Add","add /t/[TYPE] /n/[DESCRIPTION] /d/[DD-MM-YYYY] " +
-                "/$/[AMOUNT] /c/[1:9]", "help add");
-        System.out.printf("%-20s %-70s %-20s%n", "Edit", "edit [INDEX]", "help edit");
-        System.out.printf("%-20s %-70s %-20s%n", "Delete", "delete [INDEX]", "help delete");
-        System.out.printf("%-20s %-70s %-20s%n", "List", "list", "help list");
+        System.out.printf("%-20s %-75s %-20s%n", "Command", "Syntax", "Further help");
+        System.out.printf("%-20s %-75s %-20s%n","Add","add /t/[TYPE] /n/[DESCRIPTION] /d/[DD-MM-YYYY] " +
+                "/$/[AMOUNT] /c/[CATEGORY]", "help add");
+        System.out.printf("%-20s %-75s %-20s%n", "Edit", "edit [INDEX]", "help edit");
+        System.out.printf("%-20s %-75s %-20s%n", "Delete", "delete [INDEX]", "help delete");
+        System.out.printf("%-20s %-75s %-20s%n", "List", "list", "help list");
         System.out.println(HELP_BORDER);
 
     }
@@ -211,7 +207,7 @@ public class UserInterface {
 
         System.out.println("\n Method 2");
         System.out.println(TAB_SPACE + " SYNTAX : add /t/[TYPE] /n/[DESCRIPTION] /d/[DD-MM-YYYY] " +
-                "/$/[AMOUNT] /c/[1:9] \n");
+                "/$/[AMOUNT] /c/[CATEGORY] \n");
         System.out.println("Provide the category number along with the add command");
         System.out.println("\n ");
         System.out.println(HELP_BORDER);
@@ -277,6 +273,8 @@ public class UserInterface {
         System.out.println(TAB_SPACE + "2. Past Week Transactions");
         System.out.println(TAB_SPACE + "3. Past Month Transactions");
         System.out.println(TAB_SPACE + "4. Custom Date Transactions");
+        System.out.println(TAB_SPACE + "5. Account Transactions");
+        System.out.println(TAB_SPACE + "6. Category Transactions");
         System.out.println(LINE);
     }
     public static String getListOption() {
@@ -297,6 +295,39 @@ public class UserInterface {
         String data = in.next();
         in.nextLine();
         return data;
+    }
+
+    public static void printAccountList(ArrayList<Account> accounts) {
+        int maxIndex = accounts.size();
+        System.out.println(LINE);
+        System.out.println(TAB_SPACE + "Your accounts:");
+        System.out.println(TAB_SPACE + ACCOUNT_TABLE_BORDER);
+        System.out.printf(TAB_SPACE + TAB_SPACE + "%-20s %-30s", "Account Number",
+                "Account Name");
+
+        for (int i = START_INDEX; i < maxIndex; i++) {
+            Account account = accounts.get(i);
+            int accountNumber = account.getAccountNumber();
+            String name = account.getName();
+
+            System.out.printf("\n" +TAB_SPACE + TAB_SPACE + "%-20d %-30.45s", accountNumber, name);
+        }
+        System.out.println("\n" + TAB_SPACE + ACCOUNT_TABLE_BORDER);
+        System.out.println(LINE);
+    }
+
+    public static String getSelectedAccountNumber(ArrayList<Account> accounts) {
+        printAccountList(accounts);
+        System.out.print("Select an account number: ");
+        String data = in.next();
+        in.nextLine();
+        return data;
+    }
+
+    public static int getSelectedCategory() {
+        System.out.print("Select a category number: ");
+        String data = in.nextLine();
+        return Integer.parseInt(data);
     }
 
 
@@ -348,6 +379,54 @@ public class UserInterface {
         System.out.println(TAB_SPACE + TABLE_BORDER);
         System.out.println(LINE);
     }
+
+    public static void printAccountTransactions(ArrayList<Transaction> transactions, String accountName,
+                                                int accountNumber) {
+        int index = transactions.size();
+        System.out.println(LINE);
+        System.out.println(TAB_SPACE + "Displaying transactions of account: " + accountName + "(" + accountNumber +")");
+        System.out.println(TAB_SPACE + TABLE_BORDER);
+        System.out.printf(TAB_SPACE + TAB_SPACE + "%-5s %-10s %-30s %-15s %-15s %-15s%n", "ID", "Type",
+                  "Transaction", "Date", "Amount", "Category");
+        for (int i = START_INDEX; i < index; i++) {
+            Transaction transaction = transactions.get(i);
+            String type = transaction.getTransactionType();
+            String description = transaction.getDescription();
+            LocalDate date = transaction.getDate();
+            double amount = transaction.getAmount();
+            String category = transaction.getCategory().getCategoryName();
+
+            System.out.printf(TAB_SPACE + TAB_SPACE + "%-5d %-10s %-30.45s %-15s %-15.2f %-15s%n",
+                    i + 1, type, description, date, amount, category);
+        }
+        System.out.println(TAB_SPACE + TABLE_BORDER);
+        System.out.println(LINE);
+    }
+
+    public static void printCategoryTransactions(ArrayList<Transaction> transactions, String categoryName) {
+        int index = transactions.size();
+        System.out.println(LINE);
+        System.out.println(TAB_SPACE + "Displaying transactions of category: " + categoryName);
+        System.out.println(TAB_SPACE + TABLE_BORDER);
+        System.out.printf(TAB_SPACE + TAB_SPACE + "%-5s %-10s %-20s %-20s %-30s %-15s %-15s%n", "ID", "Type",
+                "Account Number", "Account Name", "Transaction", "Date", "Amount");
+        for (int i = START_INDEX; i < index; i++) {
+            Transaction transaction = transactions.get(i);
+            int accountNumber = transaction.getAccountNumber();
+            String accountName = transaction.getAccountName();
+            String type = transaction.getTransactionType();
+            String description = transaction.getDescription();
+            LocalDate date = transaction.getDate();
+            double amount = transaction.getAmount();
+
+            System.out.printf(TAB_SPACE + TAB_SPACE + "%-5d %-10s %-20d %-20.45s %-30.45s %-15s %-15.2f%n",
+                    i + 1, type, accountNumber, accountName, description, date, amount);
+        }
+        System.out.println(TAB_SPACE + TABLE_BORDER);
+        System.out.println(LINE);
+    }
+
+
     //@@author
 
     //@@author vibes-863
@@ -463,5 +542,66 @@ public class UserInterface {
         System.out.println(TAB_SPACE + "The storage file is corrupted :(");
         System.out.println(TAB_SPACE + "So, a new file will be created!");
         System.out.println(LINE);
+    }
+    public static void printSearchResults(ArrayList<Transaction> transactions, ArrayList<Integer> indices) {
+        if(transactions.isEmpty()) {
+            System.out.println("No matching Transactions found");
+        } else{
+            System.out.println("Search results:");
+            System.out.println(TAB_SPACE + TABLE_BORDER);
+            System.out.printf(TAB_SPACE + TAB_SPACE + "%-5s %-10s %-20s %-20s %-30s %-15s %-15s %-15s%n", "ID", "Type",
+                    "Account Number", "Account Name", "Transaction", "Date", "Amount", "Category");
+            int i = 0;
+            for (Transaction t : transactions) {
+                //System.out.println((indices.get(i) + 1) + ". " + transactions.get(i));
+                System.out.printf(TAB_SPACE + TAB_SPACE + "%-5d %-10s %-20d %-20.45s %-30.45s %-15s %-15.2f %-15s%n",
+                        indices.get(i)+1, t.getTransactionType(),t.getAccountNumber(),t.getAccountName(),
+                        t.getDescription(), t.getDate(), t.getAmount(), t.getCategory().getCategoryName());
+                i++;
+            }
+            System.out.println(TAB_SPACE + TABLE_BORDER);
+        }
+
+    }
+
+    public static void printInvalidCategoryError() {
+        System.out.println(LINE);
+        System.out.println(TAB_SPACE + "Invalid Category");
+        System.out.println(LINE);
+    }
+
+    private static void printInvalidAccountNameError() {
+        System.out.println(LINE);
+        System.out.println(TAB_SPACE + "Account Name cannot be blank");
+        System.out.println(LINE);
+    }
+
+    private static void printInvalidAccountBalanceError() {
+        System.out.println(LINE);
+        System.out.println(TAB_SPACE + "Account Balance cannot be a valid number");
+        System.out.println(LINE);
+    }
+
+    public static String getInitialAccountName() {
+        System.out.println("Let's first create an account for you! What do you want to call it?");
+        String accountName = in.nextLine();
+
+        if (accountName.trim().isEmpty()) {
+            printInvalidAccountNameError();
+            accountName = getInitialAccountName();
+        }
+        return accountName;
+    }
+
+    public static Double getInitialAccountBalance() {
+        System.out.println("Great! What's the initial balance?");
+        double initialBalance = 0;
+        try {
+            initialBalance = Double.parseDouble(UserInterface.in.nextLine().trim());
+        } catch (NumberFormatException e) {
+            printInvalidAccountBalanceError();
+            getInitialAccountBalance();
+        }
+        return initialBalance;
     }
 }

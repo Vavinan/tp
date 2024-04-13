@@ -2,6 +2,7 @@ package budgetbuddy.transaction.type;
 
 import budgetbuddy.account.Account;
 import budgetbuddy.categories.Category;
+import budgetbuddy.exceptions.InvalidCategoryException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -46,7 +47,7 @@ public class TransactionTest {
     }
 
     @Test
-    public void testGetCategory() {
+    public void testGetCategory() throws InvalidCategoryException {
         Transaction transaction = new Income(1, "test","Groceries",
                 50.0f, "14-03-2024",
                 account);
@@ -64,7 +65,7 @@ public class TransactionTest {
     }
 
     @Test
-    public void testToString() {
+    public void testToString() throws InvalidCategoryException {
         Transaction transaction = new Income(1, "test","Groceries",
                 50.0f, "14-03-2024",
                 account);

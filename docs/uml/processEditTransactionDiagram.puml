@@ -4,27 +4,46 @@
 autonumber
 
 actor User
-participant "TransactionManager" as TM
+participant "TransactionList" as TL
 participant "UserInterface" as UI
-participant "AccountManager" as AM
-participant "Parser" as P
+participant ":AccountManager" as AM
+participant ":Parser" as P
+participant "EmptyArgumentException" as EAE
+participant "InvalidIndexException" as IIE
+participant "NumberFormatException" as NFE
+User -> TL: editTransaction [edit index]
 
-User -> TM: editTransaction [edit index]
-TM -> UI: getEditInformation(transaction)
-activate UI
-UI --> TM: newTransaction
-deactivate UI
-TM -> P: parseEditTransaction(newTransaction, account)
-activate P
-P --> TM: updatedTransaction
-deactivate P
-TM -> AM: getAccountByAccountNumber(accountNumber)
-activate AM
-AM --> TM: account
-deactivate AM
-TM -> TM: setTransaction(updatedTransaction)
-TM -> UI: printUpdatedTransaction(updatedTransaction)
-activate UI
-UI --> User: Display updated transaction
-deactivate UI
+alt edit index is empty
+    TL -> EAE: throw EmptyArgumentException("edit index")
+end
+alt index is not an integer
+    TL -> NFE : throw NumberFormatException(edit_index)
+end
+TL -> TL: index = parseInt(data)
+alt index is within bounds
+    TL -> UI: <getEditInformation(transaction)>
+    activate UI
+    UI --> TL: newTransaction
+    deactivate UI
+    TL -> P: parseEditTransaction(newTransaction, account)
+    activate P
+    P --> TL: updatedTransaction
+    deactivate P
+
+    TL -> AM: getAccountByAccountNumber(accountNumber)
+    activate AM
+    AM --> TL: account
+    deactivate AM
+
+    TL -> TL: setTransaction(updatedTransaction)
+
+    TL -> UI: <printUpdatedTransaction(updatedTransaction)>
+    activate UI
+    UI --> TL: Display updated transaction
+    deactivate UI
+    TL --> User: Display Output
+else
+    TL -> IIE: throw InvalidIndexException(transaction_list_size)
+end
+
 @enduml

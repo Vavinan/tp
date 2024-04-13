@@ -4,6 +4,7 @@ import budgetbuddy.account.Account;
 import budgetbuddy.account.AccountManager;
 import budgetbuddy.categories.Category;
 import budgetbuddy.exceptions.FileCorruptedException;
+import budgetbuddy.exceptions.InvalidCategoryException;
 import budgetbuddy.transaction.TransactionList;
 import budgetbuddy.transaction.type.Expense;
 import budgetbuddy.transaction.type.Income;
@@ -77,7 +78,7 @@ public class DataStorage {
     }
 
     // description, categoryNum, type, date, amount, accountNumber, accountName
-    private Transaction parseDataToTransaction(String s) throws FileCorruptedException {
+    private Transaction parseDataToTransaction(String s) throws FileCorruptedException, InvalidCategoryException {
         String[] transactionInfo = s.split(" ,");
         int categoryNum;
         try {
@@ -160,7 +161,7 @@ public class DataStorage {
             while (s.hasNext()) {
                 transactionList.add(parseDataToTransaction(s.nextLine()));
             }
-        } catch (FileCorruptedException e) {
+        } catch (FileCorruptedException | InvalidCategoryException e) {
             UserInterface.printFileCorruptedError();
             FileWriter fw = new FileWriter(TRANSACTIONS_FILE_PATH, false);
             return new ArrayList<>();
@@ -194,10 +195,8 @@ public class DataStorage {
     }
 
     private AccountManager createNewAccountManager() {
-        System.out.println("Let's first create an account for you! What do you want to call it?");
-        String accountName = UserInterface.in.nextLine();
-        System.out.println("Great! What's the initial balance?");
-        double initialBalance = Double.parseDouble(UserInterface.in.nextLine());
+        String accountName = UserInterface.getInitialAccountName();
+        Double initialBalance = UserInterface.getInitialAccountBalance();
         AccountManager accountManager = new AccountManager();
         accountManager.addAccount(accountName, initialBalance);
         return accountManager;
@@ -208,7 +207,6 @@ public class DataStorage {
             ArrayList<Transaction> transactions = readTransactionFile();
             return new TransactionList(transactions);
         } catch (IOException e) {
-            System.out.println("Error reading transactions file. Creating new transaction list.");
             return new TransactionList();
         }
     }

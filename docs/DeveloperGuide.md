@@ -9,19 +9,41 @@ original source as well}
 
 {Describe the design and implementation of the product. Use UML diagrams and short code snippets where applicable.}
 
-### [Implemented] Account feature
+### [Implemented] Add Account
 
-#### Implementation
+#### Description
 
-The Account feature in the BudgetBuddy application serves as a core component for tracking the user's current financial
-balance. This feature is primarily facilitated through the `Account` class, which encapsulates the balance attribute and
-provides mechanisms to get and set the balance. The Account object interacts closely with transactions, being updated
-whenever transactions are added or deleted.
+This method is used to add a new account to the list of accounts based on the user input provided. The input should
+include the account name and initial balance. After the account is successfully added, the account balance is
+initialized with the provided initial balance, and a unique account number is generated and assigned to the account. A
+message is displayed to the user indicating the success of the operation. This allows users to manage multiple accounts
+by adding new ones as needed.
 
-Looking ahead, users will have the flexibility to manage multiple accounts—such as Wallet, Savings, Checking, and
-Investment accounts—each encapsulated within the application's framework for seamless financial oversight. This
-expansion will provide a comprehensive view of diverse financial sources and enhance personal financial management
-within BudgetBuddy.
+#### Parameters
+
+1. String input: A string containing the user input, which should include the account name and initial balance,
+   separated by specific delimiters.
+
+#### Design and Implementation
+
+The method starts by validating the syntax of the user input to ensure it contains the necessary delimiters for the
+account name and initial balance. If the input does not meet the expected format, it throws an
+InvalidArgumentSyntaxException. It then parses the input to extract the account name and initial balance. If either the
+name or initial balance is missing or empty, an EmptyArgumentException is thrown. Additionally, if the initial balance
+is not a valid double value, a NumberFormatException is thrown.
+
+After successfully parsing and validating the input, the method proceeds to generate a unique account number for the new
+account. It ensures that the generated number is not already in use by any existing account. Once a unique number is
+obtained, a new Account object is created with the generated account number, provided account name, and initial balance.
+This new account is then added to the list of accounts, and its number is added to the list of existing account numbers
+to ensure uniqueness.
+
+Finally, the method notifies the user of the successful addition of the account by displaying the details of the newly
+created account.
+
+The following sequence diagram shows how the add account process works:
+
+![](./uml/uml-images/addAccountDiagram.png)
 
 ### [Implemented] Category feature
 
@@ -174,22 +196,59 @@ Sequence Diagram
 The following sequence diagram illustrates the sequence of interactions involved in the editing of a transaction:
 ![](./uml/uml-images/processEditTransactionDiagram.png)
 
-### [Implemented] List feature
+### [Implemented] List Transactions
 
 ### Description
 
 The list feature allows users to view their existing transactions. This feature includes viewing all the transactions,
 past week's transactions, past month's transactions and transactions from a specified date range.
 
-#### Implementation
+#### Design and Implementation
 
-This feature is facilitated through the `TransactionList#processList`, where it prompts the user for their choice of
-list they wish to see. After the user inputs the choice, the get functions will store the transactions in a new
-ArrayList and `UserInterface#printPastTransactions` will handle the output of the list.
+This feature is facilitated through the `TransactionList#processList`, and it is designed to ensure successful viewing 
+of the desired list as inputs are required in a bite-sized manner. 
+
+This method first executes the `UserInterface#printListOptions` to show users the list options and their indexes which 
+is needed for their inputs. The method will throw an InvalidIndexException if the input is out of the range.
+Depending on the list option chosen by the user, different prompts and messages will be output. For options which 
+require more data by the user, this feature will prompt the user to input the data. Once all required information is 
+gathered, the method will call on the various methods to build an ArrayList of the desired list and print out the list.
 
 Sequence Diagram
 The following sequence diagram illustrates the sequence of interactions involved in the editing of a transaction:
 ![](./uml/uml-images/processList.png)
+
+
+### [Implemented] Insights
+
+#### Description
+
+This feature provides insights into the categorized expenses and incomes of the user. It utilizes the Insight
+class to calculate and display pie charts representing the distribution of expenses and incomes across 
+different categories. <br>
+
+#### Design and Implementation
+
+1. The displayCategoryInsight method iterates through the list of transactions and calculates the total income
+and expense amounts for each category. It then calls the displayPieChart method to visualize these insights 
+using pie charts.
+
+2. The displayPieChart method creates separate pie charts for income and expense categories using the XChart 
+library. It customizes the appearance of the charts and adds series for each category with their respective
+income or expense amounts.
+
+3. The indexOf method is a private helper function used to find the index of a specific category within an 
+array
+of categories.
+
+4. The closeInsightFrames method is responsible for closing any open frames related to insights, specifically 
+targeting frames related to income and expense insights to ensure proper cleanup and resource management.
+
+The following is the class diagram for Insights class
+
+![](./uml/uml-images/insightDiagram.png)
+
+
 
 ## Product scope
 
