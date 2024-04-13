@@ -78,7 +78,8 @@ public class DataStorage {
     }
 
     // description, categoryNum, type, date, amount, accountNumber, accountName
-    private Transaction parseDataToTransaction(String s) throws FileCorruptedException, InvalidCategoryException {
+    private Transaction parseDataToTransaction(String s, ArrayList<Integer> existingAccountNumbers)
+            throws FileCorruptedException, InvalidCategoryException {
         String[] transactionInfo = s.split(" ,");
         int categoryNum;
         try {
@@ -105,6 +106,10 @@ public class DataStorage {
             amount = Double.parseDouble(transactionInfo[4]);
         } catch (NumberFormatException e) {
             throw new FileCorruptedException("Invalid type for transaction amount");
+        }
+
+        if (!existingAccountNumbers.contains(Integer.parseInt(transactionInfo[5]))) {
+            throw new FileCorruptedException("Invalid account number");
         }
 
         switch (transactionInfo[2]) {
@@ -169,7 +174,7 @@ public class DataStorage {
         return accounts;
     }
 
-    public ArrayList<Transaction> readTransactionFile() throws IOException {
+    public ArrayList<Transaction> readTransactionFile(ArrayList<Integer> existingAccountNumbers) throws IOException {
         createDataFolderIfNotExists();
         File f = new File(TRANSACTIONS_FILE_PATH);
         if (!f.exists()) {
@@ -184,7 +189,7 @@ public class DataStorage {
         ArrayList<Transaction> transactionList = new ArrayList<>();
         try {
             while (s.hasNext()) {
-                transactionList.add(parseDataToTransaction(s.nextLine()));
+                transactionList.add(parseDataToTransaction(s.nextLine(), existingAccountNumbers));
             }
         } catch (FileCorruptedException | InvalidCategoryException e) {
             UserInterface.printFileCorruptedError();
@@ -233,9 +238,9 @@ public class DataStorage {
         return accountManager;
     }
 
-    public TransactionList loadTransactions() {
+    public TransactionList loadTransactions(ArrayList<Integer> existingAccountNumbers) {
         try {
-            ArrayList<Transaction> transactions = readTransactionFile();
+            ArrayList<Transaction> transactions = readTransactionFile(existingAccountNumbers);
             return new TransactionList(transactions);
         } catch (IOException e) {
             return new TransactionList();
