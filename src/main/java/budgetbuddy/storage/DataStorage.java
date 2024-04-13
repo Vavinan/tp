@@ -130,16 +130,41 @@ public class DataStorage {
         }
     }
 
-    public ArrayList<Account> readAccountFile() throws IOException {
+    public ArrayList<Account> readAccountFile() throws IOException, FileCorruptedException {
         File f = new File(ACCOUNTS_FILE_PATH);
         Scanner s = new Scanner(f);
 
         ArrayList<Account> accounts = new ArrayList<>();
         while (s.hasNext()) {
             String[] accountInfo = s.nextLine().split(" ,");
-            assert accountInfo.length == 3 : "Invalid account information format";
-            accounts.add(new Account(Integer.parseInt(accountInfo[0]), accountInfo[1],
-                    Double.parseDouble(accountInfo[2])));
+            int accountNumber;
+            double balance;
+            String accountName = accountInfo[1].trim();
+            if (accountInfo.length != 3) {
+                throw new FileCorruptedException("Invalid account information format");
+            }
+
+            try {
+                accountNumber = Integer.parseInt(accountInfo[0]);
+            } catch (NumberFormatException e) {
+                throw new FileCorruptedException("Invalid type for account number");
+            }
+
+            try {
+                balance = Double.parseDouble(accountInfo[2]);
+            } catch (NumberFormatException e) {
+                throw new FileCorruptedException("Invalid type for account balance");
+            }
+
+            if (accountNumber < 1000 || accountNumber > 9999) {
+                throw new FileCorruptedException("Invalid account number");
+            }
+
+            if (accountName.isEmpty()) {
+                throw new FileCorruptedException("Invalid account name");
+            }
+
+            accounts.add(new Account(accountNumber, accountInfo[1], balance));
         }
         return accounts;
     }
@@ -179,7 +204,13 @@ public class DataStorage {
                 }
                 return createNewAccountManager();
             }
-            ArrayList<Account> accounts = readAccountFile();
+            ArrayList<Account> accounts = null;
+            try {
+                accounts = readAccountFile();
+            } catch (FileCorruptedException e) {
+                UserInterface.printFileCorruptedError();
+                return createNewAccountManager();
+            }
             if (accounts.isEmpty()) {
                 return createNewAccountManager();
             }
@@ -189,7 +220,7 @@ public class DataStorage {
             }
             return new AccountManager(accounts, existingAccountNumbers);
         } catch (IOException e) {
-            System.out.println("Error reading accounts file. Creating new account manager.");
+            UserInterface.printFileCorruptedError();
             return createNewAccountManager();
         }
     }
