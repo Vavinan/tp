@@ -26,7 +26,8 @@ public class DataStorageTest {
                 "25-03-2024", new Account(1));
         t.setCategory(Category.fromNumber(1));
         transactionArrayList.add(t);
-
+        ArrayList<Integer> existingAccountNumbers = new ArrayList<>();
+        existingAccountNumbers.add(1);
         try {
             dataStorage.readTransactionFile(existingAccountNumbers);
             dataStorage.saveTransactions(transactionArrayList);
@@ -48,6 +49,8 @@ public class DataStorageTest {
                 "25-03-2024", new Account(1));
         t.setCategory(Category.fromNumber(1));
         expectedTransactions.add(t);
+        ArrayList<Integer> existingAccountNumbers = new ArrayList<>();
+        existingAccountNumbers.add(1);
         dataStorage.readTransactionFile(existingAccountNumbers);
         dataStorage.saveTransactions(expectedTransactions);
         try {
