@@ -26,9 +26,10 @@ public class DataStorageTest {
                 "25-03-2024", new Account(1));
         t.setCategory(Category.fromNumber(1));
         transactionArrayList.add(t);
-
+        ArrayList<Integer> existingAccountNumbers = new ArrayList<>();
+        existingAccountNumbers.add(1);
         try {
-            dataStorage.readTransactionFile();
+            dataStorage.readTransactionFile(existingAccountNumbers);
             dataStorage.saveTransactions(transactionArrayList);
 
             File file = new File(DataStorage.TRANSACTIONS_FILE_PATH);
@@ -48,10 +49,12 @@ public class DataStorageTest {
                 "25-03-2024", new Account(1));
         t.setCategory(Category.fromNumber(1));
         expectedTransactions.add(t);
-        dataStorage.readTransactionFile();
+        ArrayList<Integer> existingAccountNumbers = new ArrayList<>();
+        existingAccountNumbers.add(1);
+        dataStorage.readTransactionFile(existingAccountNumbers);
         dataStorage.saveTransactions(expectedTransactions);
         try {
-            ArrayList<Transaction> actualTransactions = dataStorage.readTransactionFile();
+            ArrayList<Transaction> actualTransactions = dataStorage.readTransactionFile(existingAccountNumbers);
 
             // Check if read transactions match the expected transactions
             assertEquals(expectedTransactions.size(), actualTransactions.size());

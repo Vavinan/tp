@@ -27,6 +27,27 @@ public class DataStorage {
     public static final String ACCOUNTS_FILE_PATH = "./data/accounts.txt";
     public static final String FOLDER_PATH = "./data";
 
+    private static void writeToFile(String stringToWrite, String filePath) throws IOException {
+        FileWriter fw = new FileWriter(filePath, true);
+        fw.write(stringToWrite);
+        fw.close();
+    }
+
+    private static String getStringToWrite(Transaction t) {
+        LocalDate date = t.getDate();
+        String stringDate = date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+        return t.getDescription() + " ," + t.getCategory().getCategoryNum() + " ,"
+                + t.getTransactionType() + " ," + stringDate + " ," + t.getAmount() + " ," + t.getAccountNumber()
+                + " ," + t.getAccountName() + "\n";
+    }
+
+    private static void createDataFolderIfNotExists() throws IOException {
+        Path dataFolderPath = Paths.get(FOLDER_PATH);
+        if (!Files.exists(dataFolderPath)) {
+            Files.createDirectories(dataFolderPath);
+        }
+    }
+
     public void saveAccounts(ArrayList<Account> accounts) {
         try {
             File f = new File(ACCOUNTS_FILE_PATH);
@@ -63,22 +84,9 @@ public class DataStorage {
         }
     }
 
-    private static void writeToFile(String stringToWrite, String filePath) throws IOException {
-        FileWriter fw = new FileWriter(filePath, true);
-        fw.write(stringToWrite);
-        fw.close();
-    }
-
-    private static String getStringToWrite(Transaction t) {
-        LocalDate date = t.getDate();
-        String stringDate = date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-        return t.getDescription() + " ," + t.getCategory().getCategoryNum() + " ,"
-                + t.getTransactionType() + " ," + stringDate + " ," + t.getAmount() + " ," + t.getAccountNumber()
-                + " ," + t.getAccountName() + "\n";
-    }
-
     // description, categoryNum, type, date, amount, accountNumber, accountName
-    private Transaction parseDataToTransaction(String s) throws FileCorruptedException, InvalidCategoryException {
+    private Transaction parseDataToTransaction(String s, ArrayList<Integer> existingAccountNumbers)
+            throws FileCorruptedException, InvalidCategoryException {
         String[] transactionInfo = s.split(" ,");
         int categoryNum;
         try {
@@ -107,6 +115,10 @@ public class DataStorage {
             throw new FileCorruptedException("Invalid type for transaction amount");
         }
 
+        if (!existingAccountNumbers.contains(Integer.parseInt(transactionInfo[5]))) {
+            throw new FileCorruptedException("Invalid account number");
+        }
+
         switch (transactionInfo[2]) {
         case "Income":
             Income incomeObj = new Income(Integer.parseInt(transactionInfo[5]), transactionInfo[6], transactionInfo[0],
@@ -120,13 +132,6 @@ public class DataStorage {
             return expenseObj;
         default:
             return null;
-        }
-    }
-
-    private static void createDataFolderIfNotExists() throws IOException {
-        Path dataFolderPath = Paths.get(FOLDER_PATH);
-        if (!Files.exists(dataFolderPath)) {
-            Files.createDirectories(dataFolderPath);
         }
     }
 
@@ -181,7 +186,7 @@ public class DataStorage {
         return accounts;
     }
 
-    public ArrayList<Transaction> readTransactionFile() throws IOException {
+    public ArrayList<Transaction> readTransactionFile(ArrayList<Integer> existingAccountNumbers) throws IOException {
         createDataFolderIfNotExists();
         File f = new File(TRANSACTIONS_FILE_PATH);
         if (!f.exists()) {
@@ -200,7 +205,7 @@ public class DataStorage {
                 if (line.trim().isEmpty()) {
                     continue;
                 }
-                transactionList.add(parseDataToTransaction(line));
+                transactionList.add(parseDataToTransaction(line, existingAccountNumbers));
             }
         } catch (FileCorruptedException | InvalidCategoryException e) {
             UserInterface.printFileCorruptedError();
@@ -246,9 +251,9 @@ public class DataStorage {
         return accountManager;
     }
 
-    public TransactionList loadTransactions() {
+    public TransactionList loadTransactions(ArrayList<Integer> existingAccountNumbers) {
         try {
-            ArrayList<Transaction> transactions = readTransactionFile();
+            ArrayList<Transaction> transactions = readTransactionFile(existingAccountNumbers);
             return new TransactionList(transactions);
         } catch (IOException e) {
             return new TransactionList();

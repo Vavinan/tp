@@ -109,4 +109,8 @@ public class AccountManager {
     public void saveAccounts() {
         dataStorage.saveAccounts(accounts);
     }
+
+    public ArrayList<Integer> getExistingAccountNumbers() {
+        return existingAccountNumbers;
+    }
 }
