@@ -300,6 +300,7 @@ public class UserInterface {
     public static void printAccountList(ArrayList<Account> accounts) {
         int maxIndex = accounts.size();
         System.out.println(LINE);
+        System.out.println("Please select an account to view...");
         System.out.println(TAB_SPACE + "Your accounts:");
         System.out.println(TAB_SPACE + ACCOUNT_TABLE_BORDER);
         System.out.printf(TAB_SPACE + TAB_SPACE + "%-20s %-30s", "Account Number",
@@ -318,7 +319,7 @@ public class UserInterface {
 
     public static String getSelectedAccountNumber(ArrayList<Account> accounts) {
         printAccountList(accounts);
-        System.out.print("Select an account number: ");
+        System.out.print("Account number: ");
         String data = in.next();
         in.nextLine();
         return data;
