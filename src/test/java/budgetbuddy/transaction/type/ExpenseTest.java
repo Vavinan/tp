@@ -1,11 +1,11 @@
 package budgetbuddy.transaction.type;
 
 import budgetbuddy.account.Account;
-import budgetbuddy.transaction.type.Expense;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ExpenseTest {
     private Expense expense;
@@ -14,7 +14,8 @@ class ExpenseTest {
     @BeforeEach
     void setUp() {
         account = new Account(1, "Test Account", 0.0);
-        expense = new Expense(1, "Test Account", "Test Expense", 100.0, "01-01-2023", account);
+        expense = new Expense(1, "Test Account", "Test Expense", 100.0,
+                "01-01-2023", account);
     }
 
     @Test
@@ -29,16 +30,19 @@ class ExpenseTest {
 
     @Test
     void expenseWithNullDescriptionThrowsAssertionError() {
-        assertThrows(AssertionError.class, () -> new Expense(1, "Test Account", null, 100.0, "01-01-2023", account));
+        assertThrows(AssertionError.class, () -> new Expense(1, "Test Account",
+                null, 100.0, "01-01-2023", account));
     }
 
     @Test
     void expenseWithEmptyDescriptionThrowsAssertionError() {
-        assertThrows(AssertionError.class, () -> new Expense(1, "Test Account", "", 100.0, "01-01-2023", account));
+        assertThrows(AssertionError.class, () -> new Expense(1, "Test Account", "",
+                100.0, "01-01-2023", account));
     }
 
     @Test
     void expenseWithNullAccountThrowsAssertionError() {
-        assertThrows(AssertionError.class, () -> new Expense(1, "Test Account", "Test Expense", 100.0, "01-01-2023", null));
+        assertThrows(AssertionError.class, () -> new Expense(1, "Test Account",
+                "Test Expense", 100.0, "01-01-2023", null));
     }
 }
