@@ -46,6 +46,42 @@ public class TransactionListTest {
     }
 
     @Test
+    public void a_processEditTransaction_editsTransaction()
+            throws InvalidTransactionTypeException, InvalidAddTransactionSyntax, EmptyArgumentException,
+            InvalidIndexException, IOException, InvalidEditTransactionData, InvalidCategoryException {
+        // Arrange
+        Transaction testTransaction1 = new Income(1, "test", "Test1", 100,
+                "14-03-2024", account);
+        testTransaction1.setCategory(Category.fromNumber(1));
+        Transaction testTransaction2 = new Income(1, "test", "Test2", 200,
+                "16-03-2024", account);
+        testTransaction2.setCategory(Category.fromNumber(2));
+        transactionList.addTransaction(testTransaction1);
+        transactionList.addTransaction(testTransaction2);
+
+        // Mocking input for the UserInterface
+        ByteArrayInputStream in =
+                new ByteArrayInputStream("Income Test1-edited 15-03-2024 150 6 6".getBytes());
+        System.setIn(in);
+
+        // Act
+        transactionList.processEditTransaction("edit 1", accountManager);
+
+        // Assert
+        assertEquals(2, transactionList.getTransactions().size());
+        assertEquals("Test1-edited", transactionList.getTransactions().get(0).getDescription());
+        assertEquals(150, transactionList.getTransactions().get(0).getAmount());
+        assertEquals("2024-03-15", String.valueOf(transactionList.getTransactions().get(0).getDate()));
+        assertEquals(Category.fromNumber(6), transactionList.getTransactions().get(0).getCategory());
+        assertThrows(InvalidIndexException.class, () -> transactionList.processEditTransaction("edit 3",
+                accountManager));
+        assertThrows(EmptyArgumentException.class, () -> transactionList.processEditTransaction("edit",
+                accountManager));
+        assertThrows(NumberFormatException.class, () -> transactionList.processEditTransaction("edit one",
+                accountManager));
+    }
+
+    @Test
     public void getTransactions_initiallyEmpty() {
         assertEquals(0, transactionList.getTransactions().size());
     }
@@ -182,44 +218,6 @@ public class TransactionListTest {
         assertEquals(testTransaction1, categoryTransactions.get(0));
         assertEquals(testTransaction2, categoryTransactions.get(1));
     }
-
-    @Test
-    public void a_processEditTransaction_editsTransaction()
-            throws InvalidTransactionTypeException, InvalidAddTransactionSyntax, EmptyArgumentException,
-            InvalidIndexException, IOException, InvalidEditTransactionData, InvalidCategoryException,
-            InvalidEditTransactionData {
-        // Arrange
-        Transaction testTransaction1 = new Income(1, "test", "Test1", 100,
-                "14-03-2024", account);
-        testTransaction1.setCategory(Category.fromNumber(1));
-        Transaction testTransaction2 = new Income(1, "test", "Test2", 200,
-                "16-03-2024", account);
-        testTransaction2.setCategory(Category.fromNumber(2));
-        transactionList.addTransaction(testTransaction1);
-        transactionList.addTransaction(testTransaction2);
-
-        // Mocking input for the UserInterface
-        ByteArrayInputStream in =
-                new ByteArrayInputStream("Income Test1-edited 15-03-2024 150 6 6".getBytes());
-        System.setIn(in);
-
-        // Act
-        transactionList.processEditTransaction("edit 1", accountManager);
-
-        // Assert
-        assertEquals(2, transactionList.getTransactions().size());
-        assertEquals("Test1-edited", transactionList.getTransactions().get(0).getDescription());
-        assertEquals(150, transactionList.getTransactions().get(0).getAmount());
-        assertEquals("2024-03-15", String.valueOf(transactionList.getTransactions().get(0).getDate()));
-        assertEquals(Category.fromNumber(6), transactionList.getTransactions().get(0).getCategory());
-        assertThrows(InvalidIndexException.class, () -> transactionList.processEditTransaction("edit 3",
-                accountManager));
-        assertThrows(EmptyArgumentException.class, () -> transactionList.processEditTransaction("edit",
-                accountManager));
-        assertThrows(NumberFormatException.class, () -> transactionList.processEditTransaction("edit one",
-                accountManager));
-    }
-
 
 
 }
