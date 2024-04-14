@@ -28,9 +28,8 @@ public class Parser {
      * The function `parseAccountNumber` extracts and returns an account number from a given input
      * string following a specific syntax.
      *
-     * @param input The input string that containes the account number to be parsed.
-     * @return The method is returning an integer value, which is the account number parsed from the
-     * input string.
+     * @param input The input string that contains the account number to be parsed.
+     * @return The method is returning an integer value, which is the account number parsed from the input string.
      */
     public static int parseAccountNumber(String input) throws InvalidArgumentSyntaxException {
         String data = input.substring(ADD_COMMAND_INDEX + 1);
@@ -47,11 +46,10 @@ public class Parser {
      * The function `parseUserInputToTransaction` takes user input, parses it to create a transaction
      * object (either income or expense), and handles various exceptions related to invalid input.
      *
-     * @param input takes a user input that contain transaction details in a
-     * specific format.
+     * @param input takes a user input that contain transaction details in a specific format.
      * @param account The `account` parameter in this method represents the account to which the transaction belongs.
      * @return The method `parseUserInputToTransaction` is returning a `Transaction` object, which can
-     * be either an `Income` or an `Expense` object based on the type provided in the input.
+     *     be either an `Income` or an `Expense` object based on the type provided in the input.
      */
     public Transaction parseUserInputToTransaction(String input, Account account)
             throws InvalidTransactionTypeException, NumberFormatException,
@@ -130,10 +128,9 @@ public class Parser {
      *
      * @param newTransaction The `newTransaction` string is expected to be in a specific format
      * @param account The `account` parameter in the `parseEditTransaction` method represents the
-     * account to which the transaction belongs.
+     *     account to which the transaction belongs.
      * @return The `parseEditTransaction` method is returning a `Transaction` object, which can be
-     * either an `Income` or `Expense` object based on the type provided in the `newTransaction`
-     * string.
+     *     either an `Income` or `Expense` object based on the type provided in the `newTransaction` string.
      */
     public Transaction parseEditTransaction(String newTransaction, Account account) throws InvalidEditTransactionData,
             InvalidCategoryException {
