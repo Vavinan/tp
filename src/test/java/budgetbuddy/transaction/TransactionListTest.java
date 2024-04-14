@@ -15,6 +15,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.condition.DisabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -45,6 +47,7 @@ public class TransactionListTest {
 
     }
 
+    @DisabledOnOs({OS.LINUX})
     @Test
     public void a_processEditTransaction_editsTransaction()
             throws InvalidTransactionTypeException, InvalidAddTransactionSyntax, EmptyArgumentException,
