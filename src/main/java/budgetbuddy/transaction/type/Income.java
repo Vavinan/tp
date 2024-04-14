@@ -12,7 +12,8 @@ public class Income extends Transaction {
     //@@author vibes-863
 
     /**
-     * Creates an income transaction with the given account number, account name, description, amount, date, and account.
+     * Creates an income transaction with the given account number, account name, description, amount, date,
+     * and account.
      * The balance of the account is increased by the amount of the income.
      *
      * @param accountNumber the account number
@@ -45,7 +46,7 @@ public class Income extends Transaction {
     public Income(int accountNumber, String accountName, String description, double amount, String date) {
         super(accountNumber, accountName, description, amount, date);
     }
-    
+
     /**
      * Returns the type of the transaction.
      *
