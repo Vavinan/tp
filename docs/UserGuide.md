@@ -75,6 +75,8 @@ Example of usage:
 * `list` followed by `3` to view Past Week Transactions.
 * `list` followed by `4` followed by the start date `01-01-2024` followed by the end date `31-03-2024`
 to view Custom Date Transactions from 01-01-2024 to 31-03-2024.
+* `list` followed by `5` followed by account number `ACCOUNT_NUMBER` to view transactions from that account.
+* `list` followed by `6` followed by category number `CATEGORY_NUMBER` to view transactions of that category.
 
 List feature options:
 ![](./ug/list_options.png)
