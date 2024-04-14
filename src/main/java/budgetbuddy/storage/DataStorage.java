@@ -130,7 +130,8 @@ public class DataStorage {
         }
     }
 
-    public ArrayList<Account> readAccountFile() throws IOException, FileCorruptedException {
+    public ArrayList<Account> readAccountFile(ArrayList<Integer> existingAccountNumbers)
+            throws IOException, FileCorruptedException {
         File f = new File(ACCOUNTS_FILE_PATH);
         Scanner s = new Scanner(f);
 
@@ -170,7 +171,12 @@ public class DataStorage {
                 throw new FileCorruptedException("Invalid account name");
             }
 
+            if (existingAccountNumbers.contains(accountNumber)) {
+                throw new FileCorruptedException("Duplicate account number");
+            }
+
             accounts.add(new Account(accountNumber, accountInfo[1], balance));
+            existingAccountNumbers.add(accountNumber);
         }
         return accounts;
     }
@@ -214,19 +220,16 @@ public class DataStorage {
                 }
                 return createNewAccountManager();
             }
+            ArrayList<Integer> existingAccountNumbers = new ArrayList<>();
             ArrayList<Account> accounts = null;
             try {
-                accounts = readAccountFile();
+                accounts = readAccountFile(existingAccountNumbers);
             } catch (FileCorruptedException e) {
                 UserInterface.printFileCorruptedError();
                 return createNewAccountManager();
             }
             if (accounts.isEmpty()) {
                 return createNewAccountManager();
-            }
-            ArrayList<Integer> existingAccountNumbers = new ArrayList<>();
-            for (Account account : accounts) {
-                existingAccountNumbers.add(account.getAccountNumber());
             }
             return new AccountManager(accounts, existingAccountNumbers);
         } catch (IOException e) {
