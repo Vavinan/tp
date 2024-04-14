@@ -39,6 +39,7 @@ public class TransactionList {
     private static final int DAYS_IN_WEEK = 7;
     private static final int DAYS_IN_MONTH = 30;
     private static final int DAYS_OFFSET = 1;
+    public static final String SEARCH = "search";
 
 
     private final ArrayList<Transaction> transactions;
@@ -284,6 +285,10 @@ public class TransactionList {
             break;
         case ACCOUNT:
             UserInterface.printAccountHelp();
+            break;
+
+        case SEARCH:
+            UserInterface.printSearchHelp();
             break;
         default:
             UserInterface.printUseAvailableHelp();
