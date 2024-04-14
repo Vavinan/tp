@@ -306,13 +306,13 @@ public class UserInterface {
         System.out.println(string);
         System.out.println(LINE);
         System.out.print(TAB_SPACE + "Enter transaction type: ");
-        String type = in.next();
+        String type = in.nextLine();
         System.out.print(TAB_SPACE + "Enter description: ");
-        String description = in.next();
+        String description = in.nextLine();
         System.out.print(TAB_SPACE + "Enter transaction date: ");
-        String date = in.next();
+        String date = in.nextLine();
         System.out.print(TAB_SPACE + "Enter transaction amount: ");
-        String amount = in.next();
+        String amount = in.nextLine();
         System.out.println(" ");
         for (Category category : Category.values()) {
             System.out.println(TAB_SPACE + TAB_SPACE + category.getCategoryName() + ": " + category.getCategoryNum());
