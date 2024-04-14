@@ -15,6 +15,9 @@ import budgetbuddy.transaction.type.Income;
 import budgetbuddy.transaction.type.Transaction;
 import budgetbuddy.ui.UserInterface;
 
+/**
+ * Parses the user input into data that is easily understandable by other classes and methods.
+ */
 public class Parser {
 
     public static final int ADD_COMMAND_INDEX = 3;

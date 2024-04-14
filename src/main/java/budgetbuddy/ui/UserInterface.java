@@ -8,6 +8,10 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * Manages Overall interaction between users and the program.
+ * It handles all the input and output related tasks.
+ */
 public class UserInterface {
 
     public static final int START_INDEX = 0;
