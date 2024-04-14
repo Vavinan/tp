@@ -200,7 +200,7 @@ public class TransactionListTest {
 
         // Mocking input for the UserInterface
         ByteArrayInputStream in =
-                new ByteArrayInputStream("Income \n Test1-edited \n 15-03-2024 150 6 6".getBytes());
+                new ByteArrayInputStream("Income Test1-edited 15-03-2024 150 6 6".getBytes());
         System.setIn(in);
 
         // Act
