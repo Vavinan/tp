@@ -1,5 +1,7 @@
 package budgetbuddy.categories;
 
+import budgetbuddy.exceptions.InvalidCategoryException;
+
 public enum Category {
     DINING(1, "Dining"),
     GROCERIES(2, "Groceries"),
@@ -19,13 +21,13 @@ public enum Category {
         this.categoryName = categoryName;
     }
 
-    public static Category fromNumber(int number) {
+    public static Category fromNumber(int number) throws InvalidCategoryException {
         for (Category category : Category.values()) {
             if (category.categoryNum == number) {
                 return category;
             }
         }
-        return null;
+        throw new InvalidCategoryException("Category index out of bounds");
     }
 
     public String getCategoryName() {

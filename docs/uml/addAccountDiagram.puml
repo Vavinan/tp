@@ -1,0 +1,22 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+actor User
+participant "AccountManager" as AM
+participant "Parser" as P
+participant "UserInterface" as UI
+
+User -> AM: processAddAccount(input)
+AM -> AM: validateSyntax(input)
+AM -> P: parseAddAccount(input)
+activate P
+P --> AM: parsedData
+deactivate P
+AM -> AM: addAccount(parsedData[0], parsedData[1])
+AM -> UI: printAddAccountMessage(newAccount)
+activate UI
+UI --> User: Display added account message
+deactivate UI
+@enduml
