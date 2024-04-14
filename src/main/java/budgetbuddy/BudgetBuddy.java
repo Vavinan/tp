@@ -37,7 +37,7 @@ public class BudgetBuddy {
     public BudgetBuddy() {
         DataStorage dataStorage = new DataStorage();
         this.accountManager = dataStorage.loadAccounts();
-        this.transactions = dataStorage.loadTransactions();
+        this.transactions = dataStorage.loadTransactions(accountManager.getExistingAccountNumbers());
     }
 
     /**
