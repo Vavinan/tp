@@ -186,7 +186,8 @@ public class TransactionListTest {
     @Test
     public void a_processEditTransaction_editsTransaction()
             throws InvalidTransactionTypeException, InvalidAddTransactionSyntax, EmptyArgumentException,
-            InvalidIndexException, IOException, InvalidEditTransactionData, InvalidCategoryException, InvalidEditTransactionData {
+            InvalidIndexException, IOException, InvalidEditTransactionData, InvalidCategoryException,
+            InvalidEditTransactionData {
         // Arrange
         Transaction testTransaction1 = new Income(1, "test", "Test1", 100,
                 "14-03-2024", account);
