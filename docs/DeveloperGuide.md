@@ -7,7 +7,24 @@ original source as well}
 
 ## Design & implementation
 
-{Describe the design and implementation of the product. Use UML diagrams and short code snippets where applicable.}
+
+### Architecture
+The **Architecture Diagram** of BudgetBuddy is shown below. It explains the high-level design of the application.
+![](./uml/uml-images/architectureDiagram.png)
+
+**Main components of the architecture:**
+
+The bulk of BudgetBuddy work is done by these following four components:
+* `BudgetBuddy` class: is the main class of the application, in charge of the app launch,
+shut down and reading user's inputs. It invokes the loading and saving of data when the app is launched/shut down.
+* `ui` package: consists of `Ui` class, which deals with all the printing/output to the user, 
+and also some reading of user's inputs for additional data.
+* `parser` package: consists of the `Parser` class, makes sense of the data input by the user
+to provide meaningful data for other methods.
+* `storage` package: consists of `DataStorage` class, in charge of saving and loading of the `data` files.
+
+These components help to manipulate the `Transaction`, `TransactionList`, `Account` and `AccountManager` classes
+which drives BudgetBuddy.
 
 ### [Implemented] Add Account
 
@@ -201,7 +218,8 @@ The following sequence diagram illustrates the sequence of interactions involved
 ### Description
 
 The list feature allows users to view their existing transactions. This feature includes viewing all the transactions,
-past week's transactions, past month's transactions and transactions from a specified date range.
+past week's transactions, past month's transactions, transactions from a specified date range, transactions from a
+specified account and transactions of a particular category.
 
 #### Design and Implementation
 
@@ -209,10 +227,14 @@ This feature is facilitated through the `TransactionList#processList`, and it is
 of the desired list as inputs are required in a bite-sized manner. 
 
 This method first executes the `UserInterface#printListOptions` to show users the list options and their indexes which 
-is needed for their inputs. The method will throw an InvalidIndexException if the input is out of the range.
-Depending on the list option chosen by the user, different prompts and messages will be output. For options which 
-require more data by the user, this feature will prompt the user to input the data. Once all required information is 
-gathered, the method will call on the various methods to build an ArrayList of the desired list and print out the list.
+is needed for their inputs. The method will throw an InvalidIndexException if the input is out of the range (range 1-6).
+Depending on the list option chosen by the user, the case statement of the `TransactionList#processList` will run, and
+execute the method of the corresponding option. Different methods would have different prompts as more information is
+required from the user. For the example of custom date transactions, `TransactionList#getCustomDateTransactions` will
+call the methods: `UserInterface#getStartDate` and `UserInterface#getEndDate` in order to obtain the desired date range
+from the user. Once all the required information is gathered for the particular option, an ArrayList will be created and
+the desired transactions will be added into that ArrayList. Then, this ArrayList will be printed out, displaying the
+transactions of the chosen option.
 
 Sequence Diagram
 The following sequence diagram illustrates the sequence of interactions involved in the editing of a transaction:
@@ -252,28 +274,40 @@ The following is the class diagram for Insights class
 
 ## Product scope
 
-### Target user profile
+### Target user profile:
+* has a need to manage significant number of day-to-day transactions
+* prefer desktop apps over other types
+* can type fast
+* prefers typing to mouse interactions
+* is reasonably comfortable using CLI apps
 
-{Describe the target user profile}
-
-### Value proposition
-
-{Describe the value proposition: what problem does it solve?}
+### Value proposition:
+* manage daily transactions faster than a typical mouse/GUI driven app
 
 ## User Stories
 
-| Version | As a ... | I want to ...             | So that I can ...                                           |
-|---------|----------|---------------------------|-------------------------------------------------------------|
-| v1.0    | new user | see usage instructions    | refer to them when I forget how to use the application      |
-| v2.0    | user     | find a to-do item by name | locate a to-do without having to go through the entire list |
+| Version | As a ... | I want to ...                                      | So that I can ...                                     |
+|---------|----------|----------------------------------------------------|-------------------------------------------------------|
+| v1.0    | user     | Update my daily expense                            | Manage my transactions                                |
+| v1.0    | user     | Exit from the interface                            | Stop the application                                  |
+| v1.0    | user     | Know how to communicate with the bot               | Use it effectively                                    |
+| v1.0    | user     | View my past transactions                          | Keep track of them                                    |
+| v1.0    | user     | Delete a transaction                               | Remove a transaction I added by mistake               |
+| v1.0    | user     | Add income as well as expense transactions         | Track my balance                                      |
+| v2.0    | user     | Keep track of my balance                           | Know how much money I have left                       |
+| v2.0    | user     | Choose the date range to view my transactions      | View transactions that I am interested in only        |
+| v2.0    | user     | Track multiple balances such as wallet, debit card | Know how much money I have left in all accounts       |
+| v2.0    | user     | Get a quick view of my past week's transactions    | Obtain a quick overview of my recent spending history |
+| v2.0    | user     | Categorize my transactions                         | Get insights on each category                         |
 
 ## Non-Functional Requirements
-
-{Give non-functional requirements}
+1. Should work on any *mainstream OS* as long as it has Java `11` or above installed.
+2. A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be
+able to accomplish most of the tasks faster using commands than using the mouse.
 
 ## Glossary
 
-* *glossary item* - Definition
+* **Mainsteam OS**: Windows, Linux, Unix, MacOS
 
 ## Instructions for manual testing
 
