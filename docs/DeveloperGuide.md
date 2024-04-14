@@ -218,7 +218,8 @@ The following sequence diagram illustrates the sequence of interactions involved
 ### Description
 
 The list feature allows users to view their existing transactions. This feature includes viewing all the transactions,
-past week's transactions, past month's transactions and transactions from a specified date range.
+past week's transactions, past month's transactions, transactions from a specified date range, transactions from a
+specified account and transactions of a particular category.
 
 #### Design and Implementation
 
@@ -226,10 +227,14 @@ This feature is facilitated through the `TransactionList#processList`, and it is
 of the desired list as inputs are required in a bite-sized manner. 
 
 This method first executes the `UserInterface#printListOptions` to show users the list options and their indexes which 
-is needed for their inputs. The method will throw an InvalidIndexException if the input is out of the range.
-Depending on the list option chosen by the user, different prompts and messages will be output. For options which 
-require more data by the user, this feature will prompt the user to input the data. Once all required information is 
-gathered, the method will call on the various methods to build an ArrayList of the desired list and print out the list.
+is needed for their inputs. The method will throw an InvalidIndexException if the input is out of the range (range 1-6).
+Depending on the list option chosen by the user, the case statement of the `TransactionList#processList` will run, and
+execute the method of the corresponding option. Different methods would have different prompts as more information is
+required from the user. For the example of custom date transactions, `TransactionList#getCustomDateTransactions` will
+call the methods: `UserInterface#getStartDate` and `UserInterface#getEndDate` in order to obtain the desired date range
+from the user. Once all the required information is gathered for the particular option, an ArrayList will be created and
+the desired transactions will be added into that ArrayList. Then, this ArrayList will be printed out, displaying the
+transactions of the chosen option.
 
 Sequence Diagram
 The following sequence diagram illustrates the sequence of interactions involved in the editing of a transaction:
