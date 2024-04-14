@@ -14,6 +14,7 @@ import org.junit.jupiter.api.BeforeEach;
 import budgetbuddy.transaction.type.Transaction;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -22,12 +23,14 @@ public class TransactionListTest {
 
     private TransactionList transactionList;
     private Account account;
+    private Account account2;
     private AccountManager accountManager;
 
     @BeforeEach
     public void setUp() throws IOException {
         transactionList = new TransactionList();
         account = new Account(1);
+        account2 = new Account(2);
         accountManager = new AccountManager();
         accountManager.getAccounts().add(account); // need to change this
     }
@@ -121,5 +124,52 @@ public class TransactionListTest {
 
         assertThrows(NumberFormatException.class, () -> transactionList.removeTransaction(
                 "delete one", accountManager));
+    }
+
+    @Test
+    public void getAccountTransactions_filtersCorrectTransactions() throws InvalidCategoryException {
+        Transaction testTransaction1 = new Income(1, "test","Test1", 100,
+                "15-03-2024", account);
+        testTransaction1.setCategory(Category.fromNumber(1));
+        Transaction testTransaction2 = new Income(1, "test","Test2", 200,
+                "16-03-2024", account);
+        testTransaction2.setCategory(Category.fromNumber(1));
+        Transaction testTransaction3 = new Income(2, "test","Test3", 300,
+                "18-03-2024", account2);
+        testTransaction3.setCategory(Category.fromNumber(1));
+        transactionList.addTransaction(testTransaction1);
+        transactionList.addTransaction(testTransaction2);
+        transactionList.addTransaction(testTransaction3);
+
+        ArrayList<Transaction> accountTransactions;
+        accountTransactions = TransactionList.getAccountTransactions(transactionList.getTransactions(),1);
+
+        assertEquals(2, accountTransactions.size());
+        assertEquals(testTransaction1, accountTransactions.get(0));
+        assertEquals(testTransaction2, accountTransactions.get(1));
+    }
+
+    @Test
+    public void getCategoryTransactions_filtersCorrectTransactions() throws InvalidCategoryException {
+        Transaction testTransaction1 = new Income(1, "test","Test1", 100,
+                "15-03-2024", account);
+        testTransaction1.setCategory(Category.fromNumber(1));
+        Transaction testTransaction2 = new Income(1, "test","Test2", 200,
+                "16-03-2024", account);
+        testTransaction2.setCategory(Category.fromNumber(1));
+        Transaction testTransaction3 = new Income(1, "test","Test3", 300,
+                "18-03-2024", account);
+        testTransaction3.setCategory(Category.fromNumber(5));
+        transactionList.addTransaction(testTransaction1);
+        transactionList.addTransaction(testTransaction2);
+        transactionList.addTransaction(testTransaction3);
+
+        ArrayList<Transaction> categoryTransactions;
+        categoryTransactions = TransactionList.getCategoryTransactions(transactionList.getTransactions(),
+                Category.fromNumber(1));
+
+        assertEquals(2, categoryTransactions.size());
+        assertEquals(testTransaction1, categoryTransactions.get(0));
+        assertEquals(testTransaction2, categoryTransactions.get(1));
     }
 }
