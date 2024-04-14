@@ -269,28 +269,40 @@ The following is the class diagram for Insights class
 
 ## Product scope
 
-### Target user profile
+### Target user profile:
+* has a need to manage significant number of day-to-day transactions
+* prefer desktop apps over other types
+* can type fast
+* prefers typing to mouse interactions
+* is reasonably comfortable using CLI apps
 
-{Describe the target user profile}
-
-### Value proposition
-
-{Describe the value proposition: what problem does it solve?}
+### Value proposition:
+* manage daily transactions faster than a typical mouse/GUI driven app
 
 ## User Stories
 
-| Version | As a ... | I want to ...             | So that I can ...                                           |
-|---------|----------|---------------------------|-------------------------------------------------------------|
-| v1.0    | new user | see usage instructions    | refer to them when I forget how to use the application      |
-| v2.0    | user     | find a to-do item by name | locate a to-do without having to go through the entire list |
+| Version | As a ... | I want to ...                                      | So that I can ...                                     |
+|---------|----------|----------------------------------------------------|-------------------------------------------------------|
+| v1.0    | user     | Update my daily expense                            | Manage my transactions                                |
+| v1.0    | user     | Exit from the interface                            | Stop the application                                  |
+| v1.0    | user     | Know how to communicate with the bot               | Use it effectively                                    |
+| v1.0    | user     | View my past transactions                          | Keep track of them                                    |
+| v1.0    | user     | Delete a transaction                               | Remove a transaction I added by mistake               |
+| v1.0    | user     | Add income as well as expense transactions         | Track my balance                                      |
+| v2.0    | user     | Keep track of my balance                           | Know how much money I have left                       |
+| v2.0    | user     | Choose the date range to view my transactions      | View transactions that I am interested in only        |
+| v2.0    | user     | Track multiple balances such as wallet, debit card | Know how much money I have left in all accounts       |
+| v2.0    | user     | Get a quick view of my past week's transactions    | Obtain a quick overview of my recent spending history |
+| v2.0    | user     | Categorize my transactions                         | Get insights on each category                         |
 
 ## Non-Functional Requirements
-
-{Give non-functional requirements}
+1. Should work on any *mainstream OS* as long as it has Java `11` or above installed.
+2. A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be
+able to accomplish most of the tasks faster using commands than using the mouse.
 
 ## Glossary
 
-* *glossary item* - Definition
+* **Mainsteam OS**: Windows, Linux, Unix, MacOS
 
 ## Instructions for manual testing
 
