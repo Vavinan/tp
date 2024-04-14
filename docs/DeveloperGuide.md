@@ -7,7 +7,24 @@ original source as well}
 
 ## Design & implementation
 
-{Describe the design and implementation of the product. Use UML diagrams and short code snippets where applicable.}
+
+### Architecture
+The **Architecture Diagram** of BudgetBuddy is shown below. It explains the high-level design of the application.
+![](./uml/uml-images/architectureDiagram.png)
+
+**Main components of the architecture:**
+
+The bulk of BudgetBuddy work is done by these following four components:
+* `BudgetBuddy` class: is the main class of the application, in charge of the app launch,
+shut down and reading user's inputs. It invokes the loading and saving of data when the app is launched/shut down.
+* `ui` package: consists of `Ui` class, which deals with all the printing/output to the user, 
+and also some reading of user's inputs for additional data.
+* `parser` package: consists of the `Parser` class, makes sense of the data input by the user
+to provide meaningful data for other methods.
+* `storage` package: consists of `DataStorage` class, in charge of saving and loading of the `data` files.
+
+These components help to manipulate the `Transaction`, `TransactionList`, `Account` and `AccountManager` classes
+which drives BudgetBuddy.
 
 ### [Implemented] Add Account
 
