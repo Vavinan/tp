@@ -211,9 +211,12 @@ public class TransactionListTest {
         assertEquals(150, transactionList.getTransactions().get(0).getAmount());
         assertEquals("2024-03-15", String.valueOf(transactionList.getTransactions().get(0).getDate()));
         assertEquals(Category.fromNumber(6), transactionList.getTransactions().get(0).getCategory());
-        assertThrows(InvalidIndexException.class, () -> transactionList.processEditTransaction("edit 3", accountManager));
-        assertThrows(EmptyArgumentException.class, () -> transactionList.processEditTransaction("edit", accountManager));
-        assertThrows(NumberFormatException.class, () -> transactionList.processEditTransaction("edit one", accountManager));
+        assertThrows(InvalidIndexException.class, () -> transactionList.processEditTransaction("edit 3",
+                accountManager));
+        assertThrows(EmptyArgumentException.class, () -> transactionList.processEditTransaction("edit",
+                accountManager));
+        assertThrows(NumberFormatException.class, () -> transactionList.processEditTransaction("edit one",
+                accountManager));
     }
 
 
