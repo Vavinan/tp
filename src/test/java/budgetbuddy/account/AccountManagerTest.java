@@ -6,7 +6,9 @@ import budgetbuddy.exceptions.InvalidIndexException;
 import budgetbuddy.transaction.TransactionList;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class AccountManagerTest {
 
@@ -22,15 +24,18 @@ public class AccountManagerTest {
         AccountManager accountManager = new AccountManager();
         accountManager.addAccount("Test Account", 1000.00);
         accountManager.addAccount("Test Account 2", 2000.00);
-        assertNotEquals(accountManager.getAccount(0).getAccountNumber(), accountManager.getAccount(1).getAccountNumber());
+        assertNotEquals(accountManager.getAccount(0).getAccountNumber(), accountManager
+                .getAccount(1).getAccountNumber());
     }
 
     @Test
-    void removingAccountShouldDecreaseExistingAccountNumbersSize() throws InvalidIndexException, InvalidArgumentSyntaxException, EmptyArgumentException {
+    void removingAccountShouldDecreaseExistingAccountNumbersSize()
+            throws InvalidIndexException, InvalidArgumentSyntaxException, EmptyArgumentException {
         AccountManager accountManager = new AccountManager();
         accountManager.addAccount("Test Account", 1000.00);
         accountManager.addAccount("Test Account2", 1000.00);
-        accountManager.removeAccount("delete-acc " + String.valueOf(accountManager.getAccounts().get(1).getAccountNumber()), new TransactionList());
+        accountManager.removeAccount("delete-acc " + String.valueOf(accountManager.getAccounts().get(1)
+                .getAccountNumber()), new TransactionList());
         assertEquals(1, accountManager.getExistingAccountNumbers().size());
     }
 
