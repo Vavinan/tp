@@ -231,6 +231,7 @@ public class DataStorage {
                 accounts = readAccountFile(existingAccountNumbers);
             } catch (FileCorruptedException e) {
                 UserInterface.printFileCorruptedError();
+                FileWriter fw = new FileWriter(ACCOUNTS_FILE_PATH, false);
                 return createNewAccountManager();
             }
             if (accounts.isEmpty()) {
