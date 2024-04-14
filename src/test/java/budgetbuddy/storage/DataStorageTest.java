@@ -2,6 +2,7 @@ package budgetbuddy.storage;
 
 import budgetbuddy.account.Account;
 import budgetbuddy.categories.Category;
+import budgetbuddy.exceptions.InvalidCategoryException;
 import budgetbuddy.transaction.type.Expense;
 import budgetbuddy.transaction.type.Transaction;
 import org.junit.jupiter.api.Test;
@@ -18,39 +19,42 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 public class DataStorageTest {
     @Test
-    public void testSaveTransactions() throws IOException {
+    public void testSaveTransactions() throws IOException, InvalidCategoryException {
         DataStorage dataStorage = new DataStorage();
         ArrayList<Transaction> transactionArrayList = new ArrayList<>();
         Transaction t = new Expense(1, "test","Groceries", 50.0,
                 "25-03-2024", new Account(1));
         t.setCategory(Category.fromNumber(1));
         transactionArrayList.add(t);
-
+        ArrayList<Integer> existingAccountNumbers = new ArrayList<>();
+        existingAccountNumbers.add(1);
         try {
-            dataStorage.readFileContents();
+            dataStorage.readTransactionFile(existingAccountNumbers);
             dataStorage.saveTransactions(transactionArrayList);
 
-            File file = new File(DataStorage.STORAGE_FILE_PATH);
+            File file = new File(DataStorage.TRANSACTIONS_FILE_PATH);
             assertTrue(file.exists()); // Check if file exists after saving transactions
         } catch (IOException e) {
             fail("Exception thrown while saving transactions: " + e.getMessage());
         } finally {
-            FileWriter fw = new FileWriter(DataStorage.STORAGE_FILE_PATH, false);
+            FileWriter fw = new FileWriter(DataStorage.TRANSACTIONS_FILE_PATH, false);
         }
     }
 
     @Test
-    public void testReadFromFile() throws IOException {
+    public void testReadFromFile() throws IOException, InvalidCategoryException {
         DataStorage dataStorage = new DataStorage();
         ArrayList<Transaction> expectedTransactions = new ArrayList<>();
         Transaction t = new Expense( 1, "test","Groceries", 50.0,
                 "25-03-2024", new Account(1));
         t.setCategory(Category.fromNumber(1));
         expectedTransactions.add(t);
-        dataStorage.readFileContents();
+        ArrayList<Integer> existingAccountNumbers = new ArrayList<>();
+        existingAccountNumbers.add(1);
+        dataStorage.readTransactionFile(existingAccountNumbers);
         dataStorage.saveTransactions(expectedTransactions);
         try {
-            ArrayList<Transaction> actualTransactions = dataStorage.readFileContents();
+            ArrayList<Transaction> actualTransactions = dataStorage.readTransactionFile(existingAccountNumbers);
 
             // Check if read transactions match the expected transactions
             assertEquals(expectedTransactions.size(), actualTransactions.size());
@@ -66,7 +70,7 @@ public class DataStorageTest {
         } catch (IOException e) {
             fail("Exception thrown while reading from file: " + e.getMessage());
         } finally {
-            FileWriter fw = new FileWriter(DataStorage.STORAGE_FILE_PATH, false);
+            FileWriter fw = new FileWriter(DataStorage.TRANSACTIONS_FILE_PATH, false);
         }
     }
 }

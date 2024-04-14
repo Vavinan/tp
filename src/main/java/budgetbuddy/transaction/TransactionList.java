@@ -3,13 +3,15 @@ package budgetbuddy.transaction;
 import budgetbuddy.account.Account;
 
 import budgetbuddy.account.AccountManager;
-import budgetbuddy.exceptions.EmptyArgumentException;
-import budgetbuddy.exceptions.InvalidAddTransactionSyntax;
-import budgetbuddy.exceptions.InvalidIndexException;
-import budgetbuddy.exceptions.InvalidTransactionTypeException;
-import budgetbuddy.exceptions.InvalidEditTransactionData;
+
 
 import budgetbuddy.categories.Category;
+import budgetbuddy.exceptions.EmptyArgumentException;
+import budgetbuddy.exceptions.InvalidAddTransactionSyntax;
+import budgetbuddy.exceptions.InvalidCategoryException;
+import budgetbuddy.exceptions.InvalidEditTransactionData;
+import budgetbuddy.exceptions.InvalidIndexException;
+import budgetbuddy.exceptions.InvalidTransactionTypeException;
 import budgetbuddy.insights.Insight;
 import budgetbuddy.parser.Parser;
 import budgetbuddy.storage.DataStorage;
@@ -28,6 +30,7 @@ public class TransactionList {
     public static final int LOWER_BOUND = 0;
     public static final int EDIT_BEGIN_INDEX = 5;
 
+    public static final String ACCOUNT = "acc";
     public static final String ALL = "all";
     public static final String ADD = "add";
     public static final String DELETE = "delete";
@@ -37,15 +40,19 @@ public class TransactionList {
     private static final int DAYS_IN_MONTH = 30;
     private static final int DAYS_OFFSET = 1;
 
+
     private final ArrayList<Transaction> transactions;
     private final Parser parser;
 
     private final DataStorage dataStorage = new DataStorage();
 
-    public TransactionList() throws IOException {
-        // Initialise ArrayList in the constructor
-        this.transactions = dataStorage.readFileContents();
-        assert transactions != null : "Transaction list is null after reading from file";
+    public TransactionList() {
+        this.transactions = new ArrayList<>();
+        this.parser = new Parser();
+    }
+
+    public TransactionList(ArrayList<Transaction> transactions) {
+        this.transactions = transactions;
         this.parser = new Parser();
     }
 
@@ -63,9 +70,6 @@ public class TransactionList {
             throw new EmptyArgumentException("delete index");
         }
         String data = input.substring(DELETE_BEGIN_INDEX).trim();
-        if (isNotInteger(data)) {
-            throw new NumberFormatException(data);
-        }
         int id = Integer.parseInt(data) - INDEX_OFFSET;
         int size = transactions.size();
         if (id >= LOWER_BOUND && id < size) {
@@ -104,7 +108,8 @@ public class TransactionList {
     }
 
     public void processTransaction(String input, Account account)
-            throws InvalidTransactionTypeException, InvalidAddTransactionSyntax, EmptyArgumentException {
+            throws InvalidTransactionTypeException, InvalidAddTransactionSyntax, EmptyArgumentException,
+            InvalidCategoryException {
         // Check for syntax for add transaction
         String[] arguments = {"/a/","/t/", "/n/", "/$/", "/d/"};
         for (String argument : arguments) {
@@ -113,13 +118,8 @@ public class TransactionList {
             }
         }
 
-        Transaction t = parser.parseTransaction(input, account);
+        Transaction t = parser.parseUserInputToTransaction(input, account);
         assert t != null : "Parsed transaction is null";
-        if (t.getCategory() == null) {
-            UserInterface.listCategories();
-            int category = UserInterface.getCategoryNum();
-            t.setCategory(Category.fromNumber(category));
-        }
         addTransaction(t);
         assert transactions.get(transactions.size() - 1) != null : "Added transaction is null after adding to the list";
         String fetchData = String.valueOf(transactions.get(transactions.size() - 1));
@@ -130,33 +130,28 @@ public class TransactionList {
         dataStorage.saveTransactions(transactions);
     }
 
-    public void updateBalance(Account account) {
-        account.setBalance(dataStorage.getBalance());
-    }
-
     //@@author isaaceng7
-    public static ArrayList<Transaction> getPastWeekTransactions(ArrayList<Transaction> transactions) {
-        LocalDate today = LocalDate.now();
-        LocalDate lastWeek = today.minusDays(DAYS_IN_WEEK + DAYS_OFFSET);
-        ArrayList<Transaction> pastWeekTransactions = new ArrayList<>();
-        for (Transaction transaction : transactions) {
-            if (transaction.getDate().isAfter(lastWeek)) {
-                pastWeekTransactions.add(transaction);
-            }
-        }
-        return pastWeekTransactions;
-    }
 
-    public static ArrayList<Transaction> getPastMonthTransactions(ArrayList<Transaction> transactions) {
+    public static ArrayList<Transaction> getPastTransactions(ArrayList<Transaction> transactions, String duration) {
         LocalDate today = LocalDate.now();
-        LocalDate lastMonth = today.minusDays(DAYS_IN_MONTH + DAYS_OFFSET);
-        ArrayList<Transaction> pastWeekTransactions = new ArrayList<>();
+        LocalDate startDate = null;
+        switch(duration) {
+        case "week":
+            startDate = today.minusDays(DAYS_IN_WEEK + DAYS_OFFSET);
+            break;
+        case "month":
+            startDate = today.minusDays(DAYS_IN_MONTH + DAYS_OFFSET);
+            break;
+        default:
+            break;
+        }
+        ArrayList<Transaction> pastTransactions = new ArrayList<>();
         for (Transaction transaction : transactions) {
-            if (transaction.getDate().isAfter(lastMonth)) {
-                pastWeekTransactions.add(transaction);
+            if (transaction.getDate().isAfter(startDate)) {
+                pastTransactions.add(transaction);
             }
         }
-        return pastWeekTransactions;
+        return pastTransactions;
     }
 
     public static ArrayList<Transaction> getCustomDateTransactions(ArrayList<Transaction> transactions) {
@@ -174,8 +169,30 @@ public class TransactionList {
         return customDateTransactions;
     }
 
+    public static ArrayList<Transaction> getAccountTransactions(ArrayList<Transaction> transactions,
+                                                                int accountNumber) {
+        ArrayList<Transaction> accountTransactions = new ArrayList<>();
+        for (Transaction transaction : transactions) {
+            if (transaction.getAccountNumber() == accountNumber) {
+                accountTransactions.add(transaction);
+            }
+        }
+        return accountTransactions;
+    }
 
-    public void processList() throws InvalidIndexException {
+    public static ArrayList<Transaction> getCategoryTransactions(ArrayList<Transaction> transactions,
+                                                                 Category category) {
+        ArrayList<Transaction> categoryTransactions = new ArrayList<>();
+        for (Transaction transaction : transactions) {
+            if (transaction.getCategory() == category) {
+                categoryTransactions.add(transaction);
+            }
+        }
+        return categoryTransactions;
+    }
+
+    public void processList(ArrayList<Account> accounts, AccountManager accountManager) throws InvalidIndexException,
+            InvalidCategoryException {
         UserInterface.printListOptions();
         String data = UserInterface.getListOption().trim();
         int option = Integer.parseInt(data);
@@ -186,29 +203,46 @@ public class TransactionList {
             break;
         // 2 - PAST WEEK TRANSACTIONS
         case 2:
-            ArrayList<Transaction> pastWeekTransactions = getPastWeekTransactions(transactions);
-            UserInterface.printPastWeekTransactions(pastWeekTransactions);
+            ArrayList<Transaction> pastWeekTransactions = getPastTransactions(transactions, "week");
+            UserInterface.printPastTransactions(pastWeekTransactions, "week");
             break;
         // 3 - PAST MONTH TRANSACTIONS
         case 3:
-            ArrayList<Transaction> pastMonthTransactions = getPastMonthTransactions(transactions);
-            UserInterface.printPastMonthTransactions(pastMonthTransactions);
+            ArrayList<Transaction> pastMonthTransactions = getPastTransactions(transactions, "month");
+            UserInterface.printPastTransactions(pastMonthTransactions, "month");
             break;
         // 4 - CUSTOM DATE TRANSACTIONS
         case 4:
             ArrayList<Transaction> customDateTransactions = getCustomDateTransactions(transactions);
             UserInterface.printCustomDateTransactions(customDateTransactions);
             break;
-
+        // 5 - ACCOUNT TRANSACTIONS
+        case 5:
+            String accountData = UserInterface.getSelectedAccountNumber(accounts);
+            int accountNumber = Integer.parseInt(accountData);
+            Account account = accountManager.getAccountByAccountNumber(accountNumber);
+            String accountName = account.getName();
+            ArrayList<Transaction> accountTransactions = getAccountTransactions(transactions, accountNumber);
+            UserInterface.printAccountTransactions(accountTransactions, accountName, accountNumber);
+            break;
+        // 6 - CATEGORY TRANSACTIONS
+        case 6:
+            UserInterface.listCategories();
+            int input = UserInterface.getSelectedCategory();
+            Category categorySelected = Category.fromNumber(input);
+            String categoryName = categorySelected.getCategoryName();
+            ArrayList<Transaction> categoryTransactions = getCategoryTransactions(transactions, categorySelected);
+            UserInterface.printCategoryTransactions(categoryTransactions, categoryName);
+            break;
         default:
-            throw new InvalidIndexException("4");
+            throw new InvalidIndexException("6");
         }
 
     }
 
     //@@author Vavinan
     public void processEditTransaction(String input, AccountManager accountManager) throws EmptyArgumentException,
-            NumberFormatException, InvalidIndexException, InvalidEditTransactionData {
+            NumberFormatException, InvalidIndexException, InvalidEditTransactionData, InvalidCategoryException {
         if (input.trim().length() < EDIT_BEGIN_INDEX) {
             throw new EmptyArgumentException("edit index ");
         }
@@ -222,9 +256,9 @@ public class TransactionList {
             Transaction transaction = transactions.get(index);
             Account account = accountManager.getAccountByAccountNumber(transaction.getAccountNumber());
             String newTransaction = UserInterface.getEditInformation(transaction.toString());
-            Transaction t = parser.parseTransactionType(newTransaction, account);
+            Transaction t = parser.parseEditTransaction(newTransaction, account);
             transactions.set(index, t);
-            UserInterface.printUpdatedTransaction();
+            UserInterface.printUpdatedTransaction(t);
         } else {
             throw new InvalidIndexException(String.valueOf(transactions.size()));
         }
@@ -232,7 +266,7 @@ public class TransactionList {
 
     public void helpWithUserCommands(String input){
         String helpCommand = parser.parseHelpCommand(input);
-        switch(helpCommand){
+        switch(helpCommand.toLowerCase()){
         case ALL:
             UserInterface.printAllCommands();
             break;
@@ -248,6 +282,9 @@ public class TransactionList {
         case LIST:
             UserInterface.printListHelp();
             break;
+        case ACCOUNT:
+            UserInterface.printAccountHelp();
+            break;
         default:
             UserInterface.printUseAvailableHelp();
             break;
@@ -256,5 +293,41 @@ public class TransactionList {
     //@@author
     public void displayInsights() {
         Insight.displayCategoryInsight(transactions);
+    }
+
+    public ArrayList<Transaction> removeTransactionsByAccountNumber(int accountNumber) {
+        ArrayList<Transaction> transactionsToRemove = new ArrayList<>();
+        for (Transaction transaction : transactions) {
+            if (transaction.getAccountNumber() == accountNumber) {
+                transactionsToRemove.add(transaction);
+            }
+        }
+        transactions.removeAll(transactionsToRemove);
+        return transactionsToRemove;
+    }
+
+    public void searchTransactions(String input) {
+        try {
+            String keyword = input.split(" ")[1];
+            ArrayList<Transaction> searchResults = new ArrayList<>();
+            ArrayList<Integer> indices = new ArrayList<>();
+            int index = 0;
+            for (Transaction transaction : transactions) {
+                if (transaction.getDescription().toLowerCase().contains(keyword.toLowerCase()) ||
+                        String.valueOf(transaction.getAmount()).contains(keyword) ||
+                        transaction.getCategory().getCategoryName().toLowerCase()
+                                .contains(keyword.toLowerCase()) ||
+                        transaction.getDate().toString().contains(keyword)) {
+                    searchResults.add(transaction);
+                    indices.add(index);
+                }
+                index++;
+            }
+            UserInterface.printSearchResults(searchResults, indices);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            UserInterface.printInvalidInput("Please enter a keyword to search for transactions.");
+        } catch (Exception e) {
+            UserInterface.printExceptionErrorMessage(e.getMessage());
+        }
     }
 }

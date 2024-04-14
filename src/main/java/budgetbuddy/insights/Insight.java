@@ -14,6 +14,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import java.util.ArrayList;
+import java.awt.Window;
 
 import static java.lang.Math.abs;
 
@@ -101,5 +102,19 @@ public class Insight {
         }
         return -1;
     }
+
+    //@@author Vavinan
+    public static void closeInsightFrames() {
+        // Close any open insight frames here
+        for (Window window : Window.getWindows()) {
+            if (window instanceof JFrame) {
+                String title = ((JFrame) window).getTitle();
+                if (title != null && (title.equals("Income Insights") || title.equals("Expense Insights"))) {
+                    window.dispose();
+                }
+            }
+        }
+    }
+    //@@author 
 
 }
