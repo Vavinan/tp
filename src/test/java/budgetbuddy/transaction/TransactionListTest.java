@@ -14,7 +14,6 @@ import org.junit.jupiter.api.BeforeEach;
 import budgetbuddy.transaction.type.Transaction;
 
 import java.io.IOException;
-import java.sql.Array;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
