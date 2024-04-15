@@ -34,6 +34,8 @@ public class DataStorage {
     public static final String FOLDER_PATH = "./data";
 
     private static final Logger logger = Logger.getLogger(AccountManager.class.getName());
+
+    //@@author ShyamKrishna33
     /**
      * Writes the provided string to a file at the given file path.
      *
@@ -41,7 +43,6 @@ public class DataStorage {
      * @param filePath      The path of the file to write to.
      * @throws IOException If an I/O error occurs while writing to the file.
      */
-    //@@author ShyamKrishna33
     private static void writeToFile(String stringToWrite, String filePath) throws IOException {
         FileWriter fw = new FileWriter(filePath, true);
         fw.write(stringToWrite);
@@ -95,13 +96,13 @@ public class DataStorage {
         logger.log(Level.INFO, "Accounts saved to file");
     }
 
+    //@@author ShyamKrishna33
     /**
      * Saves the list of transactions to a file.
      *
      * @param transactionArrayList The list of transactions to save.
      * @throws IOException If an I/O error occurs while saving the transactions.
      */
-    //@@author ShyamKrishna33
     public void saveTransactions(ArrayList<Transaction> transactionArrayList) throws IOException {
         File f = new File(TRANSACTIONS_FILE_PATH);
 
@@ -178,11 +179,11 @@ public class DataStorage {
     //@@author
 
     /**
-     * Reads account data from the accounts file and returns a list of Account objects.
+     * Reads account data from a file and returns a list of Account objects.
      *
      * @param existingAccountNumbers A list of existing account numbers.
      * @return The list of Account objects read from the file.
-     * @throws IOException           If an I/O error occurs while reading the file.
+     * @throws IOException If an I/O error occurs while reading the file.
      * @throws FileCorruptedException If the file containing account data is corrupted.
      */
     public ArrayList<Account> readAccountFile(ArrayList<Integer> existingAccountNumbers)
@@ -196,43 +197,65 @@ public class DataStorage {
             if (line.trim().isEmpty()) {
                 continue;
             }
-            String[] accountInfo = line.split(" ,");
-            int accountNumber;
-            double balance;
-            String accountName = accountInfo[1].trim();
+            accounts.add(processAccountLine(line, existingAccountNumbers));
+        }
+        return accounts;
+    }
 
-            if (accountInfo.length != 3) {
-                throw new FileCorruptedException("Invalid account information format");
-            }
+    /**
+     * Reads account data from a file and returns a list of Account objects.
+     *
+     * @param existingAccountNumbers A list of existing account numbers.
+     * @return The list of Account objects read from the file.
+     * @throws IOException If an I/O error occurs while reading the file.
+     * @throws FileCorruptedException If the file containing account data is corrupted.
+     */
+    private Account processAccountLine(String line, ArrayList<Integer> existingAccountNumbers) throws FileCorruptedException {
+        String[] accountInfo = line.split(" ,");
+        validateAccountInfo(accountInfo, existingAccountNumbers);
 
-            try {
-                accountNumber = Integer.parseInt(accountInfo[0]);
-            } catch (NumberFormatException e) {
-                throw new FileCorruptedException("Invalid type for account number");
-            }
+        int accountNumber = Integer.parseInt(accountInfo[0]);
+        double balance = Double.parseDouble(accountInfo[2]);
+        String accountName = accountInfo[1].trim();
 
-            try {
-                balance = Double.parseDouble(accountInfo[2]);
-            } catch (NumberFormatException e) {
-                throw new FileCorruptedException("Invalid type for account balance");
-            }
+        existingAccountNumbers.add(accountNumber);
+        return new Account(accountNumber, accountName, balance);
+    }
 
+    /**
+     * Validates a line of account data.
+     *
+     * @param accountInfo The line of account data to validate.
+     * @param existingAccountNumbers A list of existing account numbers.
+     * @throws FileCorruptedException If the line of account data is invalid.
+     */
+    private void validateAccountInfo(String[] accountInfo, ArrayList<Integer> existingAccountNumbers) throws FileCorruptedException {
+        if (accountInfo.length != 3) {
+            throw new FileCorruptedException("Invalid account information format");
+        }
+
+        try {
+            int accountNumber = Integer.parseInt(accountInfo[0]);
             if (accountNumber < 1000 || accountNumber > 9999) {
                 throw new FileCorruptedException("Invalid account number");
             }
-
-            if (accountName.isEmpty()) {
-                throw new FileCorruptedException("Invalid account name");
-            }
-
             if (existingAccountNumbers.contains(accountNumber)) {
                 throw new FileCorruptedException("Duplicate account number");
             }
-
-            accounts.add(new Account(accountNumber, accountInfo[1], balance));
-            existingAccountNumbers.add(accountNumber);
+        } catch (NumberFormatException e) {
+            throw new FileCorruptedException("Invalid type for account number");
         }
-        return accounts;
+
+        try {
+            double balance = Double.parseDouble(accountInfo[2]);
+        } catch (NumberFormatException e) {
+            throw new FileCorruptedException("Invalid type for account balance");
+        }
+
+        String accountName = accountInfo[1].trim();
+        if (accountName.isEmpty()) {
+            throw new FileCorruptedException("Invalid account name");
+        }
     }
 
     /**
