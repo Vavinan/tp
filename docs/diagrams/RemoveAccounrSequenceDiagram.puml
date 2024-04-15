@@ -1,0 +1,28 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+actor User
+participant "AccountManager" as AM
+participant "Parser" as P
+participant "TransactionList" as TL
+participant "UserInterface" as UI
+
+User -> AM: removeAccount(input, TL)
+AM -> AM: validateSyntax(input)
+AM -> P: parseRemoveAccount(input)
+activate P
+P --> AM: accountNumber
+deactivate P
+AM -> AM: getAccountByAccountNumber(accountNumber)
+AM -> TL: removeTransactionsByAccountNumber(accountNumber)
+activate TL
+TL --> AM: transactionsRemoved
+deactivate TL
+AM -> AM: removeAccount(accountNumber)
+AM -> UI: printDeleteAccountMessage(removedAccount, transactionsRemoved)
+activate UI
+UI --> User: Display removed account message
+deactivate UI
+@enduml
