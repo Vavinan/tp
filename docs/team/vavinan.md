@@ -15,6 +15,12 @@ It is optimized for use via a Command Line Interface (CLI) and is written in Jav
       * Added implementation details for the feature `delete`.
       * Added implementation details for the feature `edit`.
       * Added implementation details for the feature `insights`.
+   
+   * Community:
+      * Reported bugs and suggestions for other teams in class and PE-D.
+     
+   * Others:
+      * Added headers for UserInterface class and Parser class
 ### Feature 1 - Deleting Transaction
 
 1. Created the `removeTransaction` method to handle deletion of a transaction based on its index in the list.
@@ -43,4 +49,20 @@ which has errors or added by mistake.
 which has been added with some mistakes and need to be updated. <br>
 **Highlights:** Instead of expecting the user to type long command this feature prompts the user to input 
 value for each data
+
+### Feature 3 - Search Transaction
+
+1. Implemented the `searchTransaction` method to facilitate searching of transactions using a keyword 
+   based on description, date, category or amount.
+2. Facilitated by the command `search` followed by the keyword.
+3. If the keyword is missing, exception is thrown and the suer will be alerted
+4. The keyword is used to search from the list and the matching results will be shows as a table along 
+   with its true **index ID**. If there is no matching transactions, then the user will be notified that there is no matching transactions.
+
+**What it does:** Allows users to search for transactions<br>
+**Justification:** this feature is key to the BudgetBuddy as if the transaction is history is too long and 
+a user wants to delete or edit transaction. Then this search functionality will be helpful as the user can 
+enter a keyword to search for it to get the true index ID of the transaction. Then that ID can be used in 
+delete or edit command.
+
 
