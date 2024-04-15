@@ -131,6 +131,10 @@ and `expense`.
 
 3. `EmptyArgumentException`: This exception is thrown when an empty argument is encountered.
 
+The following class diagram shows the associations between classes involved in processing a transaction.
+
+![](./uml/uml-images/TransactionListDiagram.png)
+
 The following sequence diagram shows how a remove transaction goes works:
 
 ![](./uml/uml-images/addTransactionDiagram.png)
