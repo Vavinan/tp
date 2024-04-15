@@ -35,6 +35,7 @@ public class DataStorage {
     public static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
     //@@author ShyamKrishna33
+
     /**
      * Writes the provided string to a file at the given file path.
      *
@@ -96,6 +97,7 @@ public class DataStorage {
     }
 
     //@@author ShyamKrishna33
+
     /**
      * Saves the list of transactions to a file.
      *
@@ -103,6 +105,7 @@ public class DataStorage {
      * @throws IOException If an I/O error occurs while saving the transactions.
      */
     public void saveTransactions(ArrayList<Transaction> transactionArrayList) throws IOException {
+        LOGGER.log(Level.INFO, "Saving transactions to file");
         File f = new File(TRANSACTIONS_FILE_PATH);
 
         assert f.exists() : "File does not exist";
@@ -115,6 +118,7 @@ public class DataStorage {
             String stringToWrite = getStringToWrite(transaction);
             writeToFile(stringToWrite, TRANSACTIONS_FILE_PATH);
         }
+        LOGGER.log(Level.INFO, "Transactions saved to file");
     }
 
     /**
@@ -208,7 +212,6 @@ public class DataStorage {
      *
      * @param existingAccountNumbers A list of existing account numbers.
      * @return The list of Account objects read from the file.
-     * @throws IOException            If an I/O error occurs while reading the file.
      * @throws FileCorruptedException If the file containing account data is corrupted.
      */
     private Account processAccountLine(String line, ArrayList<Integer> existingAccountNumbers)
@@ -271,6 +274,7 @@ public class DataStorage {
         }
     }
 
+    //@@author ShyamKrishna33
     /**
      * Reads transaction data from the transactions file and returns a list of Transaction objects.
      *
@@ -279,9 +283,11 @@ public class DataStorage {
      * @throws IOException If an I/O error occurs while reading the file.
      */
     public ArrayList<Transaction> readTransactionFile(ArrayList<Integer> existingAccountNumbers) throws IOException {
+        LOGGER.log(Level.INFO, "Fetching transactions from storage");
         createDataFolderIfNotExists();
         File f = new File(TRANSACTIONS_FILE_PATH);
         if (!f.exists()) {
+            LOGGER.log(Level.INFO, "File does not exists. Creating a new one.");
             if (!f.createNewFile()) {
                 throw new IOException("Failed to create file");
             }
@@ -300,12 +306,15 @@ public class DataStorage {
                 transactionList.add(parseDataToTransaction(line, existingAccountNumbers));
             }
         } catch (FileCorruptedException | InvalidCategoryException e) {
+            LOGGER.log(Level.SEVERE, "File got corrupted");
             UserInterface.printFileCorruptedError();
             FileWriter fw = new FileWriter(TRANSACTIONS_FILE_PATH, false);
             return new ArrayList<>();
         }
+        LOGGER.log(Level.INFO, "Transactions are fetched successfully");
         return transactionList;
     }
+    //@@author
 
     /**
      * Loads the accounts from the accounts file and returns an AccountManager object.
@@ -357,6 +366,7 @@ public class DataStorage {
         return accountManager;
     }
 
+    //@@author ShyamKrishna33
     /**
      * Loads the transactions from the transactions file and returns a TransactionList object.
      *
@@ -371,4 +381,5 @@ public class DataStorage {
             return new TransactionList();
         }
     }
+    //@@author
 }
