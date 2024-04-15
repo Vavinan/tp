@@ -399,4 +399,40 @@ The following is the class diagram for Insights class
 
 ## Instructions for manual testing
 
-{Give instructions on how to do a manual product testing e.g., how to load sample data to be used for testing}
+### Add transaction
+With the help of help guide you can add a transaction (assuming account number is 5413)
+ * Run the following command: `add /a/5431 /t/Income /n/March Salary /$/10000 /d/01-03-2024 /c/8`
+   Expected : Received acknowledgement and transaction is added to the list.
+ * Run the following command: `add /a/5431 /t/new /n/March Salary /$/10000 /d/01-03-2024 /c/8`
+   Expected: Error occurred with a message. Transaction is not added
+ * Run the following command : `add /a/5431 /t/Income /n/March Salary /$/10000 /d/01-20-2024 /c/8`
+   Expected: Error occurred due to date format. Transaction is not added
+ * Run the following command : `add /a/5431 /t/Income /n/March Salary /$/10000 /d/01-03-2024 /c/10`
+   Expected: Invalid category. Transaction is not added.
+
+### Edit Transaction
+With the help of help guide you can edit a transaction (assuming there are only 2 transactions in the history)
+* Run the following command: `edit 3`
+  Expected: Error occurred due to index id is out of the range.
+* Run the following command : `edit 0`
+  Expected: Error occurred due to index id is out of the range.
+* Run the following command : `add-acc /n/DBS Savings /$/hundred`
+  Expected: Error occurred due to invalid initial balance. Initial balance should be double not a string.
+* Run the following command: `edit 1`
+  Expected : Details of the transaction is shown, and new input for each argument.
+
+
+### Add account
+With the help of help guide you can add a new account
+* Run the following command: `add-acc /n/DBS Savings /$/10000`
+  Expected : Received acknowledgement and account is added successfully.
+* Run the following command: `add-acc /n//$/10000`
+  Expected: Error occurred due to empty account name. Account not added.
+* Run the following command : `add-acc /n/DBS Savings /$/`
+  Expected: Error occurred due to missing initial balance. Account not added.
+* Run the following command : `add-acc /n/DBS Savings /$/hundred`
+  Expected: Error occurred due to invalid initial balance. Initial balance should be double not a string.
+  Account not added
+
+
+
