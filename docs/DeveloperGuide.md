@@ -399,6 +399,64 @@ The following is the class diagram for Insights class
 
 ## Instructions for manual testing
 
+### Deleting a transaction
+1. Deleting a transaction with multiple existing transactions
+   1. Prerequisites: List all transactions using the `list` command followed by `1`. **Multiple transactions** in the list.
+   2. Test case: `delete 1`
+   Expected: First transaction is deleted from the transaction history. Account balance is updated. Details of the deleted transaction is shown in the status message.
+   3. Test case: `delete 0`
+   Expected: No transaction is deleted. Error details shown in the status message.
+   4. Test case: other incorrect delete commands: `delete abc`, `deleteee`
+   Expected: Similar to point 3.
+
+2. Deleting a transaction with only one existing transaction
+   1. Prerequisites: List all transactions using the `list` command followed by `1`. **Only one** transaction in the list.
+   2. Test case: `delete 1`
+      Expected: First transaction is deleted from the transaction history. Account balance is updated. Details of the deleted transaction is shown in the status message.
+   3. Test case: `delete 2`
+      Expected: No transaction is deleted. Error details shown in the status message.
+   4. Test case: `delete 0`
+            Expected: No transaction is deleted. Error details shown in the status message.
+
+3. Deleting a transaction with no existing transaction
+   1. Prerequisites: List all transactions using the `list` command followed by `1`. **No** transaction in the list.
+   2. Test case: `delete 1`
+      Expected: No transaction is deleted. Error details shown in the status message.
+   3. Test case: `delete 0`
+      Expected: No transaction is deleted. Error details shown in the status message.
+
+
+### View transaction history
+1. Viewing transaction history of all transactions, past week transactions or past month transactions.
+   1. Prerequisites: There is at least one existing transaction. View list options using the `list` command.
+   2. Test case: `1`
+      Expected: All existing transactions is shown in the status message.
+   3. Test case: `2`
+      Expected: Existing transactions from the past week is shown in the status message.
+   4. Test case: `3`
+      Expected: Existing transactions from the past month is shown in the status message.
+   5. Test case: integers of `4` to `6` 
+      Expected: Contain prompts before generating different transaction lists in status message.
+   6. Test case: other integers or incorrect inputs: `10`, `-1`, `abc`.
+      Expected: No list is generated. Error details shown in the status message.
+
+2. Viewing transaction from custom date range
+   1. Prerequisites: There is at least one existing transaction that is within desired date range. View list options using the `list` command, followed by `4`
+   2. Test case: `01-01-2024` followed by `01-03-2024`
+      Expected: All existing transactions within 01-01-2024 and 01-03-2024 shown in status message.
+   3. Test case: `01012024` followed by `01032024`
+      Expected: No list is generated. Error details shown in the status message.
+   4. Test case: other incorrect inputs: `01-01-24`, `01-Mar-2024`
+      Expected: No list is generated. Error details shown in the status message.
+
+### Delete an account
+1. Delete an existing account
+   1. Prerequisites: List all accounts using the `list-acc`. There is at least one existing account.
+   2. Test case: `delete-acc ACCOUNT_NUMBER`
+      Expected: Deletes the account and all existing transactions under it. Account details and transactions are shown in the status message.
+   3. Test case: other incorrect inputs that is not the ACCOUNT_NUMBER: `delete-acc abc`, `delete-acc 2134321`, `delete-acc `.
+      Expected: No account is deleted. Error details shown in the status message.
+
 ### Add transaction
 With the help of help guide you can add a transaction (assuming account number is 5413)
  * Run the following command: `add /a/5431 /t/Income /n/March Salary /$/10000 /d/01-03-2024 /c/8`
@@ -434,5 +492,4 @@ With the help of help guide you can add a new account
   Expected: Error occurred due to invalid initial balance. Initial balance should be double not a string.
   Account not added
 
-
-
+  
