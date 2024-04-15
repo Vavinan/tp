@@ -21,6 +21,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 /**
  * This class provides methods for storing and retrieving data related to transactions and accounts.
@@ -31,6 +33,7 @@ public class DataStorage {
     public static final String ACCOUNTS_FILE_PATH = "./data/accounts.txt";
     public static final String FOLDER_PATH = "./data";
 
+    private static final Logger logger = Logger.getLogger(AccountManager.class.getName());
     /**
      * Writes the provided string to a file at the given file path.
      *
@@ -67,11 +70,14 @@ public class DataStorage {
      * @param accounts The list of accounts to save.
      */
     public void saveAccounts(ArrayList<Account> accounts) {
+        logger.log(Level.INFO, "Saving accounts to file");
         try {
             File f = new File(ACCOUNTS_FILE_PATH);
             if (!f.exists()) {
+                logger.log(Level.WARNING, "File does not exist. Creating new file.");
                 createDataFolderIfNotExists();
                 if (!f.createNewFile()) {
+                    logger.log(Level.SEVERE, "Failed to create file");
                     throw new IOException("Failed to create file");
                 }
             }
@@ -84,7 +90,9 @@ public class DataStorage {
             fw.close();
         } catch (IOException e) {
             System.out.println("Error saving accounts.");
+            logger.log(Level.SEVERE, "Error saving accounts");
         }
+        logger.log(Level.INFO, "Accounts saved to file");
     }
 
     /**
@@ -192,7 +200,6 @@ public class DataStorage {
             int accountNumber;
             double balance;
             String accountName = accountInfo[1].trim();
-
 
             if (accountInfo.length != 3) {
                 throw new FileCorruptedException("Invalid account information format");
