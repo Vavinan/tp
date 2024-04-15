@@ -1,5 +1,26 @@
 # User Guide
 
+## Table of Contents
+- [Introduction](#introduction)
+- [Quick Start](#quick-start)
+- [Features](#features)
+  - [Viewing help: `help`](#viewing-help-help)
+  - [Adding a transaction: `add`](#adding-a-transaction-add)
+  - [View transaction history: `list`](#view-transaction-history-list)
+  - [Deleting a transaction: `delete`](#deleting-a-transaction-delete)
+  - [Edit a transaction: `edit`](#edit-a-transaction-edit)
+  - [Search for a transaction: `search`](#search-for-a-transaction-search)
+  - [Add an account: `add-acc`](#add-an-account-add-acc)
+  - [List all accounts: `list-acc`](#list-all-accounts-list-acc)
+  - [Delete an account: `delete-acc`](#delete-an-account-delete-acc)
+  - [Edit an account: `edit-acc`](#edit-an-account-edit-acc)
+  - [View transaction insights: `insights`](#view-transaction-insights-insights)
+  - [Exiting the program: `bye`](#exiting-the-program-bye)
+  - [Saving the data](#saving-the-data)
+  - [Editing the data file](#editing-the-data-file)
+- [FAQ](#faq)
+- [Command Summary](#command-summary)
+
 ## Introduction
 
 BudgetBuddy is a **desktop app for managing personal finances, optimized for use via a Command Line Interface** (CLI).
@@ -276,8 +297,6 @@ the acceptable range). Therefore, edit the data file only if you are confident t
 the data of your previous BudgetBuddy home folder.
 
 ## Command Summary
-
-{Give a 'cheat sheet' of commands here}
 
 * View help `help`
 * View help for all commands `help all`. This can be used to see all the commands related to transactions
