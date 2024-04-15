@@ -65,7 +65,7 @@ Adds a transaction into the transaction list of the specified account.
 * `add /n/New iPhone /$/2000 /c/9 /t/Expense /a/5431 /d/20-03-2024`
 
 _Successful add feature output:_ <br>
-![](./ug/successful_add_feature.png)<br> <br>
+![](images/successful_add_feature.png)<br> <br>
 
 ### View transaction history: `list`
 
@@ -91,10 +91,10 @@ List the existing transactions. List feature includes options:
 * `list` followed by `6` followed by category number `CATEGORY_NUMBER` to view transactions of that category.
 
 _List feature options:_ <br>
-![](./ug/list_options.png)
+![](images/list_options.png)
 
 _Successful list feature (custom date) example:_ <br>
-![](./ug/successful_list_feature.png)<br> <br>
+![](images/successful_list_feature.png)<br> <br>
 
 ### Deleting a transaction: `delete`
 
@@ -114,7 +114,7 @@ Removes a transaction from transaction history.
 `delete 1`
 
 _Successful delete feature example:_
-![](./ug/successful_delete_transaction.png)<br> <br>
+![](images/successful_delete_transaction.png)<br> <br>
 
 ### Edit a transaction: `edit`
 
@@ -138,7 +138,7 @@ Edits the details of an existing transaction.
 * Then the user will be asked to edit each information from that specific transaction one by one.
 
 _Successful edit feature example:_
-![](./ug/successful_edit_transaction.png)<br> <br>
+![](images/successful_edit_transaction.png)<br> <br>
 
 ### Search for a transaction: `search`
 
@@ -164,7 +164,7 @@ Search for a list of transactions matching the keyword.
 * Then the user will be asked to edit each information from that specific transaction one by one.
 
 _Successful edit feature example:_ <br>
-![](./ug/successful_search.png)<br> <br>
+![](images/successful_search.png)<br> <br>
 
 ### Add an account: `add-acc`
 
@@ -182,7 +182,7 @@ Adds a new account with a specified initial balance.
 `add-acc /n/DBS Savings /$/10000`
 
 _Successful add-acc feature output:_ <br>
-![](./ug/successful_add_acc_feature.png)<br> <br>
+![](images/successful_add_acc_feature.png)<br> <br>
 
 ### List all accounts: `list-acc`
 
@@ -191,7 +191,7 @@ List all the existing accounts.
 **Format:** `list-acc`
 
 _Successful list-acc feature output: <br>_
-![](./ug/successful_list_acc_feature.png)<br> <br>
+![](images/successful_list_acc_feature.png)<br> <br>
 
 ### Delete an account: `delete-acc`
 
@@ -209,7 +209,7 @@ Removes an account and removes all its transactions.
 `delete-acc 5431`
 
 _Successful delete-acc feature output:_ <br>
-![](./ug/successful_delete_acc_feature.png)<br> <br>
+![](images/successful_delete_acc_feature.png)<br> <br>
 
 ### Edit an account: `edit-acc`
 
@@ -227,7 +227,7 @@ Edits the details of an existing account.
 `edit-acc 5431`
 
 _Successful edit-acc feature output:_ <br>
-![](./ug/successful_edit_acc_feature.png)<br> <br>
+![](images/successful_edit_acc_feature.png)<br> <br>
 
 ### View transaction insights: `insights`
 

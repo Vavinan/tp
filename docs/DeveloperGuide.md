@@ -9,8 +9,8 @@ original source as well}
 
 
 ### Architecture
-The **Architecture Diagram** of BudgetBuddy is shown below. It explains the high-level design of the application.
-![](./uml/uml-images/architectureDiagram.png)
+The **Architecture Diagram** of BudgetBuddy is shown below. It explains the high-level design of the application. <br>
+![](images/architectureDiagram.png)
 
 **Main components of the architecture:**
 
@@ -58,9 +58,13 @@ to ensure uniqueness.
 Finally, the method notifies the user of the successful addition of the account by displaying the details of the newly
 created account.
 
+The following class diagram shows the associations between classes involved in adding an account.
+
+![](images/AddAccountClassDiagram.png)
+
 The following sequence diagram shows how the add account process works:
 
-![](./uml/uml-images/addAccountDiagram.png)
+![](images/addAccountDiagram.png)
 
 ### [Implemented] Category feature
 
@@ -133,11 +137,11 @@ and `expense`.
 
 The following class diagram shows the associations between classes involved in processing a transaction.
 
-![](./uml/uml-images/TransactionListDiagram.png)
+![](images/TransactionListDiagram.png)
 
 The following sequence diagram shows how an add transaction command works:
 
-![](./uml/uml-images/addTransactionDiagram.png)
+![](images/addTransactionDiagram.png)
 
 ### [Implemented] Remove transaction
 
@@ -170,7 +174,7 @@ notifies the user of the successful removal along with displaying the details of
 
 The following sequence diagram shows how a remove transaction goes works:
 
-![](./uml/uml-images/removeTransactionDiagram.png)
+![](images/removeTransactionDiagram.png)
 
 ### [Implemented] Edit Transaction
 
@@ -215,7 +219,7 @@ transactions while maintaining data integrity:
 
 Sequence Diagram
 The following sequence diagram illustrates the sequence of interactions involved in the editing of a transaction:
-![](./uml/uml-images/processEditTransactionDiagram.png)
+![](images/processEditTransactionDiagram.png)
 
 
 ### [Implemented] Search Transactions
@@ -283,7 +287,7 @@ transactions of the chosen option.
 
 Sequence Diagram
 The following sequence diagram illustrates the sequence of interactions involved in the editing of a transaction:
-![](./uml/uml-images/processList.png)
+![](images/processList.png)
 
 
 ### [Implemented] Insights
@@ -313,7 +317,7 @@ targeting frames related to income and expense insights to ensure proper cleanup
 
 The following is the class diagram for Insights class
 
-![](./uml/uml-images/insightDiagram.png)
+![](images/insightDiagram.png)
 
 
 
