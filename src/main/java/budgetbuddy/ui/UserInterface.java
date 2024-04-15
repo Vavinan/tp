@@ -450,6 +450,7 @@ public class UserInterface {
         System.out.println(TAB_SPACE + "To get idea about all commands use: help all");
         System.out.println(TAB_SPACE + "Add transaction: help add");
         System.out.println(TAB_SPACE + "Delete transaction: help delete");
+        System.out.println(TAB_SPACE + "Search : help search");
         System.out.println(TAB_SPACE + "Edit transaction: help edit");
         System.out.println(TAB_SPACE + "List transaction: help list");
         System.out.println(TAB_SPACE + "Help related to accounts: help acc");
@@ -1089,5 +1090,13 @@ public class UserInterface {
             getInitialAccountBalance();
         }
         return initialBalance;
+    }
+
+    public static void printSearchHelp(){
+        System.out.println(HELP_BORDER);
+        System.out.println(TAB_SPACE + "SYNTAX : search [KEYWORD] \n");
+        System.out.println(TAB_SPACE + "The keyword can be anything representing description, date, " +
+                "category or amount");
+        System.out.println(HELP_BORDER);
     }
 }
