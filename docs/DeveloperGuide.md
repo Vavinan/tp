@@ -25,7 +25,7 @@ The bulk of BudgetBuddy work is done by these following four components:
 * `storage` package: consists of `DataStorage` class, in charge of saving and loading of the `data` files.
 
 These components help to manipulate the `Transaction`, `TransactionList`, `Account` and `AccountManager` classes
-which drives BudgetBuddy.
+which drives BudgetBuddy. <br> <br>
 
 ### [Implemented] Add Account
 
@@ -65,7 +65,7 @@ The following class diagram shows the associations between classes involved in a
 
 The following sequence diagram shows how the add account process works:
 
-![](images/addAccountDiagram.png)
+![](images/addAccountDiagram.png)<br> <br>
 
 ### [Implemented] Remove Account
 
@@ -101,7 +101,7 @@ The following sequence diagram shows how the remove account process works:
 **Additional Notes**  
 The method ensures that the system's integrity is maintained by not allowing the last account to be removed, which is
 handled gracefully with appropriate user notifications. The removal process also involves updating various components of
-the system to reflect the changes accurately.
+the system to reflect the changes accurately.<br> <br>
 
 ### [Implemented] Category feature
 
@@ -118,7 +118,7 @@ transaction object. This attribute is defined as a member of the `Category` enum
 
 Upon invoking the `Add` command, users are presented with a selection prompt featuring the available categories. User
 input, typically in the form of a numerical identifier corresponding to a category within the enum class, facilitates
-the assignment of the appropriate enum object to the transaction's category attribute.
+the assignment of the appropriate enum object to the transaction's category attribute.<br> <br>
 
 ### [Implemented] Process transaction
 
@@ -178,7 +178,7 @@ The following class diagram shows the associations between classes involved in p
 
 The following sequence diagram shows how an add transaction command works:
 
-![](images/addTransactionDiagram.png)
+![](images/addTransactionDiagram.png)<br> <br>
 
 ### [Implemented] Remove transaction
 
@@ -211,7 +211,7 @@ notifies the user of the successful removal along with displaying the details of
 
 The following sequence diagram shows how a remove transaction goes works:
 
-![](images/removeTransactionDiagram.png)
+![](images/removeTransactionDiagram.png)<br> <br>
 
 ### [Implemented] Edit Transaction
 
@@ -256,7 +256,7 @@ transactions while maintaining data integrity:
 
 Sequence Diagram
 The following sequence diagram illustrates the sequence of interactions involved in the editing of a transaction:
-![](images/processEditTransactionDiagram.png)
+![](images/processEditTransactionDiagram.png)<br> <br>
 
 ### [Implemented] Search Transactions
 
@@ -299,8 +299,8 @@ searchTransactions(input)
          - Print "Invalid search input."
       6. Catch Exception:
          - Print the exception message.
-```
-
+``` 
+   
 ### [Implemented] List Transactions
 
 ### Description
@@ -324,9 +324,9 @@ from the user. Once all the required information is gathered for the particular 
 the desired transactions will be added into that ArrayList. Then, this ArrayList will be printed out, displaying the
 transactions of the chosen option.
 
-Sequence Diagram
+Sequence Diagram <br>
 The following sequence diagram illustrates the sequence of interactions involved in the editing of a transaction:
-![](images/processList.png)
+![](images/processList.png)<br> <br>
 
 ### [Implemented] Insights
 
@@ -395,7 +395,7 @@ The following is the class diagram for Insights class
 
 ## Glossary
 
-* **Mainsteam OS**: Windows, Linux, Unix, MacOS
+* **Mainstream OS**: Windows, Linux, Unix, macOS
 
 ## Instructions for manual testing
 
