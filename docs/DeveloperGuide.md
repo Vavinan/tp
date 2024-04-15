@@ -7,24 +7,25 @@ as a data visualization tool.
 
 ## Design & implementation
 
-
 ### Architecture
-The **Architecture Diagram** of BudgetBuddy is shown below. It explains the high-level design of the application.
-![](./uml/uml-images/architectureDiagram.png)
+
+The **Architecture Diagram** of BudgetBuddy is shown below. It explains the high-level design of the application. <br>
+![](images/architectureDiagram.png)
 
 **Main components of the architecture:**
 
 The bulk of BudgetBuddy work is done by these following four components:
+
 * `BudgetBuddy` class: is the main class of the application, in charge of the app launch,
-shut down and reading user's inputs. It invokes the loading and saving of data when the app is launched/shut down.
-* `ui` package: consists of `Ui` class, which deals with all the printing/output to the user, 
-and also some reading of user's inputs for additional data.
+  shut down and reading user's inputs. It invokes the loading and saving of data when the app is launched/shut down.
+* `ui` package: consists of `Ui` class, which deals with all the printing/output to the user,
+  and also some reading of user's inputs for additional data.
 * `parser` package: consists of the `Parser` class, makes sense of the data input by the user
-to provide meaningful data for other methods.
+  to provide meaningful data for other methods.
 * `storage` package: consists of `DataStorage` class, in charge of saving and loading of the `data` files.
 
 These components help to manipulate the `Transaction`, `TransactionList`, `Account` and `AccountManager` classes
-which drives BudgetBuddy.
+which drives BudgetBuddy. <br> <br>
 
 ### [Implemented] Add Account
 
@@ -58,9 +59,49 @@ to ensure uniqueness.
 Finally, the method notifies the user of the successful addition of the account by displaying the details of the newly
 created account.
 
+The following class diagram shows the associations between classes involved in adding an account.
+
+![](images/AddAccountClassDiagram.png)
+
 The following sequence diagram shows how the add account process works:
 
-![](./uml/uml-images/addAccountDiagram.png)
+![](images/addAccountDiagram.png)<br> <br>
+
+### [Implemented] Remove Account
+
+#### Description
+
+This method is used to remove an existing account from the system based on the account number provided by the user
+input. It checks for the existence of the account in the system, and if found, it removes the account and any associated
+transactions, displaying a message indicating successful removal. This allows users to manage their accounts effectively
+by removing unnecessary or outdated accounts.
+
+#### Parameters
+
+1. String input: A string containing the user input, which should include the account number to be removed, parsed using
+   specific delimiters.
+
+#### Design and Implementation
+ 
+The method begins by validating the presence of the account number in the user input. If the format is incorrect, it
+throws an `InvalidArgumentSyntaxException`. If the account number is missing or the format is incorrect (not a valid
+integer), a `NumberFormatException` or `EmptyArgumentException` is thrown.
+
+After validating and parsing the account number, it checks if removing the account would result in no accounts left,
+which is not allowed. If valid, it proceeds to remove the account by the account number. It also removes any associated
+transactions with this account from the transaction list, ensuring no orphan transactions remain.
+
+Finally, the method updates the system's account list and transaction list to reflect the removal and notifies the user
+of the successful operation by displaying relevant details of the removed account and transactions.
+
+The following sequence diagram shows how the remove account process works:
+
+![](images/RemoveAccounrSequenceDiagram.png)
+
+**Additional Notes**  
+The method ensures that the system's integrity is maintained by not allowing the last account to be removed, which is
+handled gracefully with appropriate user notifications. The removal process also involves updating various components of
+the system to reflect the changes accurately.<br> <br>
 
 ### [Implemented] Category feature
 
@@ -77,7 +118,7 @@ transaction object. This attribute is defined as a member of the `Category` enum
 
 Upon invoking the `Add` command, users are presented with a selection prompt featuring the available categories. User
 input, typically in the form of a numerical identifier corresponding to a category within the enum class, facilitates
-the assignment of the appropriate enum object to the transaction's category attribute.
+the assignment of the appropriate enum object to the transaction's category attribute.<br> <br>
 
 ### [Implemented] Process transaction
 
@@ -125,7 +166,7 @@ This method adds a transaction to the list of transactions based on the necessar
 #### Exceptions:
 
 1. `InvalidTransactionTypeException`: This exception is thrown when the transaction type is not one of `income`
-and `expense`.
+   and `expense`.
 
 2. `InvalidAddTransactionSyntax`: This exception is thrown when the syntax of the add transaction is invalid.
 
@@ -133,11 +174,11 @@ and `expense`.
 
 The following class diagram shows the associations between classes involved in processing a transaction.
 
-![](./uml/uml-images/TransactionListDiagram.png)
+![](images/TransactionListDiagram.png)
 
 The following sequence diagram shows how an add transaction command works:
 
-![](./uml/uml-images/addTransactionDiagram.png)
+![](images/addTransactionDiagram.png)<br> <br>
 
 ### [Implemented] Remove transaction
 
@@ -170,7 +211,7 @@ notifies the user of the successful removal along with displaying the details of
 
 The following sequence diagram shows how a remove transaction goes works:
 
-![](./uml/uml-images/removeTransactionDiagram.png)
+![](images/removeTransactionDiagram.png)<br> <br>
 
 ### [Implemented] Edit Transaction
 
@@ -215,30 +256,32 @@ transactions while maintaining data integrity:
 
 Sequence Diagram
 The following sequence diagram illustrates the sequence of interactions involved in the editing of a transaction:
-![](./uml/uml-images/processEditTransactionDiagram.png)
-
+![](images/processEditTransactionDiagram.png)<br> <br>
 
 ### [Implemented] Search Transactions
 
 ### Description
+
 This method enables users to search for transactions based on a keyword. Users provide a keyword, and the system
 searches through transaction descriptions, amounts, categories, and dates to find matches. The search results,
 along with their corresponding indices in the transactions list, are displayed to the user.
 
 #### Design and Implementation
+
 1. **Keyword Extraction:** The method extracts the keyword from the user input.
 
-2. **Search Process:** It iterates through the list of transactions, checking if any transaction's 
-   description, amount, category, or date contains the keyword. Matches are added to a list of search 
+2. **Search Process:** It iterates through the list of transactions, checking if any transaction's
+   description, amount, category, or date contains the keyword. Matches are added to a list of search
    results along with their corresponding indices in the transactions list.
 
-3. **Output Generation:** Once the search process is completed, the method generates output by displaying the 
+3. **Output Generation:** Once the search process is completed, the method generates output by displaying the
    search results along with their indices to the user.
 
-4. **Exception Handling:** The method handles exceptions such as an empty keyword input or any unexpected 
+4. **Exception Handling:** The method handles exceptions such as an empty keyword input or any unexpected
    errors during the search process. Proper error messages are displayed to the user in case of exceptions.
 
 Example Algorithm:
+
 ```
 searchTransactions(input)  
       1. Extract the keyword from the user input.
@@ -256,8 +299,8 @@ searchTransactions(input)
          - Print "Invalid search input."
       6. Catch Exception:
          - Print the exception message.
-```
-
+``` 
+   
 ### [Implemented] List Transactions
 
 ### Description
@@ -268,10 +311,10 @@ specified account and transactions of a particular category.
 
 #### Design and Implementation
 
-This feature is facilitated through the `TransactionList#processList`, and it is designed to ensure successful viewing 
-of the desired list as inputs are required in a bite-sized manner. 
+This feature is facilitated through the `TransactionList#processList`, and it is designed to ensure successful viewing
+of the desired list as inputs are required in a bite-sized manner.
 
-This method first executes the `UserInterface#printListOptions` to show users the list options and their indexes which 
+This method first executes the `UserInterface#printListOptions` to show users the list options and their indexes which
 is needed for their inputs. The method will throw an InvalidIndexException if the input is out of the range (range 1-6).
 Depending on the list option chosen by the user, the case statement of the `TransactionList#processList` will run, and
 execute the method of the corresponding option. Different methods would have different prompts as more information is
@@ -281,45 +324,43 @@ from the user. Once all the required information is gathered for the particular 
 the desired transactions will be added into that ArrayList. Then, this ArrayList will be printed out, displaying the
 transactions of the chosen option.
 
-Sequence Diagram
+Sequence Diagram <br>
 The following sequence diagram illustrates the sequence of interactions involved in the editing of a transaction:
-![](./uml/uml-images/processList.png)
-
+![](images/processList.png)<br> <br>
 
 ### [Implemented] Insights
 
 #### Description
 
 This feature provides insights into the categorized expenses and incomes of the user. It utilizes the Insight
-class to calculate and display pie charts representing the distribution of expenses and incomes across 
+class to calculate and display pie charts representing the distribution of expenses and incomes across
 different categories. <br>
 
 #### Design and Implementation
 
 1. The displayCategoryInsight method iterates through the list of transactions and calculates the total income
-and expense amounts for each category. It then calls the displayPieChart method to visualize these insights 
-using pie charts.
+   and expense amounts for each category. It then calls the displayPieChart method to visualize these insights
+   using pie charts.
 
-2. The displayPieChart method creates separate pie charts for income and expense categories using the XChart 
-library. It customizes the appearance of the charts and adds series for each category with their respective
-income or expense amounts.
+2. The displayPieChart method creates separate pie charts for income and expense categories using the XChart
+   library. It customizes the appearance of the charts and adds series for each category with their respective
+   income or expense amounts.
 
-3. The indexOf method is a private helper function used to find the index of a specific category within an 
-array
-of categories.
+3. The indexOf method is a private helper function used to find the index of a specific category within an
+   array
+   of categories.
 
-4. The closeInsightFrames method is responsible for closing any open frames related to insights, specifically 
-targeting frames related to income and expense insights to ensure proper cleanup and resource management.
+4. The closeInsightFrames method is responsible for closing any open frames related to insights, specifically
+   targeting frames related to income and expense insights to ensure proper cleanup and resource management.
 
 The following is the class diagram for Insights class
 
-![](./uml/uml-images/insightDiagram.png)
-
-
+![](images/insightDiagram.png)
 
 ## Product scope
 
 ### Target user profile:
+
 * has a need to manage significant number of day-to-day transactions
 * prefer desktop apps over other types
 * can type fast
@@ -327,6 +368,7 @@ The following is the class diagram for Insights class
 * is reasonably comfortable using CLI apps
 
 ### Value proposition:
+
 * manage daily transactions faster than a typical mouse/GUI driven app
 
 ## User Stories
@@ -346,17 +388,16 @@ The following is the class diagram for Insights class
 | v2.0    | user     | Categorize my transactions                         | Get insights on each category                         |
 
 ## Non-Functional Requirements
+
 1. Should work on any *mainstream OS* as long as it has Java `11` or above installed.
 2. A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be
-able to accomplish most of the tasks faster using commands than using the mouse.
+   able to accomplish most of the tasks faster using commands than using the mouse.
 
 ## Glossary
 
-* **Mainsteam OS**: Windows, Linux, Unix, MacOS
+* **Mainstream OS**: Windows, Linux, Unix, macOS
 
 ## Instructions for manual testing
-
-{Give instructions on how to do a manual product testing e.g., how to load sample data to be used for testing}
 
 ### Deleting a transaction
 1. Deleting a transaction with multiple existing transactions
@@ -415,3 +456,40 @@ able to accomplish most of the tasks faster using commands than using the mouse.
       Expected: Deletes the account and all existing transactions under it. Account details and transactions are shown in the status message.
    3. Test case: other incorrect inputs that is not the ACCOUNT_NUMBER: `delete-acc abc`, `delete-acc 2134321`, `delete-acc `.
       Expected: No account is deleted. Error details shown in the status message.
+
+### Add transaction
+With the help of help guide you can add a transaction (assuming account number is 5413)
+ * Run the following command: `add /a/5431 /t/Income /n/March Salary /$/10000 /d/01-03-2024 /c/8`
+   Expected : Received acknowledgement and transaction is added to the list.
+ * Run the following command: `add /a/5431 /t/new /n/March Salary /$/10000 /d/01-03-2024 /c/8`
+   Expected: Error occurred with a message. Transaction is not added
+ * Run the following command : `add /a/5431 /t/Income /n/March Salary /$/10000 /d/01-20-2024 /c/8`
+   Expected: Error occurred due to date format. Transaction is not added
+ * Run the following command : `add /a/5431 /t/Income /n/March Salary /$/10000 /d/01-03-2024 /c/10`
+   Expected: Invalid category. Transaction is not added.
+
+### Edit Transaction
+With the help of help guide you can edit a transaction (assuming there are only 2 transactions in the history)
+* Run the following command: `edit 3`
+  Expected: Error occurred due to index id is out of the range.
+* Run the following command : `edit 0`
+  Expected: Error occurred due to index id is out of the range.
+* Run the following command : `add-acc /n/DBS Savings /$/hundred`
+  Expected: Error occurred due to invalid initial balance. Initial balance should be double not a string.
+* Run the following command: `edit 1`
+  Expected : Details of the transaction is shown, and new input for each argument.
+
+
+### Add account
+With the help of help guide you can add a new account
+* Run the following command: `add-acc /n/DBS Savings /$/10000`
+  Expected : Received acknowledgement and account is added successfully.
+* Run the following command: `add-acc /n//$/10000`
+  Expected: Error occurred due to empty account name. Account not added.
+* Run the following command : `add-acc /n/DBS Savings /$/`
+  Expected: Error occurred due to missing initial balance. Account not added.
+* Run the following command : `add-acc /n/DBS Savings /$/hundred`
+  Expected: Error occurred due to invalid initial balance. Initial balance should be double not a string.
+  Account not added
+
+  
