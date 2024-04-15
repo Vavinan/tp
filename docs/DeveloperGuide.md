@@ -135,7 +135,7 @@ The following class diagram shows the associations between classes involved in p
 
 ![](./uml/uml-images/TransactionListDiagram.png)
 
-The following sequence diagram shows how a remove transaction goes works:
+The following sequence diagram shows how an add transaction command works:
 
 ![](./uml/uml-images/addTransactionDiagram.png)
 

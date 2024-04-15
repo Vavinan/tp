@@ -4,25 +4,29 @@
 autonumber
 
 actor User
-participant "TransactionManager" as TM
-participant "Parser" as P
+participant ":TransactionManager" as TM
+participant ":Parser" as P
 participant "UserInterface" as UI
 
 User -> TM: processTransaction(input, account)
 TM -> TM: validateSyntax(input)
 TM -> P: parseUserInputToTransaction(input, account)
 activate P
-P --> TM: transaction
-deactivate P
-TM -> TM: checkCategory(transaction)
+P -> P: checkCategory(transaction)
+
 alt Category is null
-    TM -> UI: listCategories()
+    P -> UI: listCategories()
     activate UI
     UI --> User: Display category options
+    User --> UI: categoryNum
+    UI --> P: getCategoryNum()
     deactivate UI
-    User -> TM: selectCategory(categoryNum)
-    TM -> TM: setCategory(transaction, categoryNum)
 end
+
+P --> TM: transaction
+deactivate P
+
+
 TM -> TM: addTransaction(transaction)
 TM -> UI: printAddMessage(transaction, account.balance)
 activate UI
