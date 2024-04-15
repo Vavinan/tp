@@ -1,5 +1,25 @@
 # Developer Guide
 
+## Table of Contents
+- [Acknowledgements](#acknowledgements)
+- [Design & Implementation](#design--implementation)
+  - [Architecture](#architecture)
+  - [Add Account](#implemented-add-account)
+  - [Remove Account](#implemented-remove-account)
+  - [Category Feature](#implemented-category-feature)
+  - [Process Transction](#implemented-process-transaction)
+  - [Remove Transactiom](#implemented-remove-transaction)
+  - [Edit Transaction](#implemented-edit-transaction)
+  - [Search Transaction](#implemented-search-transactions)
+  - [List Feature](#implemented-list-transactions)
+  - [Insights](#implemented-insights)
+- [Product Scope](#product-scope)
+- [User Stories](#user-stories)
+- [Non-Functional Requirements](#non-functional-requirements)
+- [Glossary](#glossary)
+- [Instructions for manual testing](#instructions-for-manual-testing)
+
+
 ## Acknowledgements
 
 * [XChart](https://knowm.org/open-source/xchart/) - open source library, has been used in this project 
