@@ -21,6 +21,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 /**
  * This class provides methods for storing and retrieving data related to transactions and accounts.
@@ -30,7 +32,9 @@ public class DataStorage {
     public static final String TRANSACTIONS_FILE_PATH = "./data/transactions.txt";
     public static final String ACCOUNTS_FILE_PATH = "./data/accounts.txt";
     public static final String FOLDER_PATH = "./data";
+    public static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
+    //@@author ShyamKrishna33
     /**
      * Writes the provided string to a file at the given file path.
      *
@@ -38,7 +42,6 @@ public class DataStorage {
      * @param filePath      The path of the file to write to.
      * @throws IOException If an I/O error occurs while writing to the file.
      */
-    //@@author ShyamKrishna33
     private static void writeToFile(String stringToWrite, String filePath) throws IOException {
         FileWriter fw = new FileWriter(filePath, true);
         fw.write(stringToWrite);
@@ -67,11 +70,14 @@ public class DataStorage {
      * @param accounts The list of accounts to save.
      */
     public void saveAccounts(ArrayList<Account> accounts) {
+        logger.log(Level.INFO, "Saving accounts to file");
         try {
             File f = new File(ACCOUNTS_FILE_PATH);
             if (!f.exists()) {
+                logger.log(Level.WARNING, "File does not exist. Creating new file.");
                 createDataFolderIfNotExists();
                 if (!f.createNewFile()) {
+                    logger.log(Level.SEVERE, "Failed to create file");
                     throw new IOException("Failed to create file");
                 }
             }
@@ -84,16 +90,18 @@ public class DataStorage {
             fw.close();
         } catch (IOException e) {
             System.out.println("Error saving accounts.");
+            logger.log(Level.SEVERE, "Error saving accounts");
         }
+        logger.log(Level.INFO, "Accounts saved to file");
     }
 
+    //@@author ShyamKrishna33
     /**
      * Saves the list of transactions to a file.
      *
      * @param transactionArrayList The list of transactions to save.
      * @throws IOException If an I/O error occurs while saving the transactions.
      */
-    //@@author ShyamKrishna33
     public void saveTransactions(ArrayList<Transaction> transactionArrayList) throws IOException {
         File f = new File(TRANSACTIONS_FILE_PATH);
 
@@ -115,7 +123,7 @@ public class DataStorage {
      * @param s                      The string representing the transaction data.
      * @param existingAccountNumbers A list of existing account numbers.
      * @return The parsed Transaction object.
-     * @throws FileCorruptedException    If the file containing transaction data is corrupted.
+     * @throws FileCorruptedException   If the file containing transaction data is corrupted.
      * @throws InvalidCategoryException If the category specified in the transaction data is invalid.
      */
     private Transaction parseDataToTransaction(String s, ArrayList<Integer> existingAccountNumbers)
@@ -170,15 +178,16 @@ public class DataStorage {
     //@@author
 
     /**
-     * Reads account data from the accounts file and returns a list of Account objects.
+     * Reads account data from a file and returns a list of Account objects.
      *
      * @param existingAccountNumbers A list of existing account numbers.
      * @return The list of Account objects read from the file.
-     * @throws IOException           If an I/O error occurs while reading the file.
+     * @throws IOException            If an I/O error occurs while reading the file.
      * @throws FileCorruptedException If the file containing account data is corrupted.
      */
     public ArrayList<Account> readAccountFile(ArrayList<Integer> existingAccountNumbers)
             throws IOException, FileCorruptedException {
+        logger.log(Level.INFO, "Reading accounts from file");
         File f = new File(ACCOUNTS_FILE_PATH);
         Scanner s = new Scanner(f);
 
@@ -188,44 +197,78 @@ public class DataStorage {
             if (line.trim().isEmpty()) {
                 continue;
             }
-            String[] accountInfo = line.split(" ,");
-            int accountNumber;
-            double balance;
-            String accountName = accountInfo[1].trim();
+            accounts.add(processAccountLine(line, existingAccountNumbers));
+        }
+        logger.log(Level.INFO, "Accounts read from file");
+        return accounts;
+    }
 
+    /**
+     * Reads account data from a file and returns a list of Account objects.
+     *
+     * @param existingAccountNumbers A list of existing account numbers.
+     * @return The list of Account objects read from the file.
+     * @throws IOException            If an I/O error occurs while reading the file.
+     * @throws FileCorruptedException If the file containing account data is corrupted.
+     */
+    private Account processAccountLine(String line, ArrayList<Integer> existingAccountNumbers)
+            throws FileCorruptedException {
+        logger.log(Level.INFO, "Processing account line");
+        String[] accountInfo = line.split(" ,");
+        validateAccountInfo(accountInfo, existingAccountNumbers);
+        logger.log(Level.INFO, "Account line processed");
 
-            if (accountInfo.length != 3) {
-                throw new FileCorruptedException("Invalid account information format");
-            }
+        int accountNumber = Integer.parseInt(accountInfo[0]);
+        double balance = Double.parseDouble(accountInfo[2]);
+        String accountName = accountInfo[1].trim();
 
-            try {
-                accountNumber = Integer.parseInt(accountInfo[0]);
-            } catch (NumberFormatException e) {
-                throw new FileCorruptedException("Invalid type for account number");
-            }
+        existingAccountNumbers.add(accountNumber);
+        logger.log(Level.INFO, "Account added to existing account numbers list");
+        logger.log(Level.INFO, "Account created");
+        return new Account(accountNumber, accountName, balance);
+    }
 
-            try {
-                balance = Double.parseDouble(accountInfo[2]);
-            } catch (NumberFormatException e) {
-                throw new FileCorruptedException("Invalid type for account balance");
-            }
+    /**
+     * Validates a line of account data.
+     *
+     * @param accountInfo            The line of account data to validate.
+     * @param existingAccountNumbers A list of existing account numbers.
+     * @throws FileCorruptedException If the line of account data is invalid.
+     */
+    private void validateAccountInfo(String[] accountInfo, ArrayList<Integer> existingAccountNumbers)
+            throws FileCorruptedException {
+        if (accountInfo.length != 3) {
+            logger.log(Level.SEVERE, "Invalid account information format");
+            throw new FileCorruptedException("Invalid account information format");
+        }
 
+        try {
+            int accountNumber = Integer.parseInt(accountInfo[0]);
             if (accountNumber < 1000 || accountNumber > 9999) {
+                logger.log(Level.SEVERE, "Invalid account number");
                 throw new FileCorruptedException("Invalid account number");
             }
-
-            if (accountName.isEmpty()) {
-                throw new FileCorruptedException("Invalid account name");
-            }
-
             if (existingAccountNumbers.contains(accountNumber)) {
+                logger.log(Level.SEVERE, "Duplicate account number");
                 throw new FileCorruptedException("Duplicate account number");
             }
-
-            accounts.add(new Account(accountNumber, accountInfo[1], balance));
-            existingAccountNumbers.add(accountNumber);
+        } catch (NumberFormatException e) {
+            logger.log(Level.SEVERE, "Invalid type for account number");
+            throw new FileCorruptedException("Invalid type for account number");
         }
-        return accounts;
+
+        try {
+            double balance = Double.parseDouble(accountInfo[2]);
+        } catch (NumberFormatException e) {
+            logger.log(Level.SEVERE, "Invalid type for account balance");
+            throw new FileCorruptedException("Invalid type for account balance");
+        }
+
+        String accountName = accountInfo[1].trim();
+        if (accountName.isEmpty()) {
+            logger.log(Level.SEVERE, "Invalid account name");
+            throw new FileCorruptedException("Invalid account name");
+        }
     }
 
     /**
@@ -270,11 +313,14 @@ public class DataStorage {
      * @return The loaded AccountManager object.
      */
     public AccountManager loadAccounts() {
+        logger.log(Level.INFO, "Loading accounts from file");
         try {
             File f = new File(ACCOUNTS_FILE_PATH);
             if (!f.exists()) {
+                logger.log(Level.WARNING, "File does not exist. Creating new file.");
                 createDataFolderIfNotExists();
                 if (!f.createNewFile()) {
+                    logger.log(Level.SEVERE, "Failed to create file");
                     throw new IOException("Failed to create file");
                 }
                 return createNewAccountManager();
@@ -284,16 +330,21 @@ public class DataStorage {
             try {
                 accounts = readAccountFile(existingAccountNumbers);
             } catch (FileCorruptedException e) {
+                logger.log(Level.SEVERE, "File corrupted");
                 UserInterface.printFileCorruptedError();
                 FileWriter fw = new FileWriter(ACCOUNTS_FILE_PATH, false);
+                logger.log(Level.WARNING, "Creating new account manager");
                 return createNewAccountManager();
             }
             if (accounts.isEmpty()) {
+                logger.log(Level.WARNING, "Creating new account manager");
                 return createNewAccountManager();
             }
             return new AccountManager(accounts, existingAccountNumbers);
         } catch (IOException e) {
+            logger.log(Level.SEVERE, "Error loading accounts");
             UserInterface.printFileCorruptedError();
+            logger.log(Level.WARNING, "Creating new account manager");
             return createNewAccountManager();
         }
     }
