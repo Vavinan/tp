@@ -32,7 +32,7 @@ public class DataStorage {
     public static final String TRANSACTIONS_FILE_PATH = "./data/transactions.txt";
     public static final String ACCOUNTS_FILE_PATH = "./data/accounts.txt";
     public static final String FOLDER_PATH = "./data";
-    public final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    public static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
     //@@author ShyamKrishna33
     /**
@@ -211,7 +211,8 @@ public class DataStorage {
      * @throws IOException            If an I/O error occurs while reading the file.
      * @throws FileCorruptedException If the file containing account data is corrupted.
      */
-    private Account processAccountLine(String line, ArrayList<Integer> existingAccountNumbers) throws FileCorruptedException {
+    private Account processAccountLine(String line, ArrayList<Integer> existingAccountNumbers)
+            throws FileCorruptedException {
         logger.log(Level.INFO, "Processing account line");
         String[] accountInfo = line.split(" ,");
         validateAccountInfo(accountInfo, existingAccountNumbers);
@@ -234,7 +235,8 @@ public class DataStorage {
      * @param existingAccountNumbers A list of existing account numbers.
      * @throws FileCorruptedException If the line of account data is invalid.
      */
-    private void validateAccountInfo(String[] accountInfo, ArrayList<Integer> existingAccountNumbers) throws FileCorruptedException {
+    private void validateAccountInfo(String[] accountInfo, ArrayList<Integer> existingAccountNumbers)
+            throws FileCorruptedException {
         if (accountInfo.length != 3) {
             logger.log(Level.SEVERE, "Invalid account information format");
             throw new FileCorruptedException("Invalid account information format");

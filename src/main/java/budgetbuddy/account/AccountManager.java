@@ -19,7 +19,7 @@ import java.util.logging.Logger;
  */
 public class AccountManager {
     public static final int INDEX_OFFSET = 1;
-    public final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    public static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     private final DataStorage dataStorage = new DataStorage();
     private final ArrayList<Account> accounts;
     private final ArrayList<Integer> existingAccountNumbers;

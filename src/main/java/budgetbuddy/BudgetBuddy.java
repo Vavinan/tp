@@ -17,9 +17,13 @@ import budgetbuddy.ui.UserInterface;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.*;
 
 import java.util.Scanner;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 public class BudgetBuddy {
     public static final int LIST_LENGTH = 5;
@@ -35,7 +39,7 @@ public class BudgetBuddy {
     public static final String DELETE_ACC = "delete-acc";
     public static final String EDIT_ACC = "edit-acc";
     public static final String SEARCH = "search";
-    public final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    public static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     private final AccountManager accountManager;
     private final TransactionList transactions;
 
@@ -51,12 +55,12 @@ public class BudgetBuddy {
     /**
      * Sets up the logger for the BudgetBuddy application.
      */
-    private static void setupLogger(){
+    private static void setupLogger() {
         LogManager.getLogManager().reset();
         logger.setLevel(java.util.logging.Level.ALL);
         try {
             File logsDir = new File("logs");
-            if (!logsDir.exists()){
+            if (!logsDir.exists()) {
                 logsDir.mkdir();
             }
             FileHandler fh = new FileHandler("logs/budgetBuggyLog.log");

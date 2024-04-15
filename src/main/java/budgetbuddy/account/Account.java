@@ -6,7 +6,7 @@ import java.util.logging.Logger;
  * Represents an account in the budget buddy system.
  */
 public class Account {
-    public final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    public static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     private final int accountNumber;
     private String name;
     private double balance;
