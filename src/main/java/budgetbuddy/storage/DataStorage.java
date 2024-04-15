@@ -4,6 +4,7 @@ import budgetbuddy.account.Account;
 import budgetbuddy.account.AccountManager;
 import budgetbuddy.categories.Category;
 import budgetbuddy.exceptions.FileCorruptedException;
+import budgetbuddy.exceptions.InvalidArgumentSyntaxException;
 import budgetbuddy.exceptions.InvalidCategoryException;
 import budgetbuddy.transaction.TransactionList;
 import budgetbuddy.transaction.type.Expense;
@@ -359,7 +360,13 @@ public class DataStorage {
     }
 
     private AccountManager createNewAccountManager() {
-        String accountName = UserInterface.getInitialAccountName();
+        String accountName = null;
+        try {
+            accountName = UserInterface.getInitialAccountName();
+        } catch (InvalidArgumentSyntaxException e) {
+            UserInterface.printInvalidArgumentSyntax(e.getMessage());
+            return createNewAccountManager();
+        }
         Double initialBalance = UserInterface.getInitialAccountBalance();
         AccountManager accountManager = new AccountManager();
         accountManager.addAccount(accountName, initialBalance);
