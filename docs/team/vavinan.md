@@ -33,7 +33,7 @@ It is optimized for use via a Command Line Interface (CLI) and is written in Jav
    get the confirmation message about the process.
 
 **What it does:** Allows users to delete the transaction. <br>
-**Justification:** this feature is key to the BudgetBuddy as users need to be able to delete the transactions
+**Justification:** This feature is key to the BudgetBuddy as users need to be able to delete the transactions
 which has errors or added by mistake.
 
 ### Feature 2 - Editing Transaction
@@ -47,7 +47,7 @@ which has errors or added by mistake.
 5. Updated the transaction list with the edited transaction and printed a confirmation message.
    
 **What it does:** Allows users to edit the transaction.<br>
-**Justification:** this feature is key to the BudgetBuddy as users need to be able to edit the transactions 
+**Justification:** This feature is key to the BudgetBuddy as users need to be able to edit the transactions 
 which has been added with some mistakes and need to be updated. <br>
 **Highlights:** Instead of expecting the user to type long command this feature prompts the user to input 
 value for each data
@@ -59,10 +59,11 @@ value for each data
 2. Facilitated by the command `search` followed by the keyword.
 3. If the keyword is missing, exception is thrown and the suer will be alerted
 4. The keyword is used to search from the list and the matching results will be shows as a table along 
-   with its true **index ID**. If there is no matching transactions, then the user will be notified that there is no matching transactions.
+   with its true **index ID**. If there is no matching transactions, then the user will be notified that there 
+   is no matching transactions.
 
 **What it does:** Allows users to search for transactions<br>
-**Justification:** this feature is key to the BudgetBuddy as if the transaction is history is too long and 
+**Justification:** This feature is key to the BudgetBuddy as if the transaction history is too long and 
 a user wants to delete or edit transaction. Then this search functionality will be helpful as the user can 
 enter a keyword to search for it to get the true index ID of the transaction. Then that ID can be used in 
 delete or edit command.
