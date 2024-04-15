@@ -8,6 +8,7 @@ import budgetbuddy.account.AccountManager;
 import budgetbuddy.categories.Category;
 import budgetbuddy.exceptions.EmptyArgumentException;
 import budgetbuddy.exceptions.InvalidAddTransactionSyntax;
+import budgetbuddy.exceptions.InvalidArgumentSyntaxException;
 import budgetbuddy.exceptions.InvalidCategoryException;
 import budgetbuddy.exceptions.InvalidEditTransactionData;
 import budgetbuddy.exceptions.InvalidIndexException;
@@ -22,6 +23,8 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Represents a list of transactions and provides methods for managing them.
@@ -32,6 +35,7 @@ public class TransactionList {
     public static final int INDEX_OFFSET = 1;
     public static final int LOWER_BOUND = 0;
     public static final int EDIT_BEGIN_INDEX = 5;
+    public static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
     public static final String ACCOUNT = "acc";
     public static final String ALL = "all";
@@ -46,7 +50,6 @@ public class TransactionList {
 
     private final ArrayList<Transaction> transactions;
     private final Parser parser;
-
     private final DataStorage dataStorage = new DataStorage();
 
     /**
@@ -55,6 +58,8 @@ public class TransactionList {
     public TransactionList() {
         this.transactions = new ArrayList<>();
         this.parser = new Parser();
+        LOGGER.log(Level.INFO, "TransactionList created with empty transactions and parser");
+
     }
 
     /**
@@ -65,6 +70,8 @@ public class TransactionList {
     public TransactionList(ArrayList<Transaction> transactions) {
         this.transactions = transactions;
         this.parser = new Parser();
+        LOGGER.log(Level.INFO, "TransactionList created with transactions and parser");
+
     }
 
     public ArrayList<Transaction> getTransactions() {
@@ -87,6 +94,7 @@ public class TransactionList {
     public void removeTransaction(String input, AccountManager accountManager) throws EmptyArgumentException,
             NumberFormatException, InvalidIndexException {
         if (input.trim().length() < DELETE_BEGIN_INDEX) {
+            LOGGER.log(Level.WARNING, "Index id is not given for delete command");
             throw new EmptyArgumentException("delete index");
         }
         String data = input.substring(DELETE_BEGIN_INDEX).trim();
@@ -100,7 +108,10 @@ public class TransactionList {
             transactions.remove(id);
             assert transactions.size() == size - 1 : "Transaction list size did not decrease after removal";
             UserInterface.printDeleteMessage(itemRemoved, account.getBalance());
+            LOGGER.log(Level.INFO, "Transaction is removed successfully");
+
         } else {
+            LOGGER.log(Level.WARNING, "Invalid index for delete command");
             throw new InvalidIndexException(String.valueOf(size));
         }
     }
@@ -144,6 +155,7 @@ public class TransactionList {
         String[] arguments = {"/a/", "/t/", "/n/", "/$/", "/d/"};
         for (String argument : arguments) {
             if (!input.contains(argument)) {
+                LOGGER.log(Level.WARNING, "Invalid add transaction syntax");
                 throw new InvalidAddTransactionSyntax("Invalid add syntax.");
             }
         }
@@ -154,6 +166,8 @@ public class TransactionList {
         assert transactions.get(transactions.size() - 1) != null : "Added transaction is null after adding to the list";
         String fetchData = String.valueOf(transactions.get(transactions.size() - 1));
         UserInterface.printAddMessage(fetchData, account.getBalance());
+        LOGGER.log(Level.INFO, "Transaction added successfully");
+
     }
 
     /**
@@ -192,6 +206,7 @@ public class TransactionList {
                 pastTransactions.add(transaction);
             }
         }
+        LOGGER.log(Level.INFO, "Past transactions loaded successfully");
         return pastTransactions;
     }
 
@@ -213,6 +228,8 @@ public class TransactionList {
                 customDateTransactions.add(transaction);
             }
         }
+        LOGGER.log(Level.INFO, "Custom date transactions loaded successfully");
+
         return customDateTransactions;
     }
 
@@ -231,6 +248,7 @@ public class TransactionList {
                 accountTransactions.add(transaction);
             }
         }
+        LOGGER.log(Level.INFO, "Transaction based on account loaded successfully");
         return accountTransactions;
     }
 
@@ -249,6 +267,8 @@ public class TransactionList {
                 categoryTransactions.add(transaction);
             }
         }
+        LOGGER.log(Level.INFO, "Transactions based on a category loaded successfully");
+
         return categoryTransactions;
     }
 
@@ -305,6 +325,7 @@ public class TransactionList {
             UserInterface.printCategoryTransactions(categoryTransactions, categoryName);
             break;
         default:
+            LOGGER.log(Level.WARNING, "Invalid index for 'list' command");
             throw new InvalidIndexException("6");
         }
 
@@ -323,13 +344,16 @@ public class TransactionList {
      */
     //@@author Vavinan
     public void processEditTransaction(String input, AccountManager accountManager) throws EmptyArgumentException,
-            NumberFormatException, InvalidIndexException, InvalidEditTransactionData, InvalidCategoryException {
+            NumberFormatException, InvalidIndexException, InvalidEditTransactionData, InvalidCategoryException,
+            InvalidArgumentSyntaxException {
         if (input.trim().length() < EDIT_BEGIN_INDEX) {
+            LOGGER.log(Level.WARNING, "Index id is missing for edit command");
             throw new EmptyArgumentException("edit index ");
         }
         String data = input.substring(EDIT_BEGIN_INDEX).trim();
 
         if (isNotInteger(data)) {
+            LOGGER.log(Level.WARNING, "Given index id for 'edit' command is not an integer");
             throw new NumberFormatException(data);
         }
         int index = Integer.parseInt(data) - INDEX_OFFSET;
@@ -340,7 +364,10 @@ public class TransactionList {
             Transaction t = parser.parseEditTransaction(newTransaction, account);
             transactions.set(index, t);
             UserInterface.printUpdatedTransaction(t);
+            LOGGER.log(Level.INFO, "Transaction is edited successfully");
+
         } else {
+            LOGGER.log(Level.WARNING, "Given index id for 'edit' command is not valid");
             throw new InvalidIndexException(String.valueOf(transactions.size()));
         }
     }
@@ -398,6 +425,7 @@ public class TransactionList {
             }
         }
         transactions.removeAll(transactionsToRemove);
+        LOGGER.log(Level.INFO, "Transactions were removed successfully from the specified account number");
         return transactionsToRemove;
     }
 
@@ -423,10 +451,13 @@ public class TransactionList {
                 }
                 index++;
             }
+            LOGGER.log(Level.INFO, "Transactions are filtered out for 'search' command");
             UserInterface.printSearchResults(searchResults, indices);
         } catch (ArrayIndexOutOfBoundsException e) {
+            LOGGER.log(Level.WARNING, "Keyword is not provided for search command");
             UserInterface.printInvalidInput("Please enter a keyword to search for transactions.");
         } catch (Exception e) {
+            LOGGER.log(Level.WARNING, "Search command failed");
             UserInterface.printExceptionErrorMessage(e.getMessage());
         }
     }
