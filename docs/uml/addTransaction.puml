@@ -1,0 +1,31 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+actor User
+participant "TransactionManager" as TM
+participant "Parser" as P
+participant "UserInterface" as UI
+
+User -> TM: processTransaction(input, account)
+TM -> TM: validateSyntax(input)
+TM -> P: parseUserInputToTransaction(input, account)
+activate P
+P --> TM: transaction
+deactivate P
+TM -> TM: checkCategory(transaction)
+alt Category is null
+    TM -> UI: listCategories()
+    activate UI
+    UI --> User: Display category options
+    deactivate UI
+    User -> TM: selectCategory(categoryNum)
+    TM -> TM: setCategory(transaction, categoryNum)
+end
+TM -> TM: addTransaction(transaction)
+TM -> UI: printAddMessage(transaction, account.balance)
+activate UI
+UI --> User: Display added transaction message
+deactivate UI
+@enduml

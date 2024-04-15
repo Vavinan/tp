@@ -3,13 +3,15 @@ package budgetbuddy.transaction;
 import budgetbuddy.account.Account;
 
 import budgetbuddy.account.AccountManager;
-import budgetbuddy.exceptions.EmptyArgumentException;
-import budgetbuddy.exceptions.InvalidAddTransactionSyntax;
-import budgetbuddy.exceptions.InvalidIndexException;
-import budgetbuddy.exceptions.InvalidTransactionTypeException;
-import budgetbuddy.exceptions.InvalidEditTransactionData;
+
 
 import budgetbuddy.categories.Category;
+import budgetbuddy.exceptions.EmptyArgumentException;
+import budgetbuddy.exceptions.InvalidAddTransactionSyntax;
+import budgetbuddy.exceptions.InvalidCategoryException;
+import budgetbuddy.exceptions.InvalidEditTransactionData;
+import budgetbuddy.exceptions.InvalidIndexException;
+import budgetbuddy.exceptions.InvalidTransactionTypeException;
 import budgetbuddy.insights.Insight;
 import budgetbuddy.parser.Parser;
 import budgetbuddy.storage.DataStorage;
@@ -21,6 +23,9 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
+/**
+ * Represents a list of transactions and provides methods for managing them.
+ */
 public class TransactionList {
 
     public static final int DELETE_BEGIN_INDEX = 7;
@@ -34,21 +39,29 @@ public class TransactionList {
     public static final String DELETE = "delete";
     public static final String EDIT = "edit";
     public static final String LIST = "list";
+    public static final String SEARCH = "search";
     private static final int DAYS_IN_WEEK = 7;
     private static final int DAYS_IN_MONTH = 30;
     private static final int DAYS_OFFSET = 1;
-
 
     private final ArrayList<Transaction> transactions;
     private final Parser parser;
 
     private final DataStorage dataStorage = new DataStorage();
 
+    /**
+     * Constructs a new TransactionList object with an empty list of transactions and a parser.
+     */
     public TransactionList() {
         this.transactions = new ArrayList<>();
         this.parser = new Parser();
     }
 
+    /**
+     * Constructs a new TransactionList object with the specified list of transactions and a parser.
+     *
+     * @param transactions The list of transactions.
+     */
     public TransactionList(ArrayList<Transaction> transactions) {
         this.transactions = transactions;
         this.parser = new Parser();
@@ -62,6 +75,15 @@ public class TransactionList {
         UserInterface.printAllTransactions(transactions);
     }
 
+    /**
+     * Removes a transaction from the list based on the user input.
+     *
+     * @param input          The user input specifying the transaction to be removed.
+     * @param accountManager The account manager for retrieving account information.
+     * @throws EmptyArgumentException If the input string is empty or does not contain the required parameter.
+     * @throws NumberFormatException  If the index parsed from the input string is not a valid integer.
+     * @throws InvalidIndexException  If the index is out of bounds or invalid.
+     */
     public void removeTransaction(String input, AccountManager accountManager) throws EmptyArgumentException,
             NumberFormatException, InvalidIndexException {
         if (input.trim().length() < DELETE_BEGIN_INDEX) {
@@ -105,10 +127,21 @@ public class TransactionList {
         transactions.add(t);
     }
 
+    /**
+     * Processes a transaction based on the user input and adds it to the transaction list.
+     *
+     * @param input   The user input specifying the transaction details.
+     * @param account The account associated with the transaction.
+     * @throws InvalidTransactionTypeException If the transaction type is invalid.
+     * @throws InvalidAddTransactionSyntax     If the syntax for adding a transaction is invalid.
+     * @throws EmptyArgumentException          If the input string is empty or missing required arguments.
+     * @throws InvalidCategoryException        If the category specified in the transaction is invalid.
+     */
     public void processTransaction(String input, Account account)
-            throws InvalidTransactionTypeException, InvalidAddTransactionSyntax, EmptyArgumentException {
+            throws InvalidTransactionTypeException, InvalidAddTransactionSyntax, EmptyArgumentException,
+            InvalidCategoryException {
         // Check for syntax for add transaction
-        String[] arguments = {"/a/","/t/", "/n/", "/$/", "/d/"};
+        String[] arguments = {"/a/", "/t/", "/n/", "/$/", "/d/"};
         for (String argument : arguments) {
             if (!input.contains(argument)) {
                 throw new InvalidAddTransactionSyntax("Invalid add syntax.");
@@ -117,27 +150,33 @@ public class TransactionList {
 
         Transaction t = parser.parseUserInputToTransaction(input, account);
         assert t != null : "Parsed transaction is null";
-        if (t.getCategory() == null) {
-            UserInterface.listCategories();
-            int category = UserInterface.getCategoryNum();
-            t.setCategory(Category.fromNumber(category));
-        }
         addTransaction(t);
         assert transactions.get(transactions.size() - 1) != null : "Added transaction is null after adding to the list";
         String fetchData = String.valueOf(transactions.get(transactions.size() - 1));
         UserInterface.printAddMessage(fetchData, account.getBalance());
     }
 
+    /**
+     * Saves the current list of transactions to a data storage.
+     *
+     * @throws IOException If an I/O error occurs while saving the transactions.
+     */
     public void saveTransactionList() throws IOException {
         dataStorage.saveTransactions(transactions);
     }
 
+    /**
+     * Retrieves past transactions based on the specified duration.
+     *
+     * @param transactions The list of transactions to filter.
+     * @param duration     The duration of past transactions to retrieve ("week" or "month").
+     * @return An ArrayList containing past transactions based on the specified duration.
+     */
     //@@author isaaceng7
-
     public static ArrayList<Transaction> getPastTransactions(ArrayList<Transaction> transactions, String duration) {
         LocalDate today = LocalDate.now();
         LocalDate startDate = null;
-        switch(duration) {
+        switch (duration) {
         case "week":
             startDate = today.minusDays(DAYS_IN_WEEK + DAYS_OFFSET);
             break;
@@ -156,6 +195,12 @@ public class TransactionList {
         return pastTransactions;
     }
 
+    /**
+     * Retrieves transactions within a custom date range.
+     *
+     * @param transactions The list of transactions to filter.
+     * @return An ArrayList containing transactions within the specified custom date range.
+     */
     public static ArrayList<Transaction> getCustomDateTransactions(ArrayList<Transaction> transactions) {
         String start = UserInterface.getStartDate();
         String end = UserInterface.getEndDate();
@@ -171,8 +216,53 @@ public class TransactionList {
         return customDateTransactions;
     }
 
+    /**
+     * Retrieves transactions associated with a specific account number.
+     *
+     * @param transactions   The list of transactions to filter.
+     * @param accountNumber  The account number for which transactions are to be retrieved.
+     * @return An ArrayList containing transactions associated with the specified account number.
+     */
+    public static ArrayList<Transaction> getAccountTransactions(ArrayList<Transaction> transactions,
+                                                                int accountNumber) {
+        ArrayList<Transaction> accountTransactions = new ArrayList<>();
+        for (Transaction transaction : transactions) {
+            if (transaction.getAccountNumber() == accountNumber) {
+                accountTransactions.add(transaction);
+            }
+        }
+        return accountTransactions;
+    }
 
-    public void processList() throws InvalidIndexException {
+    /**
+     * Retrieves transactions associated with a specific category.
+     *
+     * @param transactions The list of transactions to filter.
+     * @param category     The category for which transactions are to be retrieved.
+     * @return An ArrayList containing transactions associated with the specified category.
+     */
+    public static ArrayList<Transaction> getCategoryTransactions(ArrayList<Transaction> transactions,
+                                                                 Category category) {
+        ArrayList<Transaction> categoryTransactions = new ArrayList<>();
+        for (Transaction transaction : transactions) {
+            if (transaction.getCategory() == category) {
+                categoryTransactions.add(transaction);
+            }
+        }
+        return categoryTransactions;
+    }
+
+    /**
+     * Processes the user-selected list option to list a specific set of transactions
+     * and perform the corresponding action.
+     *
+     * @param accounts        The list of accounts.
+     * @param accountManager  The account manager for retrieving account information.
+     * @throws InvalidIndexException   If the selected option index is invalid.
+     * @throws InvalidCategoryException If the selected category is invalid.
+     */
+    public void processList(ArrayList<Account> accounts, AccountManager accountManager) throws InvalidIndexException,
+            InvalidCategoryException {
         UserInterface.printListOptions();
         String data = UserInterface.getListOption().trim();
         int option = Integer.parseInt(data);
@@ -196,16 +286,44 @@ public class TransactionList {
             ArrayList<Transaction> customDateTransactions = getCustomDateTransactions(transactions);
             UserInterface.printCustomDateTransactions(customDateTransactions);
             break;
-
+        // 5 - ACCOUNT TRANSACTIONS
+        case 5:
+            String accountData = UserInterface.getSelectedAccountNumber(accounts);
+            int accountNumber = Integer.parseInt(accountData);
+            Account account = accountManager.getAccountByAccountNumber(accountNumber);
+            String accountName = account.getName();
+            ArrayList<Transaction> accountTransactions = getAccountTransactions(transactions, accountNumber);
+            UserInterface.printAccountTransactions(accountTransactions, accountName, accountNumber);
+            break;
+        // 6 - CATEGORY TRANSACTIONS
+        case 6:
+            UserInterface.listCategories();
+            int input = UserInterface.getSelectedCategory();
+            Category categorySelected = Category.fromNumber(input);
+            String categoryName = categorySelected.getCategoryName();
+            ArrayList<Transaction> categoryTransactions = getCategoryTransactions(transactions, categorySelected);
+            UserInterface.printCategoryTransactions(categoryTransactions, categoryName);
+            break;
         default:
-            throw new InvalidIndexException("4");
+            throw new InvalidIndexException("6");
         }
 
     }
 
+    /**
+     * Processes the user input for editing a transaction and updates the transaction accordingly.
+     *
+     * @param input           The user input specifying the transaction index to be edited.
+     * @param accountManager  The account manager for retrieving account information.
+     * @throws EmptyArgumentException      If the input string is empty or missing required arguments.
+     * @throws NumberFormatException       If the index parsed from the input string is not a valid integer.
+     * @throws InvalidIndexException       If the index is out of bounds or invalid.
+     * @throws InvalidEditTransactionData  If the data for editing the transaction is invalid.
+     * @throws InvalidCategoryException    If the specified category is invalid.
+     */
     //@@author Vavinan
     public void processEditTransaction(String input, AccountManager accountManager) throws EmptyArgumentException,
-            NumberFormatException, InvalidIndexException, InvalidEditTransactionData {
+            NumberFormatException, InvalidIndexException, InvalidEditTransactionData, InvalidCategoryException {
         if (input.trim().length() < EDIT_BEGIN_INDEX) {
             throw new EmptyArgumentException("edit index ");
         }
@@ -227,9 +345,14 @@ public class TransactionList {
         }
     }
 
-    public void helpWithUserCommands(String input){
+    /**
+     * Provides help messages for user commands.
+     *
+     * @param input The user input specifying the command for which help is requested.
+     */
+    public void helpWithUserCommands(String input) {
         String helpCommand = parser.parseHelpCommand(input);
-        switch(helpCommand){
+        switch (helpCommand.toLowerCase()) {
         case ALL:
             UserInterface.printAllCommands();
             break;
@@ -248,12 +371,21 @@ public class TransactionList {
         case ACCOUNT:
             UserInterface.printAccountHelp();
             break;
+
+        case SEARCH:
+            UserInterface.printSearchHelp();
+            break;
         default:
             UserInterface.printUseAvailableHelp();
             break;
         }
     }
     //@@author
+
+    /**
+     * Displays insights based on transaction categories.
+     */
+    //@@author ShyamKrishna33
     public void displayInsights() {
         Insight.displayCategoryInsight(transactions);
     }
@@ -267,5 +399,35 @@ public class TransactionList {
         }
         transactions.removeAll(transactionsToRemove);
         return transactionsToRemove;
+    }
+
+    /**
+     * Searches transactions based on a keyword and prints search results.
+     *
+     * @param input The user input specifying the keyword to search for transactions.
+     */
+    public void searchTransactions(String input) {
+        try {
+            String keyword = input.split(" ")[1];
+            ArrayList<Transaction> searchResults = new ArrayList<>();
+            ArrayList<Integer> indices = new ArrayList<>();
+            int index = 0;
+            for (Transaction transaction : transactions) {
+                if (transaction.getDescription().toLowerCase().contains(keyword.toLowerCase()) ||
+                        String.valueOf(transaction.getAmount()).contains(keyword) ||
+                        transaction.getCategory().getCategoryName().toLowerCase()
+                                .contains(keyword.toLowerCase()) ||
+                        transaction.getDate().toString().contains(keyword)) {
+                    searchResults.add(transaction);
+                    indices.add(index);
+                }
+                index++;
+            }
+            UserInterface.printSearchResults(searchResults, indices);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            UserInterface.printInvalidInput("Please enter a keyword to search for transactions.");
+        } catch (Exception e) {
+            UserInterface.printExceptionErrorMessage(e.getMessage());
+        }
     }
 }

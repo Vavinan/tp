@@ -13,7 +13,9 @@ activities.
 3. Copy the file to the folder you want to use as the home folder for your BudgetBuddy app.
 4. Open a command terminal, `cd` into the folder you added the jar file to, and use the `java -jar tp.jar` command to
    run the application.
-5. When prompted, type the command into the terminal and press Enter to execute it. e.g. typing `help` and pressing
+5. When the application is first run, BudgetBuddy will prompt the user to create a new account, prompting the user to
+   add an account name and initial balance. Type the details in the terminal and press Enter to confirm.
+6. Subsequently, users may type the command into the terminal and press Enter to execute it. e.g. typing `help` and pressing
    Enter will prompt the help feature.
 
 ## Features
@@ -36,28 +38,51 @@ Format: `add /a/ACCOUNT_NUMBER /t/TRANSACTION_TYPE /n/NAME /$/AMOUNT /d/DATE /c/
 * The `TRANSACTION_TYPE` includes **Expense** or **Income** ONLY.
 * The `AMOUNT` is in dollars ($).
 * The `DATE` should be in the format **DD-MM-YYYY**.
-* The `CATEGORY` is an integer. The categories are mapped to the following integers: 1 (Dining), 2 (Groceries), 3 (
-  Utilities), 4 (Transportation), 5 (Healthcare), 6 (Entertainment), 7 (Rent), 8 (Salary), 9 (Others).
-* NOTE: A transaction of a particular `CATEGORY` can be of both `TRANSACTION_TYPE`s.
+* The `CATEGORY` is an integer. The categories are mapped to the following integers:
+    - 1 - Dining
+    - 2 - Groceries
+    - 3 - Utilities
+    - 4 - Transportation
+    - 5 - Healthcare
+    - 6 - Entertainment
+    - 7 - Rent
+    - 8 - Salary
+    - 9 - Others
 
 Example of usage:
-
 `add /a/5431 /t/Income /n/March Salary /$/10000 /d/01-03-2024 /c/8`
 
 `add /n/New iPhone /$/2000 /c/9 /t/Expense /a/5431 /d/20-03-2024`
 
+Successful add feature output:
+![](./ug/successful_add_feature.png)
+
 ### View transaction history: `list`
 
-List the transactions. List options will include 1. All Transactions, 2. Past Week Transactions, 3. Past Month
-Transactions, 4. Custom Date Transactions.
+List the existing transactions. List feature includes options:
+1. All Transactions
+2. Past Week Transactions - list transactions from the past 7 days
+3. Past Month Transactions - list transactions from the past month
+4. Custom Date Transactions - list transactions between the specified dates(inclusive)
+5. Account Transactions - list all transactions in the specified account
+6. Category Transactions - list all transactions in the category type
+
 Format: `list`
 
 Example of usage:
-`list` followed by `1` to view All Transactions.
-`list` followed by `2` to view Past Week Transactions.
-`list` followed by `3` to view Past Week Transactions.
-`list` followed by `4` followed by the start date `01-01-2024` followed by the end date `31-03-2024` to view Custom Date
-Transactions from 01-01-2024 to 31-03-2024.
+* `list` followed by `1` to view All Transactions.
+* `list` followed by `2` to view Past Week Transactions.
+* `list` followed by `3` to view Past Week Transactions.
+* `list` followed by `4` followed by the start date `01-01-2024` followed by the end date `31-03-2024`
+to view Custom Date Transactions from 01-01-2024 to 31-03-2024.
+* `list` followed by `5` followed by account number `ACCOUNT_NUMBER` to view transactions from that account.
+* `list` followed by `6` followed by category number `CATEGORY_NUMBER` to view transactions of that category.
+
+List feature options:
+![](./ug/list_options.png)
+
+Successful list feature (custom date) example:
+![](./ug/successful_list_feature.png)
 
 ### Deleting a transaction: `delete`
 
@@ -71,6 +96,9 @@ Format: `delete TRANSACTION_ID`
 
 Example of usage:
 `delete 1`
+
+Successful delete feature example:
+![](./ug/successful_delete_transaction.png)
 
 ### Edit a transaction: `edit`
 
@@ -89,6 +117,34 @@ Example of usage:
 
 Then the user will be asked to edit each information from that specific transaction one by one.
 
+Successful edit feature example:
+![](./ug/successful_edit_transaction.png)
+
+### Search for a transaction: `search`
+
+Search for a list of transactions matching the keyword.
+Parameters: keyword
+Format: `search KEYWORD`
+
+* The `KEYWORD` can be any value representing transaction description, category, transaction amount or 
+  transaction date.
+* Search transaction will list out the matching transactions along with their true **index ID**. This can 
+  be used in `edit` or `delete` command.
+* Keywords are case-insensitive so
+* If there is no matching transactions, the user will be notified.
+* This feature will search from the whole transaction history rather than a specific account to ease the 
+  usage of the budgetbuddy.
+
+Example of usage:
+`search salary`
+
+Then the user will be asked to edit each information from that specific transaction one by one.
+
+Successful edit feature example:
+![](./ug/successful_search.png)
+
+
+
 ### Add an account: `add-acc`
 
 Adds a new account with a specified initial balance.
@@ -99,6 +155,9 @@ Format: `add-acc /n/ACCOUNT_NAME /$/INITIAL_BALANCE`
 
 Example of Usage:
 `add-acc /n/DBS Savings /$/10000`
+
+Successful add-acc feature output:
+![](./ug/successful_add_acc_feature.png)
 
 ### List all accounts: `list-acc`
 
@@ -162,6 +221,7 @@ the data of your previous BudgetBuddy home folder.
 * List transactions `list`
 * Delete transaction `delete TRANSACTION_ID`
 * Edit transaction `edit TRANSACTION_ID`
+* Search transaction `search KEYWORD`
 * Add account `add-acc /n/ACCOUNT_NAME /$/INITIAL_BALANCE`
 * List accounts `list-acc`
 * Delete account `delete-acc ACCOUNT_NUMBER`

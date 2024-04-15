@@ -4,6 +4,7 @@ import budgetbuddy.account.Account;
 import budgetbuddy.account.AccountManager;
 import budgetbuddy.categories.Category;
 import budgetbuddy.exceptions.FileCorruptedException;
+import budgetbuddy.exceptions.InvalidCategoryException;
 import budgetbuddy.transaction.TransactionList;
 import budgetbuddy.transaction.type.Expense;
 import budgetbuddy.transaction.type.Income;
@@ -21,11 +22,50 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * This class provides methods for storing and retrieving data related to transactions and accounts.
+ * It includes methods for saving and loading transactions and accounts to/from files.
+ */
 public class DataStorage {
     public static final String TRANSACTIONS_FILE_PATH = "./data/transactions.txt";
     public static final String ACCOUNTS_FILE_PATH = "./data/accounts.txt";
     public static final String FOLDER_PATH = "./data";
 
+    /**
+     * Writes the provided string to a file at the given file path.
+     *
+     * @param stringToWrite The string to write to the file.
+     * @param filePath      The path of the file to write to.
+     * @throws IOException If an I/O error occurs while writing to the file.
+     */
+    //@@author ShyamKrishna33
+    private static void writeToFile(String stringToWrite, String filePath) throws IOException {
+        FileWriter fw = new FileWriter(filePath, true);
+        fw.write(stringToWrite);
+        fw.close();
+    }
+
+    private static String getStringToWrite(Transaction t) {
+        LocalDate date = t.getDate();
+        String stringDate = date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+        return t.getDescription() + " ," + t.getCategory().getCategoryNum() + " ,"
+                + t.getTransactionType() + " ," + stringDate + " ," + t.getAmount() + " ," + t.getAccountNumber()
+                + " ," + t.getAccountName() + "\n";
+    }
+
+    private static void createDataFolderIfNotExists() throws IOException {
+        Path dataFolderPath = Paths.get(FOLDER_PATH);
+        if (!Files.exists(dataFolderPath)) {
+            Files.createDirectories(dataFolderPath);
+        }
+    }
+    //@@author
+
+    /**
+     * Saves the list of accounts to the file in the ACCOUNT_FILE_PATH.
+     *
+     * @param accounts The list of accounts to save.
+     */
     public void saveAccounts(ArrayList<Account> accounts) {
         try {
             File f = new File(ACCOUNTS_FILE_PATH);
@@ -47,6 +87,13 @@ public class DataStorage {
         }
     }
 
+    /**
+     * Saves the list of transactions to a file.
+     *
+     * @param transactionArrayList The list of transactions to save.
+     * @throws IOException If an I/O error occurs while saving the transactions.
+     */
+    //@@author ShyamKrishna33
     public void saveTransactions(ArrayList<Transaction> transactionArrayList) throws IOException {
         File f = new File(TRANSACTIONS_FILE_PATH);
 
@@ -62,22 +109,17 @@ public class DataStorage {
         }
     }
 
-    private static void writeToFile(String stringToWrite, String filePath) throws IOException {
-        FileWriter fw = new FileWriter(filePath, true);
-        fw.write(stringToWrite);
-        fw.close();
-    }
-
-    private static String getStringToWrite(Transaction t) {
-        LocalDate date = t.getDate();
-        String stringDate = date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-        return t.getDescription() + " ," + t.getCategory().getCategoryNum() + " ,"
-                + t.getTransactionType() + " ," + stringDate + " ," + t.getAmount() + " ," + t.getAccountNumber()
-                + " ," + t.getAccountName() + "\n";
-    }
-
-    // description, categoryNum, type, date, amount, accountNumber, accountName
-    private Transaction parseDataToTransaction(String s) throws FileCorruptedException {
+    /**
+     * Parses a string representing transaction data into a Transaction object.
+     *
+     * @param s                      The string representing the transaction data.
+     * @param existingAccountNumbers A list of existing account numbers.
+     * @return The parsed Transaction object.
+     * @throws FileCorruptedException    If the file containing transaction data is corrupted.
+     * @throws InvalidCategoryException If the category specified in the transaction data is invalid.
+     */
+    private Transaction parseDataToTransaction(String s, ArrayList<Integer> existingAccountNumbers)
+            throws FileCorruptedException, InvalidCategoryException {
         String[] transactionInfo = s.split(" ,");
         int categoryNum;
         try {
@@ -106,6 +148,10 @@ public class DataStorage {
             throw new FileCorruptedException("Invalid type for transaction amount");
         }
 
+        if (!existingAccountNumbers.contains(Integer.parseInt(transactionInfo[5]))) {
+            throw new FileCorruptedException("Invalid account number");
+        }
+
         switch (transactionInfo[2]) {
         case "Income":
             Income incomeObj = new Income(Integer.parseInt(transactionInfo[5]), transactionInfo[6], transactionInfo[0],
@@ -121,29 +167,75 @@ public class DataStorage {
             return null;
         }
     }
+    //@@author
 
-    private static void createDataFolderIfNotExists() throws IOException {
-        Path dataFolderPath = Paths.get(FOLDER_PATH);
-        if (!Files.exists(dataFolderPath)) {
-            Files.createDirectories(dataFolderPath);
-        }
-    }
-
-    public ArrayList<Account> readAccountFile() throws IOException {
+    /**
+     * Reads account data from the accounts file and returns a list of Account objects.
+     *
+     * @param existingAccountNumbers A list of existing account numbers.
+     * @return The list of Account objects read from the file.
+     * @throws IOException           If an I/O error occurs while reading the file.
+     * @throws FileCorruptedException If the file containing account data is corrupted.
+     */
+    public ArrayList<Account> readAccountFile(ArrayList<Integer> existingAccountNumbers)
+            throws IOException, FileCorruptedException {
         File f = new File(ACCOUNTS_FILE_PATH);
         Scanner s = new Scanner(f);
 
         ArrayList<Account> accounts = new ArrayList<>();
         while (s.hasNext()) {
-            String[] accountInfo = s.nextLine().split(" ,");
-            assert accountInfo.length == 3 : "Invalid account information format";
-            accounts.add(new Account(Integer.parseInt(accountInfo[0]), accountInfo[1],
-                    Double.parseDouble(accountInfo[2])));
+            String line = s.nextLine();
+            if (line.trim().isEmpty()) {
+                continue;
+            }
+            String[] accountInfo = line.split(" ,");
+            int accountNumber;
+            double balance;
+            String accountName = accountInfo[1].trim();
+
+
+            if (accountInfo.length != 3) {
+                throw new FileCorruptedException("Invalid account information format");
+            }
+
+            try {
+                accountNumber = Integer.parseInt(accountInfo[0]);
+            } catch (NumberFormatException e) {
+                throw new FileCorruptedException("Invalid type for account number");
+            }
+
+            try {
+                balance = Double.parseDouble(accountInfo[2]);
+            } catch (NumberFormatException e) {
+                throw new FileCorruptedException("Invalid type for account balance");
+            }
+
+            if (accountNumber < 1000 || accountNumber > 9999) {
+                throw new FileCorruptedException("Invalid account number");
+            }
+
+            if (accountName.isEmpty()) {
+                throw new FileCorruptedException("Invalid account name");
+            }
+
+            if (existingAccountNumbers.contains(accountNumber)) {
+                throw new FileCorruptedException("Duplicate account number");
+            }
+
+            accounts.add(new Account(accountNumber, accountInfo[1], balance));
+            existingAccountNumbers.add(accountNumber);
         }
         return accounts;
     }
 
-    public ArrayList<Transaction> readTransactionFile() throws IOException {
+    /**
+     * Reads transaction data from the transactions file and returns a list of Transaction objects.
+     *
+     * @param existingAccountNumbers A list of existing account numbers.
+     * @return The list of Transaction objects read from the file.
+     * @throws IOException If an I/O error occurs while reading the file.
+     */
+    public ArrayList<Transaction> readTransactionFile(ArrayList<Integer> existingAccountNumbers) throws IOException {
         createDataFolderIfNotExists();
         File f = new File(TRANSACTIONS_FILE_PATH);
         if (!f.exists()) {
@@ -158,9 +250,13 @@ public class DataStorage {
         ArrayList<Transaction> transactionList = new ArrayList<>();
         try {
             while (s.hasNext()) {
-                transactionList.add(parseDataToTransaction(s.nextLine()));
+                String line = s.nextLine();
+                if (line.trim().isEmpty()) {
+                    continue;
+                }
+                transactionList.add(parseDataToTransaction(line, existingAccountNumbers));
             }
-        } catch (FileCorruptedException e) {
+        } catch (FileCorruptedException | InvalidCategoryException e) {
             UserInterface.printFileCorruptedError();
             FileWriter fw = new FileWriter(TRANSACTIONS_FILE_PATH, false);
             return new ArrayList<>();
@@ -168,6 +264,11 @@ public class DataStorage {
         return transactionList;
     }
 
+    /**
+     * Loads the accounts from the accounts file and returns an AccountManager object.
+     *
+     * @return The loaded AccountManager object.
+     */
     public AccountManager loadAccounts() {
         try {
             File f = new File(ACCOUNTS_FILE_PATH);
@@ -178,37 +279,44 @@ public class DataStorage {
                 }
                 return createNewAccountManager();
             }
-            ArrayList<Account> accounts = readAccountFile();
+            ArrayList<Integer> existingAccountNumbers = new ArrayList<>();
+            ArrayList<Account> accounts = null;
+            try {
+                accounts = readAccountFile(existingAccountNumbers);
+            } catch (FileCorruptedException e) {
+                UserInterface.printFileCorruptedError();
+                FileWriter fw = new FileWriter(ACCOUNTS_FILE_PATH, false);
+                return createNewAccountManager();
+            }
             if (accounts.isEmpty()) {
                 return createNewAccountManager();
             }
-            ArrayList<Integer> existingAccountNumbers = new ArrayList<>();
-            for (Account account : accounts) {
-                existingAccountNumbers.add(account.getAccountNumber());
-            }
             return new AccountManager(accounts, existingAccountNumbers);
         } catch (IOException e) {
-            System.out.println("Error reading accounts file. Creating new account manager.");
+            UserInterface.printFileCorruptedError();
             return createNewAccountManager();
         }
     }
 
     private AccountManager createNewAccountManager() {
-        System.out.println("Let's first create an account for you! What do you want to call it?");
-        String accountName = UserInterface.in.nextLine();
-        System.out.println("Great! What's the initial balance?");
-        double initialBalance = Double.parseDouble(UserInterface.in.nextLine());
+        String accountName = UserInterface.getInitialAccountName();
+        Double initialBalance = UserInterface.getInitialAccountBalance();
         AccountManager accountManager = new AccountManager();
         accountManager.addAccount(accountName, initialBalance);
         return accountManager;
     }
 
-    public TransactionList loadTransactions() {
+    /**
+     * Loads the transactions from the transactions file and returns a TransactionList object.
+     *
+     * @param existingAccountNumbers A list of existing account numbers.
+     * @return The loaded TransactionList object.
+     */
+    public TransactionList loadTransactions(ArrayList<Integer> existingAccountNumbers) {
         try {
-            ArrayList<Transaction> transactions = readTransactionFile();
+            ArrayList<Transaction> transactions = readTransactionFile(existingAccountNumbers);
             return new TransactionList(transactions);
         } catch (IOException e) {
-            System.out.println("Error reading transactions file. Creating new transaction list.");
             return new TransactionList();
         }
     }

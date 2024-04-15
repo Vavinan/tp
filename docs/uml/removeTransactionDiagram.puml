@@ -4,24 +4,35 @@
 autonumber
 
 actor User
-participant "TransactionManager" as TM
+participant "TransactionList" as TL
 participant "UserInterface" as UI
-participant "AccountManager" as AM
+participant ":AccountManager" as AM
+participant ":Account" as AC
+participant "EmptyArgumentException" as EAE
+participant "InvalidIndexException" as IIE
+User -> TL: removeTransaction [delete index]
 
-User -> TM: removeTransaction [delete index]
-TM -> UI: validateInput(input)  // Implicit interaction to check for empty input
-activate UI
-deactivate UI
-TM -> TM: parseData(data)
-TM -> AM: getAccountByAccountNumber(accountNumber)
-activate AM
-AM --> TM: account
-deactivate AM
-TM -> TM: getTransaction(id)
-TM --> TM: removeTransaction(id)
-TM -> account: setBalance(newBalance)
-TM -> UI: printDeleteMessage(itemRemoved, newBalance)
-activate UI
-UI --> User: Display delete confirmation message
-deactivate UI
+alt input.trim().length() < DELETE_BEGIN_INDEX
+    TL -> EAE: throw EmptyArgumentException
+end
+    TL -> TL: id = parseInt(data)
+    alt id >= LOWER_BOUND and id < size
+    TL -> AM: getAccountByAccountNumber(accountNumber)
+        activate AM
+        AM --> TL: :Account
+        deactivate AM
+
+        TL -> TL: get(id)
+        TL -> TL: remove(id)
+
+        TL -> AC: setBalance(newBalance)
+        TL -> UI: <printDeleteMessage(itemRemoved, newBalance)>
+        activate UI
+        UI --> TL: Display delete confirmation message
+        deactivate UI
+        TL --> User: Confirmation message
+    else
+        TL -> IIE: throw InvalidIndexException
+    end
+
 @enduml
