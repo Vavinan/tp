@@ -11,10 +11,12 @@ It is optimized for use via a Command Line Interface (CLI) and is written in Jav
    * User Guide:
       * Added documentation for the feature `delete`.
       * Added documentation for the feature `edit`.
+      * Added documentation for the feature `search`
    * Developer Guide:
       * Added implementation details for the feature `delete`.
       * Added implementation details for the feature `edit`.
       * Added implementation details for the feature `insights`.
+      * Added implementation details for the feature `search`.
    
    * Community:
       * Reported bugs and suggestions for other teams in class and PE-D.
