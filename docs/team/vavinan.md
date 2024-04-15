@@ -24,6 +24,7 @@ It is optimized for use via a Command Line Interface (CLI) and is written in Jav
    * Others:
       * Added headers for UserInterface class and Parser class
    <br>
+   
 ### Feature 1 - Deleting Transaction
 
 1. Created the `removeTransaction` method to handle deletion of a transaction based on its index in the list.
