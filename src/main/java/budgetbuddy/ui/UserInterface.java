@@ -2,6 +2,7 @@ package budgetbuddy.ui;
 
 import budgetbuddy.account.Account;
 import budgetbuddy.categories.Category;
+import budgetbuddy.exceptions.InvalidArgumentSyntaxException;
 import budgetbuddy.transaction.type.Transaction;
 
 import java.time.LocalDate;
@@ -300,7 +301,7 @@ public class UserInterface {
      *         contains the edited
      *         transaction information.
      */
-    public static String getEditInformation(String string) {
+    public static String getEditInformation(String string) throws InvalidArgumentSyntaxException {
         System.out.println(LINE);
         System.out.println(TAB_SPACE + "Please edit the following transaction");
         System.out.println(string);
@@ -309,6 +310,9 @@ public class UserInterface {
         String type = in.nextLine();
         System.out.print(TAB_SPACE + "Enter description: ");
         String description = in.nextLine();
+        if (description.contains(",")) {
+            throw new InvalidArgumentSyntaxException("Input cannot contain ',' comma.");
+        }
         System.out.print(TAB_SPACE + "Enter transaction date: ");
         String date = in.nextLine();
         System.out.print(TAB_SPACE + "Enter transaction amount: ");
@@ -882,7 +886,7 @@ public class UserInterface {
      *         the user.
      */
     //@@author vibes-863
-    public static String getNewAccountName(String account) {
+    public static String getNewAccountName(String account) throws InvalidArgumentSyntaxException {
         String[] parts = account.split("\\|");
         System.out.println(LINE);
         System.out.println(TAB_SPACE + "Please edit the following account \n");
@@ -891,7 +895,11 @@ public class UserInterface {
         }
         System.out.println(LINE);
         System.out.print(TAB_SPACE + "Enter new account name: ");
-        return in.nextLine().trim();
+        String name = in.nextLine().trim();
+        if (name.contains(",")) {
+            throw new InvalidArgumentSyntaxException("Input cannot contain ',' comma.");
+        }
+        return name;
     }
 
     //@@author
@@ -1057,9 +1065,12 @@ public class UserInterface {
      *         entered by the user.
      */
     //@@author ShyamKrishna33
-    public static String getInitialAccountName() {
+    public static String getInitialAccountName() throws InvalidArgumentSyntaxException {
         System.out.println("Let's first create an account for you! What do you want to call it?");
         String accountName = in.nextLine();
+        if (accountName.contains(",")) {
+            throw new InvalidArgumentSyntaxException("Input cannot contain ',' comma.");
+        }
 
         if (accountName.trim().isEmpty()) {
             printInvalidAccountNameError();

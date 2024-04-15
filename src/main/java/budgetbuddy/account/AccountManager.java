@@ -186,7 +186,8 @@ public class AccountManager {
      * @throws EmptyArgumentException   if the input is empty
      * @throws IllegalArgumentException if the input is invalid
      */
-    public void processEditAccount(String input) throws EmptyArgumentException, IllegalArgumentException {
+    public void processEditAccount(String input) throws EmptyArgumentException, IllegalArgumentException,
+            InvalidArgumentSyntaxException {
         assert input != null : "Input cannot be null";
         LOGGER.log(Level.INFO, "Processing edit account command");
         int accountNumber = Parser.parseEditAccount(input);
