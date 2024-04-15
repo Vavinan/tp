@@ -96,6 +96,9 @@ public class BudgetBuddy {
         while (isRunning) {
             String input = in.nextLine();
             try {
+                if (input.contains(",")){
+                    throw new InvalidArgumentSyntaxException("Input cannot contain ',' comma.");
+                }
                 switch (input.split(" ")[0].toLowerCase()) {
                 case BYE:
                     Insight.closeInsightFrames();
