@@ -17,6 +17,7 @@ deactivate P
 AM -> AM: addAccount(parsedData[0], parsedData[1])
 AM -> UI: printAddAccountMessage(newAccount)
 activate UI
-UI --> User: Display added account message
+UI --> AM: Display added account message
+AM --> User : Confirmation message
 deactivate UI
 @enduml

@@ -23,6 +23,8 @@ deactivate TL
 AM -> AM: removeAccount(accountNumber)
 AM -> UI: printDeleteAccountMessage(removedAccount, transactionsRemoved)
 activate UI
-UI --> User: Display removed account message
+UI --> AM: Display removed account message
+AM --> User: Confirmation message
+
 deactivate UI
 @enduml

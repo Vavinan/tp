@@ -30,6 +30,7 @@ deactivate P
 TM -> TM: addTransaction(transaction)
 TM -> UI: printAddMessage(transaction, account.balance)
 activate UI
-UI --> User: Display added transaction message
+UI --> TM : Display added transaction message
+TM --> User: Confirmation message
 deactivate UI
 @enduml
