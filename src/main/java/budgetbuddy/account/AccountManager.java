@@ -19,7 +19,7 @@ import java.util.logging.Logger;
  */
 public class AccountManager {
     public static final int INDEX_OFFSET = 1;
-    public static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    public static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     private final DataStorage dataStorage = new DataStorage();
     private final ArrayList<Account> accounts;
     private final ArrayList<Integer> existingAccountNumbers;
@@ -31,7 +31,7 @@ public class AccountManager {
     public AccountManager() {
         this.accounts = new ArrayList<>();
         this.existingAccountNumbers = new ArrayList<>();
-        logger.log(Level.INFO, "AccountManager created with empty account and account number lists");
+        LOGGER.log(Level.INFO, "AccountManager created with empty account and account number lists");
     }
 
     /**
@@ -45,7 +45,7 @@ public class AccountManager {
         assert existingAccountNumbers != null : "Existing account numbers list cannot be null";
         this.accounts = accounts;
         this.existingAccountNumbers = existingAccountNumbers;
-        logger.log(Level.INFO, "AccountManager created with specified account and account number lists");
+        LOGGER.log(Level.INFO, "AccountManager created with specified account and account number lists");
     }
 
     /**
@@ -59,7 +59,7 @@ public class AccountManager {
         int newAccountNumber = generateAccountNumber();
         accounts.add(new Account(newAccountNumber, name, initialBalance));
         existingAccountNumbers.add(newAccountNumber);
-        logger.log(Level.INFO, "Account added");
+        LOGGER.log(Level.INFO, "Account added");
     }
 
     /**
@@ -76,13 +76,13 @@ public class AccountManager {
             for (int accountNumber : existingAccountNumbers) {
                 if (accountNumber == fourDigitNumber) {
                     noMatchFound = false;
-                    logger.log(Level.WARNING, "Account number already exists. Generating new account number.");
+                    LOGGER.log(Level.WARNING, "Account number already exists. Generating new account number.");
                     break;
                 }
             }
         } while (!noMatchFound);
 
-        logger.log(Level.INFO, "Account number generated");
+        LOGGER.log(Level.INFO, "Account number generated");
         return fourDigitNumber;
     }
 
@@ -97,18 +97,18 @@ public class AccountManager {
     public void processAddAccount(String input)
             throws InvalidArgumentSyntaxException, NumberFormatException, EmptyArgumentException {
         assert input != null : "Input cannot be null";
-        logger.log(Level.INFO, "Processing add account command");
+        LOGGER.log(Level.INFO, "Processing add account command");
         String[] arguments = {"/n/", "/$/"};
         for (String argument : arguments) {
             if (!input.contains(argument)) {
-                logger.log(Level.WARNING, "Invalid add account syntax.");
+                LOGGER.log(Level.WARNING, "Invalid add account syntax.");
                 throw new InvalidArgumentSyntaxException("Invalid add account syntax.");
             }
         }
         String[] parsedData = Parser.parseAddAccount(input);
         addAccount(parsedData[0], Double.parseDouble(parsedData[1]));
         UserInterface.printAddAccountMessage(getAccount(accounts.size() - INDEX_OFFSET).toString());
-        logger.log(Level.INFO, "Account added successfully");
+        LOGGER.log(Level.INFO, "Account added successfully");
     }
 
     /**
@@ -126,19 +126,19 @@ public class AccountManager {
             InvalidIndexException {
         assert input != null : "Input cannot be null";
         assert transactions != null : "Transactions cannot be null";
-        logger.log(Level.INFO, "Processing remove account command");
+        LOGGER.log(Level.INFO, "Processing remove account command");
         int accountNumber = Parser.parseRemoveAccount(input);
         Account accountRemoved = getAccountByAccountNumber(accountNumber);
         if (accounts.size() == 1) {
             UserInterface.printCannotDeleteLastAccountMessage();
-            logger.log(Level.WARNING, "Cannot delete last account.");
+            LOGGER.log(Level.WARNING, "Cannot delete last account.");
             return;
         }
         accounts.remove(accountRemoved);
         existingAccountNumbers.remove(Integer.valueOf(accountNumber));
         ArrayList<Transaction> transactionsRemoved = transactions.removeTransactionsByAccountNumber(accountNumber);
         UserInterface.printDeleteAccountMessage(accountRemoved.toString(), transactionsRemoved);
-        logger.log(Level.INFO, "Account removed successfully");
+        LOGGER.log(Level.INFO, "Account removed successfully");
     }
 
     /**
@@ -166,7 +166,7 @@ public class AccountManager {
                 return account;
             }
         }
-        logger.log(Level.WARNING, "Account not found.");
+        LOGGER.log(Level.WARNING, "Account not found.");
         throw new IllegalArgumentException("Account not found.");
     }
 
@@ -188,13 +188,13 @@ public class AccountManager {
      */
     public void processEditAccount(String input) throws EmptyArgumentException, IllegalArgumentException {
         assert input != null : "Input cannot be null";
-        logger.log(Level.INFO, "Processing edit account command");
+        LOGGER.log(Level.INFO, "Processing edit account command");
         int accountNumber = Parser.parseEditAccount(input);
         Account account = getAccountByAccountNumber(accountNumber);
         String newName = UserInterface.getNewAccountName(account.toString());
         account.setName(newName);
         UserInterface.printUpdatedAccount(account.toString());
-        logger.log(Level.INFO, "Account edited successfully");
+        LOGGER.log(Level.INFO, "Account edited successfully");
     }
 
     /**
