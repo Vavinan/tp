@@ -26,6 +26,10 @@ package budgetbuddy.datastorage{
 
 package budgetbuddy.transaction.type {
     abstract class Transaction{
+        -description: String
+        -amount: double
+        -category: Category
+        -date: LocalDate
         +Transaction(accountNumber: int, accountName: String,
             description: String, amount: double, date: String)
     }
@@ -39,8 +43,9 @@ package budgetbuddy.categories {
     }
 }
 
-TransactionList -> Parser: {association}
+TransactionList -> "1" Parser: "    {association} "
 TransactionList ---> DataStorage: {association}
 TransactionList ..> Transaction: {dependency}
 Transaction --> Category: {association}
+Parser ...> Category: <<import>>
 @enduml
