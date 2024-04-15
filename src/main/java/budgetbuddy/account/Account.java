@@ -6,7 +6,7 @@ import java.util.logging.Logger;
  * Represents an account in the budget buddy system.
  */
 public class Account {
-    public static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    public static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     private final int accountNumber;
     private String name;
     private double balance;
@@ -21,7 +21,7 @@ public class Account {
         this.accountNumber = accountNumber;
         this.name = "";
         this.balance = 0.00;
-        logger.info("Account created with default name and balance");
+        LOGGER.info("Account created with default name and balance");
     }
 
     /**
@@ -37,7 +37,7 @@ public class Account {
         this.accountNumber = accountNumber;
         this.name = name;
         this.balance = balance;
-        logger.info("Account created with specified name and balance");
+        LOGGER.info("Account created with specified name and balance");
     }
 
     /**
@@ -56,7 +56,7 @@ public class Account {
      */
     public void setBalance(double balance) {
         this.balance = balance;
-        logger.info("Account balance updated");
+        LOGGER.info("Account balance updated");
     }
 
     /**
@@ -85,7 +85,7 @@ public class Account {
     public void setName(String name) {
         assert name != null : "Name cannot be null";
         this.name = name;
-        logger.info("Account name updated");
+        LOGGER.info("Account name updated");
     }
 
     /**
