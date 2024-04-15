@@ -106,11 +106,7 @@ public class BudgetBuddy {
                     isRunning = false;
                     break;
                 case LIST:
-                    if (input.length() >= LIST_LENGTH) {
-                        UserInterface.printNoCommandExists();
-                    } else {
-                        transactions.processList(accountManager.getAccounts(), accountManager);
-                    }
+                    transactions.processList(accountManager.getAccounts(), accountManager);
                     break;
                 case DELETE:
                     transactions.removeTransaction(input, accountManager);
