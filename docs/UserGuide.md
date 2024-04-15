@@ -81,6 +81,9 @@ to view Custom Date Transactions from 01-01-2024 to 31-03-2024.
 List feature options:
 ![](./ug/list_options.png)
 
+Successful list feature (custom date) example:
+![](./ug/successful_list_feature.png)
+
 ### Deleting a transaction: `delete`
 
 Removes a transaction from transaction history.
@@ -93,6 +96,9 @@ Format: `delete TRANSACTION_ID`
 
 Example of usage:
 `delete 1`
+
+Successful delete feature example:
+![](./ug/successful_delete_transaction.png)
 
 ### Edit a transaction: `edit`
 
@@ -110,6 +116,34 @@ Example of usage:
 `edit 2`
 
 Then the user will be asked to edit each information from that specific transaction one by one.
+
+Successful edit feature example:
+![](./ug/successful_edit_transaction.png)
+
+### Search for a transaction: `search`
+
+Search for a list of transactions matching the keyword.
+Parameters: keyword
+Format: `search KEYWORD`
+
+* The `KEYWORD` can be any value representing transaction description, category, transaction amount or 
+  transaction date.
+* Search transaction will list out the matching transactions along with their true **index ID**. This can 
+  be used in `edit` or `delete` command.
+* Keywords are case-insensitive so
+* If there is no matching transactions, the user will be notified.
+* This feature will search from the whole transaction history rather than a specific account to ease the 
+  usage of the budgetbuddy.
+
+Example of usage:
+`search salary`
+
+Then the user will be asked to edit each information from that specific transaction one by one.
+
+Successful edit feature example:
+![](./ug/successful_search.png)
+
+
 
 ### Add an account: `add-acc`
 
@@ -187,6 +221,7 @@ the data of your previous BudgetBuddy home folder.
 * List transactions `list`
 * Delete transaction `delete TRANSACTION_ID`
 * Edit transaction `edit TRANSACTION_ID`
+* Search transaction `search KEYWORD`
 * Add account `add-acc /n/ACCOUNT_NAME /$/INITIAL_BALANCE`
 * List accounts `list-acc`
 * Delete account `delete-acc ACCOUNT_NUMBER`

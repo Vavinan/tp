@@ -131,6 +131,10 @@ and `expense`.
 
 3. `EmptyArgumentException`: This exception is thrown when an empty argument is encountered.
 
+The following class diagram shows the associations between classes involved in processing a transaction.
+
+![](./uml/uml-images/TransactionListDiagram.png)
+
 The following sequence diagram shows how a remove transaction goes works:
 
 ![](./uml/uml-images/addTransactionDiagram.png)
@@ -212,6 +216,47 @@ transactions while maintaining data integrity:
 Sequence Diagram
 The following sequence diagram illustrates the sequence of interactions involved in the editing of a transaction:
 ![](./uml/uml-images/processEditTransactionDiagram.png)
+
+
+### [Implemented] Search Transactions
+
+### Description
+This method enables users to search for transactions based on a keyword. Users provide a keyword, and the system
+searches through transaction descriptions, amounts, categories, and dates to find matches. The search results,
+along with their corresponding indices in the transactions list, are displayed to the user.
+
+#### Design and Implementation
+1. **Keyword Extraction:** The method extracts the keyword from the user input.
+
+2. **Search Process:** It iterates through the list of transactions, checking if any transaction's 
+   description, amount, category, or date contains the keyword. Matches are added to a list of search 
+   results along with their corresponding indices in the transactions list.
+
+3. **Output Generation:** Once the search process is completed, the method generates output by displaying the 
+   search results along with their indices to the user.
+
+4. **Exception Handling:** The method handles exceptions such as an empty keyword input or any unexpected 
+   errors during the search process. Proper error messages are displayed to the user in case of exceptions.
+
+Example Algorithm:
+```
+searchTransactions(input)  
+      1. Extract the keyword from the user input.
+      2. Initialize empty lists for search results and indices.
+      3. For each transaction in transactions do:
+         1. Convert transaction description to lowercase (description_lower).
+         2. Convert transaction amount to string (amount_str).
+         3. Convert category name to lowercase (category_name).
+         4. Convert transaction date to string (date_str).
+         5. If keyword is present in description_lower, amount_str, category_name_lower, or date_str then:
+            - Add the transaction to the search results list.
+            - Add the index of the transaction in transactions to the indices list.
+      4. Display the search results along with their indices to the user.
+      5. Catch ArrayIndexOutOfBoundsException:
+         - Print "Invalid search input."
+      6. Catch Exception:
+         - Print the exception message.
+```
 
 ### [Implemented] List Transactions
 
