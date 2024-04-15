@@ -1,0 +1,51 @@
+@startuml
+skinparam classAttributeIconSize 0
+hide abstract circle
+hide class circle
+hide enum circle
+package budgetbuddy.transaction{
+    class TransactionList {
+        -transactions: ArrayList<Transaction>
+        -parser: Parser
+        -dataStorage: DataStorage
+        +TransactionList(transactions: ArrayList<Transaction>): void
+        +processTransaction(input: String, account: Account): void
+    }
+}
+package budgetbuddy.parser{
+    object Parser {
+        +parseUserInputToTransaction(input: String, account: Account): Transaction
+    }
+}
+
+package budgetbuddy.datastorage{
+    object DataStorage {
+        +saveTransactions(transactionArrayList: ArrayList<Transaction>): void
+    }
+}
+
+package budgetbuddy.transaction.type {
+    abstract class Transaction{
+        -description: String
+        -amount: double
+        -category: Category
+        -date: LocalDate
+        +Transaction(accountNumber: int, accountName: String,
+            description: String, amount: double, date: String)
+    }
+}
+
+package budgetbuddy.categories {
+    enum Category <<enumeration>> {
+        +Category(categoryNum: int, categoryName: String)
+        +getCategoryName(): String
+        +getCategoryNum(): int
+    }
+}
+
+TransactionList -> "1" Parser: "    {association} "
+TransactionList ---> "1" DataStorage: {association}
+TransactionList ..> Transaction: {dependency}
+Transaction --> "1" Category: {association}
+Parser ...> Category: <<import>>
+@enduml
