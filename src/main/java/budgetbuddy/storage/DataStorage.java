@@ -22,11 +22,23 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * This class provides methods for storing and retrieving data related to transactions and accounts.
+ * It includes methods for saving and loading transactions and accounts to/from files.
+ */
 public class DataStorage {
     public static final String TRANSACTIONS_FILE_PATH = "./data/transactions.txt";
     public static final String ACCOUNTS_FILE_PATH = "./data/accounts.txt";
     public static final String FOLDER_PATH = "./data";
 
+    /**
+     * Writes the provided string to a file at the given file path.
+     *
+     * @param stringToWrite The string to write to the file.
+     * @param filePath      The path of the file to write to.
+     * @throws IOException If an I/O error occurs while writing to the file.
+     */
+    //@@author ShyamKrishna33
     private static void writeToFile(String stringToWrite, String filePath) throws IOException {
         FileWriter fw = new FileWriter(filePath, true);
         fw.write(stringToWrite);
@@ -47,7 +59,13 @@ public class DataStorage {
             Files.createDirectories(dataFolderPath);
         }
     }
+    //@@author
 
+    /**
+     * Saves the list of accounts to the file in the ACCOUNT_FILE_PATH.
+     *
+     * @param accounts The list of accounts to save.
+     */
     public void saveAccounts(ArrayList<Account> accounts) {
         try {
             File f = new File(ACCOUNTS_FILE_PATH);
@@ -69,6 +87,13 @@ public class DataStorage {
         }
     }
 
+    /**
+     * Saves the list of transactions to a file.
+     *
+     * @param transactionArrayList The list of transactions to save.
+     * @throws IOException If an I/O error occurs while saving the transactions.
+     */
+    //@@author ShyamKrishna33
     public void saveTransactions(ArrayList<Transaction> transactionArrayList) throws IOException {
         File f = new File(TRANSACTIONS_FILE_PATH);
 
@@ -84,7 +109,15 @@ public class DataStorage {
         }
     }
 
-    // description, categoryNum, type, date, amount, accountNumber, accountName
+    /**
+     * Parses a string representing transaction data into a Transaction object.
+     *
+     * @param s                      The string representing the transaction data.
+     * @param existingAccountNumbers A list of existing account numbers.
+     * @return The parsed Transaction object.
+     * @throws FileCorruptedException    If the file containing transaction data is corrupted.
+     * @throws InvalidCategoryException If the category specified in the transaction data is invalid.
+     */
     private Transaction parseDataToTransaction(String s, ArrayList<Integer> existingAccountNumbers)
             throws FileCorruptedException, InvalidCategoryException {
         String[] transactionInfo = s.split(" ,");
@@ -134,7 +167,16 @@ public class DataStorage {
             return null;
         }
     }
+    //@@author
 
+    /**
+     * Reads account data from the accounts file and returns a list of Account objects.
+     *
+     * @param existingAccountNumbers A list of existing account numbers.
+     * @return The list of Account objects read from the file.
+     * @throws IOException           If an I/O error occurs while reading the file.
+     * @throws FileCorruptedException If the file containing account data is corrupted.
+     */
     public ArrayList<Account> readAccountFile(ArrayList<Integer> existingAccountNumbers)
             throws IOException, FileCorruptedException {
         File f = new File(ACCOUNTS_FILE_PATH);
@@ -186,6 +228,13 @@ public class DataStorage {
         return accounts;
     }
 
+    /**
+     * Reads transaction data from the transactions file and returns a list of Transaction objects.
+     *
+     * @param existingAccountNumbers A list of existing account numbers.
+     * @return The list of Transaction objects read from the file.
+     * @throws IOException If an I/O error occurs while reading the file.
+     */
     public ArrayList<Transaction> readTransactionFile(ArrayList<Integer> existingAccountNumbers) throws IOException {
         createDataFolderIfNotExists();
         File f = new File(TRANSACTIONS_FILE_PATH);
@@ -215,6 +264,11 @@ public class DataStorage {
         return transactionList;
     }
 
+    /**
+     * Loads the accounts from the accounts file and returns an AccountManager object.
+     *
+     * @return The loaded AccountManager object.
+     */
     public AccountManager loadAccounts() {
         try {
             File f = new File(ACCOUNTS_FILE_PATH);
@@ -252,6 +306,12 @@ public class DataStorage {
         return accountManager;
     }
 
+    /**
+     * Loads the transactions from the transactions file and returns a TransactionList object.
+     *
+     * @param existingAccountNumbers A list of existing account numbers.
+     * @return The loaded TransactionList object.
+     */
     public TransactionList loadTransactions(ArrayList<Integer> existingAccountNumbers) {
         try {
             ArrayList<Transaction> transactions = readTransactionFile(existingAccountNumbers);
