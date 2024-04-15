@@ -81,6 +81,9 @@ to view Custom Date Transactions from 01-01-2024 to 31-03-2024.
 List feature options:
 ![](./ug/list_options.png)
 
+Successful list feature (custom date) example:
+![](./ug/successful_list_feature.png)
+
 ### Deleting a transaction: `delete`
 
 Removes a transaction from transaction history.
