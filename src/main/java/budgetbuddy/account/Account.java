@@ -1,5 +1,7 @@
 package budgetbuddy.account;
 
+import java.util.logging.Logger;
+
 /**
  * Represents an account in the budget buddy system.
  */
@@ -8,15 +10,19 @@ public class Account {
     private String name;
     private double balance;
 
+    private static final Logger logger = Logger.getLogger(Account.class.getName());
+
     /**
      * Creates an account with the given account number, and default name and balance.
      *
      * @param accountNumber the account number
      */
     public Account(int accountNumber) {
+        assert accountNumber > 0 : "Account number must be positive";
         this.accountNumber = accountNumber;
         this.name = "";
         this.balance = 0.00;
+        logger.info("Account created with default name and balance");
     }
 
     /**
@@ -27,9 +33,12 @@ public class Account {
      * @param balance       the balance
      */
     public Account(int accountNumber, String name, double balance) {
+        assert accountNumber > 0 : "Account number must be positive";
+        assert name != null : "Name cannot be null";
         this.accountNumber = accountNumber;
         this.name = name;
         this.balance = balance;
+        logger.info("Account created with specified name and balance");
     }
 
     /**
@@ -48,6 +57,7 @@ public class Account {
      */
     public void setBalance(double balance) {
         this.balance = balance;
+        logger.info("Account balance updated");
     }
 
     /**
@@ -74,7 +84,9 @@ public class Account {
      * @param name the new name
      */
     public void setName(String name) {
+        assert name != null : "Name cannot be null";
         this.name = name;
+        logger.info("Account name updated");
     }
 
     /**
