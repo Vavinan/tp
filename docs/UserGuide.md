@@ -114,7 +114,7 @@ List the existing transactions. List feature includes options:
 
 * `list` followed by `1` to view All Transactions.
 * `list` followed by `2` to view Past Week Transactions.
-* `list` followed by `3` to view Past Week Transactions.
+* `list` followed by `3` to view Past Month Transactions.
 * `list` followed by `4` followed by the start date `01-01-2024` followed by the end date `31-03-2024`
   to view Custom Date Transactions from 01-01-2024 to 31-03-2024.
 * `list` followed by `5` followed by account number `ACCOUNT_NUMBER` to view transactions from that account.
