@@ -44,8 +44,8 @@ package budgetbuddy.categories {
 }
 
 TransactionList -> "1" Parser: "    {association} "
-TransactionList ---> DataStorage: {association}
+TransactionList ---> "1" DataStorage: {association}
 TransactionList ..> Transaction: {dependency}
-Transaction --> Category: {association}
+Transaction --> "1" Category: {association}
 Parser ...> Category: <<import>>
 @enduml
