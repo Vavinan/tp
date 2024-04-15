@@ -1,0 +1,76 @@
+@startuml
+skinparam classAttributeIconSize 0
+hide abstract circle
+hide class circle
+hide enum circle
+
+' Define the Account package and Account class
+package budgetbuddy.account {
+    class Account {
+        -balance: double
+        +Account()
+        +Account(balance: double): void
+        +getBalance(): double
+        +setBalance(balance: double): void
+    }
+}
+
+' Existing TransactionList package with new Account association
+package budgetbuddy.transaction {
+    class TransactionList {
+        -transactions: ArrayList<Transaction>
+        -parser: Parser
+        -dataStorage: DataStorage
+        +TransactionList(transactions: ArrayList<Transaction>): void
+        +processTransaction(input: String, account: Account): void
+        +updateBalance(account: Account): void  ' Added method for updating balance
+    }
+}
+
+' Existing Parser package
+package budgetbuddy.parser {
+    object Parser {
+        +parseUserInputToTransaction(input: String, account: Account): Transaction
+    }
+}
+
+' Existing DataStorage package
+package budgetbuddy.datastorage {
+    object DataStorage {
+        +saveTransactions(transactionArrayList: ArrayList<Transaction>): void
+        +getBalance(): double ' Presumed method for getting balance for an account
+    }
+}
+
+' Existing Transaction Type and Category packages and classes
+package budgetbuddy.transaction.type {
+    abstract class Transaction {
+        -description: String
+        -amount: double
+        -category: Category
+        -date: LocalDate
+        +Transaction(accountNumber: int, accountName: String,
+                     description: String, amount: double, date: String)
+    }
+}
+
+package budgetbuddy.categories {
+    enum Category <<enumeration>> {
+        +Category(categoryNum: int, categoryName: String)
+        +getCategoryName(): String
+        +getCategoryNum(): int
+    }
+}
+
+' Define relationships
+TransactionList -right-> "1" Parser: "uses "
+TransactionList -down-> "1" DataStorage: "uses "
+TransactionList ..> Transaction: "creates "
+Transaction --> "1" Category: "categorized by "
+Parser ..> Transaction: "parses into "
+Parser ..> Category: "uses "
+DataStorage ..> Account: "saves and retrieves account balance "
+Account <-- TransactionList: "updated by "
+
+' Additional relationships for Account management might be needed depending on the context
+@enduml
