@@ -356,4 +356,27 @@ able to accomplish most of the tasks faster using commands than using the mouse.
 
 ## Instructions for manual testing
 
-{Give instructions on how to do a manual product testing e.g., how to load sample data to be used for testing}
+### Data Storage
+1. Saving the transactions and accounts 
+   1. Test case: Add a valid transaction, close the program and reopen the program <br>
+      Expected: The previous transaction and the accounts are still available in the
+      transaction list to which the user can append more.
+2. Deleting transactions and accounts
+   1. Prerequisite: Have at least 1 transaction in the transaction list.
+   2. Test case: Delete a transaction, close the program and reopen it. <br>
+      Expected: The previous transaction is not available in the
+      transaction list, and it has been permanently deleted.
+   3. Test case: Delete an account, close the program and reopen it. <br>
+      Expected: The previous account and all the transactions associated with it are
+      not available in the transaction list, and they have been permanently deleted.
+3. Dealing with corrupted data file.
+   1. Prerequisite: Have some transactions in the transaction list. 
+   2. Test case: Remove any parameter of a transaction in the data file. <br>
+      Expected: File Corrupted Error is triggered and all the data are 
+      erased. The user is also notified of this error.
+   3. Test case: Add a new delimiter ',' to the data file. <br>
+      Expected: File Corrupted Error is triggered and all the data are
+      erased. The user is also notified of this error.
+   4. Test case: An account (with at least 1 transaction) is deleted from the storage <br>
+      Expected: File Corrupted Error is triggered and all the data are
+      erased. The user is also notified of this error.
