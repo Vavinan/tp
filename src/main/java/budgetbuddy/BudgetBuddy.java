@@ -39,7 +39,7 @@ public class BudgetBuddy {
     public static final String DELETE_ACC = "delete-acc";
     public static final String EDIT_ACC = "edit-acc";
     public static final String SEARCH = "search";
-    public static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    public static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     private final AccountManager accountManager;
     private final TransactionList transactions;
 
@@ -57,7 +57,7 @@ public class BudgetBuddy {
      */
     private static void setupLogger() {
         LogManager.getLogManager().reset();
-        logger.setLevel(java.util.logging.Level.ALL);
+        LOGGER.setLevel(java.util.logging.Level.ALL);
         try {
             File logsDir = new File("logs");
             if (!logsDir.exists()) {
@@ -66,7 +66,7 @@ public class BudgetBuddy {
             FileHandler fh = new FileHandler("logs/budgetBuggyLog.log");
             fh.setFormatter(new SimpleFormatter());
             fh.setLevel(Level.INFO);
-            logger.addHandler(fh);
+            LOGGER.addHandler(fh);
         } catch (IOException e) {
             UserInterface.printLoggerSetupError();
         }
