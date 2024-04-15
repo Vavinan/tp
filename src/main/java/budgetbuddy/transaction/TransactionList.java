@@ -6,7 +6,13 @@ import budgetbuddy.account.AccountManager;
 
 
 import budgetbuddy.categories.Category;
-import budgetbuddy.exceptions.*;
+import budgetbuddy.exceptions.EmptyArgumentException;
+import budgetbuddy.exceptions.InvalidAddTransactionSyntax;
+import budgetbuddy.exceptions.InvalidArgumentSyntaxException;
+import budgetbuddy.exceptions.InvalidCategoryException;
+import budgetbuddy.exceptions.InvalidEditTransactionData;
+import budgetbuddy.exceptions.InvalidIndexException;
+import budgetbuddy.exceptions.InvalidTransactionTypeException;
 import budgetbuddy.insights.Insight;
 import budgetbuddy.parser.Parser;
 import budgetbuddy.storage.DataStorage;
@@ -338,7 +344,8 @@ public class TransactionList {
      */
     //@@author Vavinan
     public void processEditTransaction(String input, AccountManager accountManager) throws EmptyArgumentException,
-            NumberFormatException, InvalidIndexException, InvalidEditTransactionData, InvalidCategoryException, InvalidArgumentSyntaxException {
+            NumberFormatException, InvalidIndexException, InvalidEditTransactionData, InvalidCategoryException,
+            InvalidArgumentSyntaxException {
         if (input.trim().length() < EDIT_BEGIN_INDEX) {
             LOGGER.log(Level.WARNING, "Index id is missing for edit command");
             throw new EmptyArgumentException("edit index ");
