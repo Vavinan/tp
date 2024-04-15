@@ -15,6 +15,10 @@ import budgetbuddy.storage.DataStorage;
 import budgetbuddy.transaction.TransactionList;
 import budgetbuddy.ui.UserInterface;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.*;
+
 import java.util.Scanner;
 
 public class BudgetBuddy {
@@ -31,9 +35,13 @@ public class BudgetBuddy {
     public static final String DELETE_ACC = "delete-acc";
     public static final String EDIT_ACC = "edit-acc";
     public static final String SEARCH = "search";
+    public final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     private final AccountManager accountManager;
     private final TransactionList transactions;
 
+    /**
+     * Creates a BudgetBuddy object with the account manager and transaction list.
+     */
     public BudgetBuddy() {
         DataStorage dataStorage = new DataStorage();
         this.accountManager = dataStorage.loadAccounts();
@@ -41,13 +49,36 @@ public class BudgetBuddy {
     }
 
     /**
+     * Sets up the logger for the BudgetBuddy application.
+     */
+    private static void setupLogger(){
+        LogManager.getLogManager().reset();
+        logger.setLevel(java.util.logging.Level.ALL);
+        try {
+            File logsDir = new File("logs");
+            if (!logsDir.exists()){
+                logsDir.mkdir();
+            }
+            FileHandler fh = new FileHandler("logs/budgetBuggyLog.log");
+            fh.setFormatter(new SimpleFormatter());
+            fh.setLevel(Level.INFO);
+            logger.addHandler(fh);
+        } catch (IOException e) {
+            UserInterface.printLoggerSetupError();
+        }
+    }
+
+    /**
      * Main entry-point for the java.BudgetBuddy application.
      */
-
-    public static void main(String[] args){
+    public static void main(String[] args) {
+        setupLogger();
         new BudgetBuddy().run();
     }
 
+    /**
+     * Runs the BudgetBuddy application.
+     */
     public void run() {
         Scanner in = UserInterface.in;
         String logo = "BUDGET BUDDY";
@@ -57,7 +88,7 @@ public class BudgetBuddy {
 
 
         boolean isRunning = true;
-        
+
         while (isRunning) {
             String input = in.nextLine();
             try {
@@ -123,11 +154,11 @@ public class BudgetBuddy {
             } catch (InvalidIndexException e) {
                 UserInterface.printInvalidIndex("Given index id is out of bound",
                         Integer.parseInt(e.getMessage()));
-            } catch (IndexOutOfBoundsException ignored){
+            } catch (IndexOutOfBoundsException ignored) {
                 UserInterface.printInvalidInput("Please check your command syntax");
-            } catch (InvalidEditTransactionData e){
+            } catch (InvalidEditTransactionData e) {
                 UserInterface.printInvalidInput(e.getMessage());
-            } catch (InvalidArgumentSyntaxException e){
+            } catch (InvalidArgumentSyntaxException e) {
                 UserInterface.printInvalidArgumentSyntax(e.getMessage());
             } catch (InvalidCategoryException e) {
                 UserInterface.printInvalidCategoryError();

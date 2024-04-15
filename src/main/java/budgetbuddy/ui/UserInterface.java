@@ -1099,4 +1099,15 @@ public class UserInterface {
                 "category or amount");
         System.out.println(HELP_BORDER);
     }
+
+    /**
+     * The function `printLoggerSetupError` prints an error message indicating that
+     * there was an issue
+     * setting up the logger.
+     */
+    public static void printLoggerSetupError() {
+        System.out.println(LINE);
+        System.out.println(TAB_SPACE + "Error setting up logger");
+        System.out.println(LINE);
+    }
 }

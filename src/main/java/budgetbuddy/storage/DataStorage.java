@@ -32,8 +32,7 @@ public class DataStorage {
     public static final String TRANSACTIONS_FILE_PATH = "./data/transactions.txt";
     public static final String ACCOUNTS_FILE_PATH = "./data/accounts.txt";
     public static final String FOLDER_PATH = "./data";
-
-    private static final Logger logger = Logger.getLogger(AccountManager.class.getName());
+    public final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
     //@@author ShyamKrishna33
     /**
@@ -124,7 +123,7 @@ public class DataStorage {
      * @param s                      The string representing the transaction data.
      * @param existingAccountNumbers A list of existing account numbers.
      * @return The parsed Transaction object.
-     * @throws FileCorruptedException    If the file containing transaction data is corrupted.
+     * @throws FileCorruptedException   If the file containing transaction data is corrupted.
      * @throws InvalidCategoryException If the category specified in the transaction data is invalid.
      */
     private Transaction parseDataToTransaction(String s, ArrayList<Integer> existingAccountNumbers)
@@ -183,7 +182,7 @@ public class DataStorage {
      *
      * @param existingAccountNumbers A list of existing account numbers.
      * @return The list of Account objects read from the file.
-     * @throws IOException If an I/O error occurs while reading the file.
+     * @throws IOException            If an I/O error occurs while reading the file.
      * @throws FileCorruptedException If the file containing account data is corrupted.
      */
     public ArrayList<Account> readAccountFile(ArrayList<Integer> existingAccountNumbers)
@@ -209,7 +208,7 @@ public class DataStorage {
      *
      * @param existingAccountNumbers A list of existing account numbers.
      * @return The list of Account objects read from the file.
-     * @throws IOException If an I/O error occurs while reading the file.
+     * @throws IOException            If an I/O error occurs while reading the file.
      * @throws FileCorruptedException If the file containing account data is corrupted.
      */
     private Account processAccountLine(String line, ArrayList<Integer> existingAccountNumbers) throws FileCorruptedException {
@@ -231,7 +230,7 @@ public class DataStorage {
     /**
      * Validates a line of account data.
      *
-     * @param accountInfo The line of account data to validate.
+     * @param accountInfo            The line of account data to validate.
      * @param existingAccountNumbers A list of existing account numbers.
      * @throws FileCorruptedException If the line of account data is invalid.
      */
