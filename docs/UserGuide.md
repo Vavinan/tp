@@ -25,6 +25,15 @@ activities.
 
 ## Features
 
+> [!NOTE]
+> **The following are notes about the command format:**
+* Words in `UPPER_CASE` are the parameters to be supplied by the user.
+  e.g `delete TRANSACTION_ID`, `TRANSACTION_ID` is a parameter which can be used as `delete 1`
+* Parameters can be in any order.
+  e.g if the command specifies `/n/ACCOUNT_NAME /$/INITIAL_BALANCE`, `/$/INITIAL_BALANCE /n/ACCOUNT_NAME` is also acceptable.
+* Extraneous parameters for commands that do not take in parameters (such as `help`, `list`, `list-acc` and `bye`) will be ignored.
+  e.g if the command specifies `help abc`, it will be interpreted as `help`.
+
 ### Viewing help: `help`
 
 Shows the instructions for using BudgetBuddy. <br>
